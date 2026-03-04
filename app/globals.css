@@ -1,0 +1,24 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  color: #f7f4ee;
+  background: #060e1c;
+}
+
+@media print {
+  body {
+    background: white;
+    color: black;
+  }
+
+  nav,
+  [data-cta] {
+    display: none;
+  }
+}

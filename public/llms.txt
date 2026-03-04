@@ -1,0 +1,43 @@
+# Forte AI Solutions
+
+> Data Intelligence. Democratized.
+
+## About
+
+Forte transforms fragmented enterprise data into structured intelligence, enabling faster decisions, leaner operations, and compounding advantage at scale.
+
+Forte was founded in 2024. The company believes every organization deserves the clarity that data can provide, not just the ones who can afford a team of data scientists.
+
+## Who Forte Serves
+
+Forte serves organizations of all sizes that are drowning in data and starving for insight. Typical clients include mid-market and enterprise organizations without large in-house data or engineering teams. Forte is specifically built for non-technical leadership teams who need data intelligence without the complexity.
+
+## Pages
+
+- /: Homepage with overview of Forte AI Solutions services and value proposition.
+- /about: Mission, founder story, and company values.
+- /services: Detailed service offerings, process timeline, and FAQ.
+- /contact: Contact form and discovery call information.
+
+## Services
+
+### Data Pipeline and Integration
+
+Forte connects siloed systems into a single, clean, reliable data infrastructure. Automated pipelines replace manual data exports and transfers. Unified data layer across all existing systems and tools. Real-time sync so numbers are never behind. Built to scale as organizations grow without rebuilding from scratch.
+
+### AI Dashboards and Reporting
+
+Forte builds intelligent dashboards that surface the right information to the right people at the right time. Executive dashboards surface priorities, not just metrics. Operational views built for teams running the day-to-day. Automated alerts when something needs attention. Designed for non-technical users.
+
+### Custom AI Model Building
+
+Forte designs and deploys AI models tailored to specific business questions. Predictive models anticipate outcomes. Diagnostic models surface root causes. Prescriptive recommendations tell teams what to do next. Explainable outputs leadership can trust and act on.
+
+## Contact
+
+Email: hello@forteaisolutions.com
+Discovery calls take 30 minutes. Response within one business day.
+
+## What Forte Does Not Do
+
+Forte does not sell off-the-shelf software products. Forte does not offer ongoing managed services or IT support. Forte does not replace existing systems. Forte builds custom data infrastructure, integrates it with existing tools, and hands over full ownership to the client. There is no proprietary lock-in.
