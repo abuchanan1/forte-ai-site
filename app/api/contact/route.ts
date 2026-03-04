@@ -1,4 +1,5 @@
 import { NextResponse, type NextRequest } from 'next/server'
+import { Resend } from 'resend'
 import { contactFormSchema } from '@/lib/validations'
 import type { ApiResponse } from '@/types'
 
@@ -69,16 +70,39 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    // TODO: Integrate email service (Resend or Postmark) to forward the contact form submission
-    // For now, log the submission server-side
-    // eslint-disable-next-line no-console
-    console.log('Contact form submission:', {
-      name: result.data.name,
-      company: result.data.company,
-      role: result.data.role,
-      email: result.data.email,
-      messageLength: result.data.message.length,
-    })
+    // Send email via Resend
+    if (process.env.RESEND_API_KEY && process.env.CONTACT_FORM_TO_EMAIL) {
+      const resend = new Resend(process.env.RESEND_API_KEY)
+
+      const { error: emailError } = await resend.emails.send({
+        from: 'Forte AI Solutions <onboarding@resend.dev>',
+        to: process.env.CONTACT_FORM_TO_EMAIL,
+        subject: `New contact form submission from ${result.data.name}`,
+        html: `
+          <h2>New Contact Form Submission</h2>
+          <p><strong>Name:</strong> ${result.data.name}</p>
+          <p><strong>Company:</strong> ${result.data.company}</p>
+          <p><strong>Role:</strong> ${result.data.role}</p>
+          <p><strong>Email:</strong> ${result.data.email}</p>
+          <p><strong>Message:</strong></p>
+          <p>${result.data.message.replace(/\n/g, '<br>')}</p>
+        `,
+      })
+
+      if (emailError) {
+        // eslint-disable-next-line no-console
+        console.error('Resend email error:', emailError)
+      }
+    } else {
+      // eslint-disable-next-line no-console
+      console.log('Contact form submission (email not configured):', {
+        name: result.data.name,
+        company: result.data.company,
+        role: result.data.role,
+        email: result.data.email,
+        messageLength: result.data.message.length,
+      })
+    }
 
     const response: ApiResponse = {
       success: true,
