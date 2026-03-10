@@ -1,9 +1,11 @@
 import type { Metadata } from 'next'
 import { createMetadata } from '@/lib/metadata'
 import { FadeUp } from '@/components/ui/FadeUp'
+import { ScaleIn } from '@/components/ui/ScaleIn'
 import { SectionLabel } from '@/components/ui/SectionLabel'
-import { StatItem } from '@/components/ui/StatItem'
+import { AnimatedCounter } from '@/components/ui/AnimatedCounter'
 import { Button } from '@/components/ui/Button'
+import { ServiceIcon } from '@/components/ui/ServiceIcon'
 
 export const metadata: Metadata = createMetadata({
   title: 'Solutions',
@@ -58,12 +60,26 @@ const FAQS = [
   },
 ]
 
+const SERVICE_IMAGES = [
+  'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=600&q=80',
+  'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&q=80',
+  'https://images.unsplash.com/photo-1677442136019-21780ecad995?w=600&q=80',
+]
+
 export default function ServicesPage() {
   return (
     <>
       {/* Hero */}
-      <section className="bg-navy pt-32 pb-20 md:pt-44 md:pb-28">
-        <div className="mx-auto max-w-7xl px-6">
+      <section className="relative bg-navy pt-32 pb-20 md:pt-44 md:pb-28 overflow-hidden">
+        <div
+          className="absolute inset-0 opacity-[0.06]"
+          style={{
+            backgroundImage: 'url("https://images.unsplash.com/photo-1518186285589-2f7649de83e0?w=1920&q=80")',
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+          }}
+        />
+        <div className="relative mx-auto max-w-7xl px-6">
           <FadeUp>
             <SectionLabel label="Our Solutions" />
           </FadeUp>
@@ -87,155 +103,206 @@ export default function ServicesPage() {
       {/* Service 1 */}
       <section className="bg-navy-deep py-20 md:py-28">
         <div className="mx-auto max-w-7xl px-6">
-          <FadeUp>
-            <SectionLabel label="Foundation" index={1} />
-          </FadeUp>
-          <FadeUp delay={0.1}>
-            <h2 className="mt-4 max-w-3xl font-display text-3xl font-normal leading-display text-white md:text-4xl">
-              Your data should work together. We make that happen.
-            </h2>
-          </FadeUp>
-          <FadeUp delay={0.2}>
-            <p className="mt-2 font-body text-sm font-medium text-brass-light">
-              What you get: one source of truth across your entire organization.
-            </p>
-          </FadeUp>
-          <FadeUp delay={0.3}>
-            <p className="mt-6 max-w-3xl font-body text-base font-light leading-body text-white/60">
-              Most organizations are not missing data. They are missing connected
-              data. Your CRM, your ERP, your spreadsheets, your third-party
-              tools, they each tell part of the story. Forte builds the
-              infrastructure that brings them together into a single, clean,
-              reliable data layer your entire organization can build on.
-            </p>
-          </FadeUp>
-          <FadeUp delay={0.4}>
-            <ul className="mt-6 space-y-3">
-              {[
-                'Automated pipelines that replace manual data exports and transfers',
-                'Unified data layer across all your existing systems and tools',
-                'Real-time sync so your numbers are never a day, a week, or a quarter behind',
-                'Built to scale as your organization grows without rebuilding from scratch',
-              ].map((point) => (
-                <li
-                  key={point}
-                  className="flex items-start gap-3 font-body text-sm font-light leading-body text-white/60"
-                >
-                  <span className="mt-2 block h-px w-3 shrink-0 bg-brass" />
-                  {point}
-                </li>
-              ))}
-            </ul>
-          </FadeUp>
-          <FadeUp delay={0.5}>
-            <div className="mt-8">
-              <StatItem num="70%" label="Reduction in manual reporting" />
+          <div className="grid gap-12 md:grid-cols-2 md:gap-16 items-center">
+            <div>
+              <FadeUp>
+                <SectionLabel label="Foundation" index={1} />
+              </FadeUp>
+              <FadeUp delay={0.1}>
+                <div className="mt-4 mb-3">
+                  <ServiceIcon icon="pipeline" size={48} />
+                </div>
+                <h2 className="max-w-3xl font-display text-3xl font-normal leading-display text-white md:text-4xl">
+                  Your data should work together. We make that happen.
+                </h2>
+              </FadeUp>
+              <FadeUp delay={0.2}>
+                <p className="mt-2 font-body text-sm font-medium text-brass-light">
+                  What you get: one source of truth across your entire organization.
+                </p>
+              </FadeUp>
+              <FadeUp delay={0.3}>
+                <p className="mt-6 max-w-3xl font-body text-base font-light leading-body text-white/60">
+                  Most organizations are not missing data. They are missing connected
+                  data. Forte builds the infrastructure that brings your systems together
+                  into a single, clean, reliable data layer.
+                </p>
+              </FadeUp>
+              <FadeUp delay={0.4}>
+                <ul className="mt-6 space-y-3">
+                  {[
+                    'Automated pipelines that replace manual data exports',
+                    'Unified data layer across all your existing systems',
+                    'Real-time sync so your numbers are never behind',
+                    'Built to scale as your organization grows',
+                  ].map((point) => (
+                    <li
+                      key={point}
+                      className="flex items-start gap-3 font-body text-sm font-light leading-body text-white/60"
+                    >
+                      <span className="mt-2 block h-px w-3 shrink-0 bg-brass" />
+                      {point}
+                    </li>
+                  ))}
+                </ul>
+              </FadeUp>
+              <FadeUp delay={0.5}>
+                <div className="mt-8">
+                  <AnimatedCounter value="70%" label="Reduction in manual reporting" />
+                </div>
+              </FadeUp>
             </div>
-          </FadeUp>
+            <ScaleIn delay={0.3}>
+              <div className="relative overflow-hidden rounded-sm">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={SERVICE_IMAGES[0]}
+                  alt="Data pipeline infrastructure visualization"
+                  className="w-full rounded-sm object-cover aspect-[4/3] opacity-70"
+                  loading="lazy"
+                />
+                <div className="absolute inset-0 bg-gradient-to-r from-navy-deep/60 to-transparent" />
+              </div>
+            </ScaleIn>
+          </div>
         </div>
       </section>
 
       {/* Service 2 */}
       <section className="bg-navy py-20 md:py-28">
         <div className="mx-auto max-w-7xl px-6">
-          <FadeUp>
-            <SectionLabel label="Visibility" index={2} />
-          </FadeUp>
-          <FadeUp delay={0.1}>
-            <h2 className="mt-4 max-w-3xl font-display text-3xl font-normal leading-display text-white md:text-4xl">
-              Stop reading reports. Start reading your business.
-            </h2>
-          </FadeUp>
-          <FadeUp delay={0.2}>
-            <p className="mt-2 font-body text-sm font-medium text-brass-light">
-              What you get: the right information, in front of the right people,
-              at the right moment.
-            </p>
-          </FadeUp>
-          <FadeUp delay={0.3}>
-            <p className="mt-6 max-w-3xl font-body text-base font-light leading-body text-white/60">
-              Most dashboards tell you what happened. Forte dashboards tell you
-              what it means. We design intelligent reporting systems built around
-              how your leadership actually makes decisions, not around what your
-              data warehouse happens to export. No more decoding charts. No more
-              chasing analysts for context.
-            </p>
-          </FadeUp>
-          <FadeUp delay={0.4}>
-            <ul className="mt-6 space-y-3">
-              {[
-                'Executive dashboards that surface priorities, not just metrics',
-                'Operational views built for the teams running the day-to-day',
-                'Automated alerts when something needs attention before it becomes a problem',
-                'Designed for non-technical users so insights reach the people who act on them',
-              ].map((point) => (
-                <li
-                  key={point}
-                  className="flex items-start gap-3 font-body text-sm font-light leading-body text-white/60"
-                >
-                  <span className="mt-2 block h-px w-3 shrink-0 bg-brass" />
-                  {point}
-                </li>
-              ))}
-            </ul>
-          </FadeUp>
-          <FadeUp delay={0.5}>
-            <div className="mt-8">
-              <StatItem num="Weeks → Hours" label="Reporting cycle reduction" />
+          <div className="grid gap-12 md:grid-cols-2 md:gap-16 items-center">
+            <ScaleIn delay={0.1} className="order-2 md:order-1">
+              <div className="relative overflow-hidden rounded-sm">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={SERVICE_IMAGES[1]}
+                  alt="AI-powered dashboard analytics"
+                  className="w-full rounded-sm object-cover aspect-[4/3] opacity-70"
+                  loading="lazy"
+                />
+                <div className="absolute inset-0 bg-gradient-to-l from-navy/60 to-transparent" />
+              </div>
+            </ScaleIn>
+            <div className="order-1 md:order-2">
+              <FadeUp>
+                <SectionLabel label="Visibility" index={2} />
+              </FadeUp>
+              <FadeUp delay={0.1}>
+                <div className="mt-4 mb-3">
+                  <ServiceIcon icon="dashboard" size={48} />
+                </div>
+                <h2 className="max-w-3xl font-display text-3xl font-normal leading-display text-white md:text-4xl">
+                  Stop reading reports. Start reading your business.
+                </h2>
+              </FadeUp>
+              <FadeUp delay={0.2}>
+                <p className="mt-2 font-body text-sm font-medium text-brass-light">
+                  What you get: the right information, in front of the right people,
+                  at the right moment.
+                </p>
+              </FadeUp>
+              <FadeUp delay={0.3}>
+                <p className="mt-6 max-w-3xl font-body text-base font-light leading-body text-white/60">
+                  Most dashboards tell you what happened. Forte dashboards tell you
+                  what it means. We design intelligent reporting built around
+                  how your leadership actually makes decisions.
+                </p>
+              </FadeUp>
+              <FadeUp delay={0.4}>
+                <ul className="mt-6 space-y-3">
+                  {[
+                    'Executive dashboards that surface priorities, not just metrics',
+                    'Operational views built for day-to-day teams',
+                    'Automated alerts before problems become crises',
+                    'Designed for non-technical users',
+                  ].map((point) => (
+                    <li
+                      key={point}
+                      className="flex items-start gap-3 font-body text-sm font-light leading-body text-white/60"
+                    >
+                      <span className="mt-2 block h-px w-3 shrink-0 bg-brass" />
+                      {point}
+                    </li>
+                  ))}
+                </ul>
+              </FadeUp>
+              <FadeUp delay={0.5}>
+                <div className="mt-8">
+                  <AnimatedCounter value="Weeks → Hours" label="Reporting cycle reduction" />
+                </div>
+              </FadeUp>
             </div>
-          </FadeUp>
+          </div>
         </div>
       </section>
 
       {/* Service 3 */}
       <section className="bg-navy-deep py-20 md:py-28">
         <div className="mx-auto max-w-7xl px-6">
-          <FadeUp>
-            <SectionLabel label="Intelligence" index={3} />
-          </FadeUp>
-          <FadeUp delay={0.1}>
-            <h2 className="mt-4 max-w-3xl font-display text-3xl font-normal leading-display text-white md:text-4xl">
-              Your data knows what is coming. Let us prove it.
-            </h2>
-          </FadeUp>
-          <FadeUp delay={0.2}>
-            <p className="mt-2 font-body text-sm font-medium text-brass-light">
-              What you get: AI models built on your data, tuned to your specific
-              business questions.
-            </p>
-          </FadeUp>
-          <FadeUp delay={0.3}>
-            <p className="mt-6 max-w-3xl font-body text-base font-light leading-body text-white/60">
-              Off-the-shelf AI tools answer generic questions. Forte builds
-              models that answer yours. Whether you need to predict customer
-              churn, forecast demand, identify operational inefficiencies, or
-              surface risks before they materialize, we design, train, and deploy
-              models tuned to your industry, your data, and your outcomes.
-            </p>
-          </FadeUp>
-          <FadeUp delay={0.4}>
-            <ul className="mt-6 space-y-3">
-              {[
-                'Predictive models that anticipate outcomes before they happen',
-                'Diagnostic models that surface root causes instead of symptoms',
-                'Prescriptive recommendations that tell your team what to do next',
-                'Explainable outputs your leadership can trust and act on',
-              ].map((point) => (
-                <li
-                  key={point}
-                  className="flex items-start gap-3 font-body text-sm font-light leading-body text-white/60"
-                >
-                  <span className="mt-2 block h-px w-3 shrink-0 bg-brass" />
-                  {point}
-                </li>
-              ))}
-            </ul>
-          </FadeUp>
-          <FadeUp delay={0.5}>
-            <div className="mt-8">
-              <StatItem num="60 days" label="Earlier risk identification" />
+          <div className="grid gap-12 md:grid-cols-2 md:gap-16 items-center">
+            <div>
+              <FadeUp>
+                <SectionLabel label="Intelligence" index={3} />
+              </FadeUp>
+              <FadeUp delay={0.1}>
+                <div className="mt-4 mb-3">
+                  <ServiceIcon icon="model" size={48} />
+                </div>
+                <h2 className="max-w-3xl font-display text-3xl font-normal leading-display text-white md:text-4xl">
+                  Your data knows what is coming. Let us prove it.
+                </h2>
+              </FadeUp>
+              <FadeUp delay={0.2}>
+                <p className="mt-2 font-body text-sm font-medium text-brass-light">
+                  What you get: AI models built on your data, tuned to your specific
+                  business questions.
+                </p>
+              </FadeUp>
+              <FadeUp delay={0.3}>
+                <p className="mt-6 max-w-3xl font-body text-base font-light leading-body text-white/60">
+                  Off-the-shelf AI tools answer generic questions. Forte builds
+                  models that answer yours. Predictive, diagnostic, prescriptive —
+                  built on your data, tuned to your outcomes.
+                </p>
+              </FadeUp>
+              <FadeUp delay={0.4}>
+                <ul className="mt-6 space-y-3">
+                  {[
+                    'Predictive models that anticipate outcomes',
+                    'Diagnostic models that surface root causes',
+                    'Prescriptive recommendations for your team',
+                    'Explainable outputs leadership can trust',
+                  ].map((point) => (
+                    <li
+                      key={point}
+                      className="flex items-start gap-3 font-body text-sm font-light leading-body text-white/60"
+                    >
+                      <span className="mt-2 block h-px w-3 shrink-0 bg-brass" />
+                      {point}
+                    </li>
+                  ))}
+                </ul>
+              </FadeUp>
+              <FadeUp delay={0.5}>
+                <div className="mt-8">
+                  <AnimatedCounter value="60 days" label="Earlier risk identification" />
+                </div>
+              </FadeUp>
             </div>
-          </FadeUp>
+            <ScaleIn delay={0.3}>
+              <div className="relative overflow-hidden rounded-sm">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={SERVICE_IMAGES[2]}
+                  alt="AI and machine learning model visualization"
+                  className="w-full rounded-sm object-cover aspect-[4/3] opacity-70"
+                  loading="lazy"
+                />
+                <div className="absolute inset-0 bg-gradient-to-r from-navy-deep/60 to-transparent" />
+              </div>
+            </ScaleIn>
+          </div>
         </div>
       </section>
 
@@ -250,8 +317,12 @@ export default function ServicesPage() {
           </FadeUp>
           <div className="mt-12 grid gap-8 md:grid-cols-4">
             {PROCESS_STEPS.map((step, i) => (
-              <FadeUp key={step.num} delay={0.1 * (i + 1)}>
-                <div>
+              <ScaleIn key={step.num} delay={0.1 * (i + 1)}>
+                <div className="relative">
+                  {/* Connecting line */}
+                  {i < PROCESS_STEPS.length - 1 && (
+                    <div className="absolute top-6 left-[calc(100%+0.5rem)] hidden h-px w-[calc(100%-1rem)] bg-gradient-to-r from-brass/30 to-brass/5 md:block" />
+                  )}
                   <span className="font-display text-3xl font-medium text-brass-light">
                     {step.num}
                   </span>
@@ -262,7 +333,7 @@ export default function ServicesPage() {
                     {step.body}
                   </p>
                 </div>
-              </FadeUp>
+              </ScaleIn>
             ))}
           </div>
         </div>
@@ -277,7 +348,7 @@ export default function ServicesPage() {
           <div className="mt-10 space-y-4">
             {FAQS.map((faq, i) => (
               <FadeUp key={faq.q} delay={0.1 * (i + 1)}>
-                <details className="group rounded-sm border border-brass/10 bg-navy-mid open:border-brass/30">
+                <details className="group rounded-sm border border-brass/10 bg-navy-mid transition-all duration-300 open:border-brass/30 open:shadow-[0_0_24px_rgba(160,120,64,0.06)]">
                   <summary className="cursor-pointer px-6 py-4 font-body text-sm font-medium text-white transition-colors hover:text-brass-light focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brass">
                     {faq.q}
                   </summary>

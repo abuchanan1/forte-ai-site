@@ -5,6 +5,7 @@ import { Analytics } from '@vercel/analytics/react'
 import { Providers } from '@/components/providers'
 import { Navbar } from '@/components/layout/Navbar'
 import { Footer } from '@/components/layout/Footer'
+import { ChatBot } from '@/components/ui/ChatBot'
 import { COMPANY } from '@/lib/constants'
 import './globals.css'
 
@@ -53,6 +54,7 @@ export default function RootLayout({
           <Navbar />
           <main id="main-content">{children}</main>
           <Footer />
+          <ChatBot />
         </Providers>
         <JsonLd />
         {process.env.NODE_ENV === 'production' &&

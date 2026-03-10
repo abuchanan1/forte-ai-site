@@ -78,10 +78,10 @@ export const SOCIAL_LINKS: SocialLink[] = [
 ]
 
 export const STATS: Stat[] = [
-  { num: '10x', label: 'Faster Insights' },
-  { num: '98%', label: 'Data Accuracy' },
-  { num: 'Fortune 500', label: 'Client Profile' },
-  { num: '12 wks', label: 'To Deployment' },
+  { num: '12 wks', label: 'Avg. Deployment' },
+  { num: '5+', label: 'Industries Served' },
+  { num: '100%', label: 'Client Ownership' },
+  { num: '24/7', label: 'Data Monitoring' },
 ]
 
 export const PAGES = [

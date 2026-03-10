@@ -11,6 +11,36 @@ body {
   background: #060e1c;
 }
 
+/* Glow pulse for interactive elements */
+@keyframes glow-pulse {
+  0%, 100% { box-shadow: 0 0 20px rgba(160, 120, 64, 0.1); }
+  50% { box-shadow: 0 0 30px rgba(160, 120, 64, 0.25); }
+}
+
+/* Smooth scrollbar styling */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #060e1c;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(160, 120, 64, 0.3);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(160, 120, 64, 0.5);
+}
+
+/* Selection color */
+::selection {
+  background: rgba(160, 120, 64, 0.3);
+  color: #f7f4ee;
+}
+
 @media print {
   body {
     background: white;
