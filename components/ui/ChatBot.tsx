@@ -172,7 +172,8 @@ export function ChatBot() {
             body: JSON.stringify({
               name: leadData.name,
               email: leadData.email,
-              company: '',
+              company: 'Via Chatbot',
+              role: 'Website Visitor',
               message: `[Chatbot Lead] ${userMsg}`,
             }),
           })
