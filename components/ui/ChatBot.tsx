@@ -7,44 +7,74 @@ import { m, AnimatePresence } from 'framer-motion'
 /*  Types                                                              */
 /* ------------------------------------------------------------------ */
 interface Message {
-  role: 'bot' | 'user' | 'status'
+  role: 'user' | 'assistant' | 'status'
   content: string
-  quickReplies?: string[]
 }
 
-type ChatStep = 'greeting' | 'name' | 'email' | 'need' | 'freeChat'
+interface LeadQualification {
+  company_size?: string
+  data_maturity?: string
+  leadership_need?: string
+  ai_interest?: string
+  budget_authority?: string
+  recommended_service?: string
+  fit_score?: string
+  notes?: string
+}
 
 interface LeadData {
   name: string
   email: string
-  need: string
+  captured: boolean
 }
 
 /* ------------------------------------------------------------------ */
-/*  Constants                                                          */
+/*  Parsing helpers — strip hidden blocks from assistant text          */
 /* ------------------------------------------------------------------ */
-const GREETING = "Hi! I'm Forte's assistant. I can answer questions about our data intelligence solutions or connect you with the team."
+const LEAD_CAPTURE_RE = /<lead_capture>([\s\S]*?)<\/lead_capture>/g
+const LEAD_QUAL_RE = /<lead_qualification>([\s\S]*?)<\/lead_qualification>/g
 
-const PROMPTS: Record<string, string> = {
-  name: "I'd love to connect you. What's your name?",
-  email: "And the best email to reach you?",
-  need: "Last one — in a sentence, what data challenge are you facing?",
-  captured: "Got it — our team will reach out within one business day. Ask me anything else in the meantime!",
-  skip: "No problem! Ask me anything about Forte.",
+function parseAndStrip(raw: string): {
+  visible: string
+  captureAction: string | null
+  leadInfo: { name?: string; email?: string } | null
+  qualification: LeadQualification | null
+} {
+  let captureAction: string | null = null
+  let leadInfo: { name?: string; email?: string } | null = null
+  let qualification: LeadQualification | null = null
+
+  // Extract lead_capture blocks
+  let captureMatch: RegExpExecArray | null
+  const captureRe = new RegExp(LEAD_CAPTURE_RE.source, 'g')
+  while ((captureMatch = captureRe.exec(raw)) !== null) {
+    try {
+      const parsed = JSON.parse(captureMatch[1]!)
+      if (parsed.action === 'request_contact') {
+        captureAction = 'request_contact'
+      } else if (parsed.action === 'save_lead') {
+        leadInfo = { name: parsed.name, email: parsed.email }
+      }
+    } catch { /* malformed JSON, skip */ }
+  }
+
+  // Extract lead_qualification blocks
+  let qualMatch: RegExpExecArray | null
+  const qualRe = new RegExp(LEAD_QUAL_RE.source, 'g')
+  while ((qualMatch = qualRe.exec(raw)) !== null) {
+    try {
+      qualification = JSON.parse(qualMatch[1]!)
+    } catch { /* malformed JSON, skip */ }
+  }
+
+  // Strip hidden blocks from visible text
+  const visible = raw
+    .replace(LEAD_CAPTURE_RE, '')
+    .replace(LEAD_QUAL_RE, '')
+    .trim()
+
+  return { visible, captureAction, leadInfo, qualification }
 }
-
-const GREETING_REPLIES = [
-  "Tell me about Forte",
-  "Connect me with your team",
-  "Just browsing",
-]
-
-const CHAT_REPLIES = [
-  "What services do you offer?",
-  "How much does it cost?",
-  "How long does it take?",
-  "Talk to someone",
-]
 
 /* ------------------------------------------------------------------ */
 /*  Audio                                                              */
@@ -70,22 +100,32 @@ function playPing() {
 /* ------------------------------------------------------------------ */
 export function ChatBot() {
   const [open, setOpen] = useState(false)
-  const [messages, setMessages] = useState<Message[]>([
-    { role: 'bot', content: GREETING, quickReplies: GREETING_REPLIES },
-  ])
+  const [messages, setMessages] = useState<Message[]>([])
   const [input, setInput] = useState('')
-  const [step, setStep] = useState<ChatStep>('greeting')
-  const [lead, setLead] = useState<LeadData>({ name: '', email: '', need: '' })
-  const [typing, setTyping] = useState(false)
-  const [unread, setUnread] = useState(1)
+  const [streaming, setStreaming] = useState(false)
+  const [streamingText, setStreamingText] = useState('')
+  const [unread, setUnread] = useState(0)
   const [autoOpened, setAutoOpened] = useState(false)
+  const [initialized, setInitialized] = useState(false)
+
+  // Lead capture state
+  const [lead, setLead] = useState<LeadData>({ name: '', email: '', captured: false })
+  const [showLeadForm, setShowLeadForm] = useState(false)
+  const [leadFormName, setLeadFormName] = useState('')
+  const [leadFormEmail, setLeadFormEmail] = useState('')
+  const [leadFormSubmitting, setLeadFormSubmitting] = useState(false)
+
+  // Qualification tracking
+  const qualificationRef = useRef<LeadQualification | null>(null)
+
   const endRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
+  const abortRef = useRef<AbortController | null>(null)
 
   // Scroll on new messages
   useEffect(() => {
     endRef.current?.scrollIntoView({ behavior: 'smooth' })
-  }, [messages, typing])
+  }, [messages, streaming, streamingText, showLeadForm])
 
   // Focus input when opened
   useEffect(() => {
@@ -95,7 +135,17 @@ export function ChatBot() {
     }
   }, [open])
 
-  // Auto-open after 25s
+  // Send initial greeting when first opened
+  useEffect(() => {
+    if (open && !initialized) {
+      setInitialized(true)
+      // Trigger the assistant with a hidden system message
+      sendToAPI([{ role: 'user', content: '[The user just opened the chat widget on the Forte AI Solutions website. Greet them warmly and concisely. Ask what brings them here today.]' }])
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [open, initialized])
+
+  // Auto-open after 30s
   useEffect(() => {
     if (autoOpened) return
     const t = setTimeout(() => {
@@ -104,132 +154,177 @@ export function ChatBot() {
         setAutoOpened(true)
         playPing()
       }
-    }, 25000)
+    }, 30000)
     return () => clearTimeout(t)
   }, [open, autoOpened])
 
-  /* ---- helpers ---- */
-  const pushBot = useCallback(
-    (content: string, quickReplies?: string[]) => {
-      const msg: Message = { role: 'bot', content }
-      if (quickReplies) msg.quickReplies = quickReplies
-      setMessages((prev) => [...prev, msg])
-      if (!open) setUnread((n) => n + 1)
-      playPing()
+  /* ---- streaming API call ---- */
+  const sendToAPI = useCallback(
+    async (conversationMessages: Message[]) => {
+      setStreaming(true)
+      setStreamingText('')
+
+      // Only send user/assistant messages to API
+      const apiMessages = conversationMessages
+        .filter((m) => m.role === 'user' || m.role === 'assistant')
+        .map((m) => ({ role: m.role as 'user' | 'assistant', content: m.content }))
+
+      const controller = new AbortController()
+      abortRef.current = controller
+
+      let fullText = ''
+
+      try {
+        const res = await fetch('/api/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ messages: apiMessages }),
+          signal: controller.signal,
+        })
+
+        if (!res.ok) {
+          throw new Error(`API error: ${res.status}`)
+        }
+
+        const reader = res.body?.getReader()
+        if (!reader) throw new Error('No reader')
+
+        const decoder = new TextDecoder()
+        let buffer = ''
+
+        while (true) {
+          const { done, value } = await reader.read()
+          if (done) break
+
+          buffer += decoder.decode(value, { stream: true })
+          const lines = buffer.split('\n\n')
+          buffer = lines.pop() ?? ''
+
+          for (const line of lines) {
+            const trimmed = line.trim()
+            if (!trimmed.startsWith('data: ')) continue
+
+            try {
+              const event = JSON.parse(trimmed.slice(6))
+
+              if (event.type === 'delta') {
+                fullText += event.text
+                // Show text without hidden blocks during streaming
+                const { visible } = parseAndStrip(fullText)
+                setStreamingText(visible)
+              } else if (event.type === 'error') {
+                fullText += '\n[Error: ' + event.error + ']'
+              }
+            } catch { /* malformed SSE line */ }
+          }
+        }
+
+        // Done streaming — process the full text
+        const { visible, captureAction, leadInfo, qualification } = parseAndStrip(fullText)
+
+        // Update qualification if provided
+        if (qualification) {
+          qualificationRef.current = { ...qualificationRef.current, ...qualification }
+        }
+
+        // Add the visible message
+        if (visible) {
+          setMessages((prev) => [...prev, { role: 'assistant', content: visible }])
+          if (!open) {
+            setUnread((n) => n + 1)
+            playPing()
+          }
+        }
+
+        // Handle lead capture actions
+        if (captureAction === 'request_contact' && !lead.captured) {
+          setShowLeadForm(true)
+        }
+        if (leadInfo?.name && leadInfo?.email) {
+          // Claude extracted lead info from conversation
+          const updatedLead = { name: leadInfo.name, email: leadInfo.email, captured: true }
+          setLead(updatedLead)
+          submitLead(updatedLead.name, updatedLead.email, conversationMessages)
+        }
+      } catch (err) {
+        if ((err as Error).name !== 'AbortError') {
+          setMessages((prev) => [
+            ...prev,
+            { role: 'status', content: 'Connection issue. Please try again.' },
+          ])
+        }
+      } finally {
+        setStreaming(false)
+        setStreamingText('')
+        abortRef.current = null
+      }
     },
-    [open],
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [open, lead.captured],
   )
 
-  const pushStatus = useCallback((content: string) => {
-    setMessages((prev) => [...prev, { role: 'status', content }])
-  }, [])
-
   /* ---- submit lead to API ---- */
-  async function submitLead(name: string, email: string, need: string) {
+  async function submitLead(name: string, email: string, conversationMessages: Message[]) {
+    // Build transcript
+    const transcript = conversationMessages
+      .filter((m) => m.role !== 'status')
+      .map((m) => `${m.role === 'user' ? 'Visitor' : 'Assistant'}: ${m.content}`)
+      .join('\n\n')
+
     try {
-      const res = await fetch('/api/chatbot-lead', {
+      await fetch('/api/chatbot-lead', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, email, message: need }),
+        body: JSON.stringify({
+          name,
+          email,
+          message: `Chatbot lead captured via AI conversation`,
+          transcript,
+          qualification: qualificationRef.current,
+        }),
       })
-      const data = await res.json()
-
-      if (!res.ok || !data.success) {
-        pushStatus('Could not submit your info. Please try the Contact page.')
-        return
-      }
-      if (data.emailSent === false) {
-        pushStatus('Your info was saved. Our team will follow up soon.')
-      }
     } catch {
-      pushStatus('Network error submitting your info. Please try the Contact page.')
+      // Silent fail — don't interrupt the conversation
     }
   }
 
-  /* ---- process a message ---- */
-  async function process(userMsg: string) {
-    setMessages((prev) => [...prev, { role: 'user', content: userMsg }])
-    setTyping(true)
+  /* ---- handle lead form submission ---- */
+  async function handleLeadFormSubmit(e: React.FormEvent) {
+    e.preventDefault()
+    if (!leadFormName.trim() || !leadFormEmail.trim()) return
 
-    // Natural typing delay — short for simple steps, slightly longer for answers
-    const delay = step === 'freeChat' ? 400 + Math.random() * 300 : 300 + Math.random() * 200
-    await new Promise((r) => setTimeout(r, delay))
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    if (!emailRegex.test(leadFormEmail)) return
 
-    let reply = ''
-    let qr: string[] | undefined
+    setLeadFormSubmitting(true)
+    const updatedLead = { name: leadFormName, email: leadFormEmail, captured: true }
+    setLead(updatedLead)
+    setShowLeadForm(false)
 
-    switch (step) {
-      case 'greeting': {
-        const lo = userMsg.toLowerCase()
-        if (lo.includes('just browsing') || lo.includes('browse') || lo.includes('skip') || lo.includes('no thanks')) {
-          setStep('freeChat')
-          reply = PROMPTS['skip'] ?? ''
-          qr = CHAT_REPLIES
-        } else if (lo.includes('connect') || lo.includes('team') || lo.includes('talk') || lo.includes('human') || lo.includes('someone')) {
-          setStep('name')
-          reply = PROMPTS['name'] ?? ''
-        } else {
-          setStep('freeChat')
-          reply = answer(userMsg)
-          qr = ["Connect me with your team", ...CHAT_REPLIES.slice(0, 3)]
-        }
-        break
-      }
+    // Add user message with their info
+    const infoMsg: Message = { role: 'user', content: `My name is ${leadFormName} and my email is ${leadFormEmail}` }
+    const updatedMessages = [...messages, infoMsg]
+    setMessages(updatedMessages)
 
-      case 'name':
-        setLead((prev) => ({ ...prev, name: userMsg }))
-        setStep('email')
-        reply = `Nice to meet you, ${userMsg.split(' ')[0]}! ${PROMPTS['email'] ?? ''}`
-        break
+    // Submit lead
+    await submitLead(updatedLead.name, updatedLead.email, updatedMessages)
 
-      case 'email': {
-        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(userMsg)) {
-          reply = "Hmm, that doesn't look right. Can you try your email again?"
-          break
-        }
-        setLead((prev) => ({ ...prev, email: userMsg }))
-        setStep('need')
-        reply = PROMPTS['need'] ?? ''
-        qr = ["We need better reporting", "Our data is siloed", "We want predictive analytics"]
-        break
-      }
-
-      case 'need': {
-        const updatedLead = { ...lead, need: userMsg }
-        setLead(updatedLead)
-        setStep('freeChat')
-        reply = PROMPTS['captured'] ?? ''
-        qr = CHAT_REPLIES
-        // Submit in background — don't block the response
-        submitLead(updatedLead.name, updatedLead.email, userMsg)
-        break
-      }
-
-      case 'freeChat': {
-        const lo = userMsg.toLowerCase()
-        if (
-          (lo.includes('connect') || lo.includes('talk') || lo.includes('human') || lo.includes('person') || lo.includes('someone') || lo.includes('team')) &&
-          !lead.email
-        ) {
-          setStep('name')
-          reply = PROMPTS['name'] ?? ''
-        } else {
-          reply = answer(userMsg)
-          qr = followUps(userMsg)
-        }
-        break
-      }
-    }
-
-    setTyping(false)
-    pushBot(reply, qr)
+    // Let Claude acknowledge
+    await sendToAPI(updatedMessages)
+    setLeadFormSubmitting(false)
   }
 
+  /* ---- send user message ---- */
   async function handleSend() {
     const msg = input.trim()
-    if (!msg) return
+    if (!msg || streaming) return
     setInput('')
-    await process(msg)
+
+    const userMessage: Message = { role: 'user', content: msg }
+    const updatedMessages = [...messages, userMessage]
+    setMessages(updatedMessages)
+
+    await sendToAPI(updatedMessages)
   }
 
   /* ---- render ---- */
@@ -274,7 +369,7 @@ export function ChatBot() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 16, scale: 0.96 }}
             transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
-            className="fixed bottom-24 right-6 z-50 flex h-[500px] w-[380px] max-w-[calc(100vw-2rem)] flex-col overflow-hidden rounded-lg border border-brass/20 bg-navy-deep shadow-[0_16px_48px_rgba(0,0,0,0.5)]"
+            className="fixed bottom-24 right-6 z-50 flex h-[520px] w-[380px] max-w-[calc(100vw-2rem)] flex-col overflow-hidden rounded-lg border border-brass/20 bg-navy-deep shadow-[0_16px_48px_rgba(0,0,0,0.5)]"
           >
             {/* Header */}
             <div className="flex items-center gap-3 border-b border-brass/15 bg-navy-mid px-4 py-3">
@@ -284,7 +379,9 @@ export function ChatBot() {
               </div>
               <div className="min-w-0">
                 <p className="font-body text-sm font-medium text-white">Forte AI Assistant</p>
-                <p className="font-body text-[10px] text-green-400">Online now</p>
+                <p className="font-body text-[10px] text-green-400">
+                  {streaming ? 'Thinking...' : 'Online now'}
+                </p>
               </div>
               <button onClick={() => setOpen(false)} className="ml-auto text-white/40 hover:text-white transition-colors" aria-label="Minimize chat">
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" /></svg>
@@ -315,21 +412,29 @@ export function ChatBot() {
                       </div>
                     </m.div>
                   )}
-
-                  {/* Quick replies — only on latest bot message */}
-                  {msg.role === 'bot' && msg.quickReplies && i === messages.length - 1 && !typing && (
-                    <m.div initial={{ opacity: 0, y: 4 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.25, delay: 0.15 }} className="mt-2 flex flex-wrap gap-1.5">
-                      {msg.quickReplies.map((r) => (
-                        <button key={r} onClick={() => process(r)} className="rounded-full border border-brass/20 bg-brass/5 px-3 py-1.5 font-body text-[11px] text-brass-light transition-all hover:bg-brass/15 hover:border-brass/40 active:scale-95">
-                          {r}
-                        </button>
-                      ))}
-                    </m.div>
-                  )}
                 </div>
               ))}
 
-              {typing && (
+              {/* Streaming text */}
+              {streaming && streamingText && (
+                <m.div
+                  initial={{ opacity: 0, y: 6 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="flex justify-start"
+                >
+                  <div className="max-w-[82%] rounded-lg bg-navy-mid border border-brass/10 px-3.5 py-2.5 font-body text-[13px] leading-relaxed text-white/85">
+                    {streamingText}
+                    <m.span
+                      animate={{ opacity: [1, 0] }}
+                      transition={{ repeat: Infinity, duration: 0.7 }}
+                      className="inline-block ml-0.5 w-[2px] h-[14px] bg-brass-light align-text-bottom"
+                    />
+                  </div>
+                </m.div>
+              )}
+
+              {/* Typing indicator — shown when streaming but no text yet */}
+              {streaming && !streamingText && (
                 <m.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex justify-start">
                   <div className="flex gap-1 rounded-lg bg-navy-mid border border-brass/10 px-4 py-3">
                     <m.span className="h-1.5 w-1.5 rounded-full bg-brass/50" animate={{ y: [0, -3, 0] }} transition={{ repeat: Infinity, duration: 0.5, delay: 0 }} />
@@ -338,6 +443,54 @@ export function ChatBot() {
                   </div>
                 </m.div>
               )}
+
+              {/* Lead capture form */}
+              {showLeadForm && !lead.captured && (
+                <m.div
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="mx-1 rounded-lg border border-brass/25 bg-navy-mid p-4"
+                >
+                  <p className="mb-3 font-body text-[12px] font-medium text-brass-light">
+                    Share your details and we&apos;ll follow up
+                  </p>
+                  <form onSubmit={handleLeadFormSubmit} className="space-y-2.5">
+                    <input
+                      type="text"
+                      placeholder="Your name"
+                      value={leadFormName}
+                      onChange={(e) => setLeadFormName(e.target.value)}
+                      className="w-full rounded border border-brass/15 bg-navy-deep px-3 py-2 font-body text-[13px] text-white placeholder-white/25 outline-none focus:border-brass/40 transition-colors"
+                      required
+                    />
+                    <input
+                      type="email"
+                      placeholder="Work email"
+                      value={leadFormEmail}
+                      onChange={(e) => setLeadFormEmail(e.target.value)}
+                      className="w-full rounded border border-brass/15 bg-navy-deep px-3 py-2 font-body text-[13px] text-white placeholder-white/25 outline-none focus:border-brass/40 transition-colors"
+                      required
+                    />
+                    <div className="flex gap-2 pt-1">
+                      <button
+                        type="submit"
+                        disabled={leadFormSubmitting}
+                        className="flex-1 rounded bg-brass py-2 font-body text-[12px] font-medium text-navy-deep transition-all hover:shadow-[0_0_12px_rgba(160,120,64,0.3)] disabled:opacity-50"
+                      >
+                        {leadFormSubmitting ? 'Sending...' : 'Connect me'}
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setShowLeadForm(false)}
+                        className="rounded border border-brass/20 px-3 py-2 font-body text-[12px] text-white/50 transition-colors hover:text-white/80"
+                      >
+                        Later
+                      </button>
+                    </div>
+                  </form>
+                </m.div>
+              )}
+
               <div ref={endRef} />
             </div>
 
@@ -349,13 +502,13 @@ export function ChatBot() {
                   type="text"
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
-                  placeholder={step === 'email' ? 'your@email.com' : step === 'name' ? 'Your name...' : 'Ask anything...'}
+                  placeholder="Ask anything..."
                   className="flex-1 rounded bg-navy-deep border border-brass/15 px-3 py-2 font-body text-sm text-white placeholder-white/25 outline-none focus:border-brass/40 transition-colors"
-                  disabled={typing}
+                  disabled={streaming}
                 />
                 <button
                   type="submit"
-                  disabled={!input.trim() || typing}
+                  disabled={!input.trim() || streaming}
                   className="flex h-9 w-9 shrink-0 items-center justify-center rounded bg-brass text-navy-deep transition-all hover:shadow-[0_0_12px_rgba(160,120,64,0.3)] disabled:opacity-25 disabled:cursor-not-allowed"
                 >
                   <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
@@ -369,84 +522,4 @@ export function ChatBot() {
       </AnimatePresence>
     </>
   )
-}
-
-/* ------------------------------------------------------------------ */
-/*  Knowledge base                                                     */
-/* ------------------------------------------------------------------ */
-function answer(input: string): string {
-  const lo = input.toLowerCase()
-
-  if (/^(hi|hey|hello|sup|yo|howdy)\b/.test(lo)) {
-    return "Hey! How can I help? I can tell you about our services, pricing, timeline, or connect you with the team."
-  }
-  if (lo.includes('service') || lo.includes('offer') || lo.includes('what do you do') || lo.includes('tell me about forte') || lo.includes('about forte')) {
-    return "Forte offers three core services: Data Pipeline & Integration (connecting siloed systems), AI Dashboards & Reporting (actionable insights for your team), and Custom AI Model Building (predictive models on your data). You own everything we build — no lock-in."
-  }
-  if (lo.includes('price') || lo.includes('cost') || lo.includes('pricing') || lo.includes('how much') || lo.includes('budget') || lo.includes('afford')) {
-    return "Pricing depends on scope — we tailor every engagement. A discovery call lets us give you a clear estimate with no surprises. No hidden fees, and you own the final product outright."
-  }
-  if (lo.includes('how long') || lo.includes('timeline') || lo.includes('weeks') || lo.includes('duration') || lo.includes('turnaround')) {
-    return "Most engagements go live within 12 weeks from kickoff. Exact timing depends on the complexity of your systems and scope of work."
-  }
-  if (lo.includes('pipeline') || (lo.includes('connect') && lo.includes('data')) || lo.includes('integrat')) {
-    return "Our Data Pipeline service connects your siloed systems — CRM, ERP, spreadsheets, third-party tools — into a single, clean data layer with real-time sync. No more manual exports."
-  }
-  if (lo.includes('dashboard') || lo.includes('report') || lo.includes('visual') || lo.includes('analytics')) {
-    return "Our AI Dashboards go beyond charts — they surface priorities, not just metrics. Built for non-technical users with automated alerts when something needs attention."
-  }
-  if (lo.includes('ai') || lo.includes('model') || lo.includes('predict') || lo.includes('machine learning') || lo.includes('forecast')) {
-    return "We build custom AI models on your data — predictive (what's coming), diagnostic (why it happened), and prescriptive (what to do next). Explainable outputs your leadership can trust."
-  }
-  if (lo.includes('technical') || lo.includes('engineer') || lo.includes('developer') || lo.includes('need a team') || lo.includes('in-house')) {
-    return "No technical team needed! Forte handles the architecture entirely. Your team focuses on using the insights, not building the infrastructure."
-  }
-  if (lo.includes('own') || lo.includes('lock') || lo.includes('proprietary') || lo.includes('keep')) {
-    return "100% yours. Everything we build belongs to your organization — no lock-in, no licensing, no dependency on Forte to keep it running."
-  }
-  if (lo.includes('process') || lo.includes('how does it work') || lo.includes('steps') || lo.includes('methodology')) {
-    return "Four phases: Discovery (map your data landscape), Architecture (design the solution), Build & Test (we build and validate everything), Deploy & Enable (go live + 30 days of support). Kickoff to live in ~12 weeks."
-  }
-  if (lo.includes('different') || lo.includes('compet') || lo.includes('vs') || lo.includes('compare') || lo.includes('better than')) {
-    return "Unlike hiring a data science team (months to recruit, one problem at a time), Forte deploys in weeks with cross-industry expertise. Unlike off-the-shelf tools, everything is custom-built for your specific questions."
-  }
-  if (lo.includes('demo') || lo.includes('call') || lo.includes('meet') || lo.includes('schedule') || lo.includes('book')) {
-    return "A discovery call takes 30 minutes — no pitch, no pressure. Head to our Contact page, or I can collect your info right here!"
-  }
-  if (lo.includes('case stud') || lo.includes('example') || lo.includes('result') || lo.includes('success')) {
-    return "We've helped organizations across healthcare, finance, logistics, and energy cut reporting cycles from weeks to hours and identify risks 60+ days earlier. Happy to share specifics on a discovery call."
-  }
-  if (lo.includes('security') || lo.includes('safe') || lo.includes('compliance') || lo.includes('hipaa') || lo.includes('gdpr') || lo.includes('encrypt')) {
-    return "Security is foundational to our work. We follow industry best practices, encrypt data in transit and at rest, and can work within your specific compliance requirements (HIPAA, SOC 2, etc.)."
-  }
-  if (lo.includes('industr') || lo.includes('healthcare') || lo.includes('finance') || lo.includes('logistics') || lo.includes('energy') || lo.includes('sector')) {
-    return "We serve organizations across healthcare, finance, logistics, energy, and technology. Our approach adapts to your industry's specific data challenges and compliance needs."
-  }
-  if (lo.includes('thank') || lo.includes('appreciate')) {
-    return "Happy to help! Anything else you'd like to know?"
-  }
-
-  return "Great question! I'd love to give you a detailed answer — our team can dig into the specifics on a discovery call. Want me to collect your info, or you can visit our Contact page!"
-}
-
-function followUps(input: string): string[] {
-  const lo = input.toLowerCase()
-
-  if (lo.includes('price') || lo.includes('cost') || lo.includes('much')) {
-    return ["What's the timeline?", "Book a discovery call", "What services do you offer?"]
-  }
-  if (lo.includes('service') || lo.includes('offer') || lo.includes('about')) {
-    return ["How much does it cost?", "Do I need a tech team?", "Book a discovery call"]
-  }
-  if (lo.includes('time') || lo.includes('long') || lo.includes('week')) {
-    return ["What's the process?", "How much does it cost?", "Book a discovery call"]
-  }
-  if (lo.includes('pipeline') || lo.includes('dashboard') || lo.includes('ai') || lo.includes('model')) {
-    return ["How much does it cost?", "How long does it take?", "Book a discovery call"]
-  }
-  if (lo.includes('security') || lo.includes('compliance')) {
-    return ["What industries do you serve?", "How does the process work?", "Book a discovery call"]
-  }
-
-  return CHAT_REPLIES
 }

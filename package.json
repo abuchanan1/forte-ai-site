@@ -10,6 +10,7 @@
     "generate-llms": "npx tsx scripts/generate-llms.ts"
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "^0.78.0",
     "@next/third-parties": "^16.1.6",
     "@upstash/ratelimit": "^2.0.8",
     "@upstash/redis": "^1.36.3",

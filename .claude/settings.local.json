@@ -1,0 +1,20 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx create-next-app@14 . --typescript --tailwind --eslint --app --src-dir=false --import-alias=\"@/*\" --use-npm 2>&1 | tail -20)",
+      "Bash(cp -r /tmp/forte-temp/* /Users/aaronbuchanan/Documents/forte-ai-site/ && cp /tmp/forte-temp/.eslintrc.json /Users/aaronbuchanan/Documents/forte-ai-site/ 2>/dev/null; cp /tmp/forte-temp/.gitignore /Users/aaronbuchanan/Documents/forte-ai-site/ 2>/dev/null; ls /Users/aaronbuchanan/Documents/forte-ai-site/)",
+      "Bash(npm install framer-motion clsx tailwind-merge zod @upstash/ratelimit @upstash/redis @next/third-parties @vercel/analytics 2>&1 | tail -5)",
+      "Bash(npm install -D eslint-plugin-jsx-a11y prettier 2>&1 | tail -5)",
+      "Bash(npm run lint 2>&1)",
+      "Bash(rm -rf node_modules package-lock.json && npm install 2>&1 | tail -10)",
+      "Bash(npm run build 2>&1)",
+      "Bash(npm run dev 2>&1)",
+      "Bash(sleep 3 && open http://localhost:3000)",
+      "Bash(git init 2>&1)",
+      "Bash(git add .env.local.example .eslintrc.json .gitignore .nvmrc .prettierrc CHANGELOG.md README.md app/ components/ lib/ middleware.ts next.config.mjs package-lock.json package.json postcss.config.mjs public/ scripts/ tailwind.config.ts tsconfig.json types/)",
+      "Bash(git commit -m \"$\\(cat <<'EOF'\nInitial scaffold of Forte AI Solutions marketing site\n\nNext.js 14 with TypeScript strict mode, Tailwind CSS, and Framer Motion.\nIncludes all pages, components, API routes, brand identity system, SEO,\nsecurity headers, analytics, and build-time llms.txt generation.\n\nCo-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>\nEOF\n\\)\")",
+      "Bash(gh repo create forte-ai-site --public --source=. --push --description \"Marketing site for Forte AI Solutions. Next.js 14, TypeScript, Tailwind CSS.\" 2>&1)",
+      "Bash(npm install resend 2>&1 | tail -5)"
+    ]
+  }
+}
