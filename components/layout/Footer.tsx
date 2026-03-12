@@ -45,10 +45,24 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="mt-16 border-t border-brass/10 pt-6">
+        <div className="mt-16 border-t border-brass/10 pt-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <p className="font-mono text-[10px] font-normal uppercase tracking-mono text-white/25">
-            {COMPANY.founded} {COMPANY.name}. All rights reserved.
+            &copy; {COMPANY.founded} {COMPANY.name}. All rights reserved.
           </p>
+          <div className="flex gap-4">
+            <a
+              href="/privacy"
+              className="font-mono text-[10px] font-normal uppercase tracking-mono text-white/25 transition-colors hover:text-brass"
+            >
+              Privacy Policy
+            </a>
+            <a
+              href="/terms"
+              className="font-mono text-[10px] font-normal uppercase tracking-mono text-white/25 transition-colors hover:text-brass"
+            >
+              Terms of Service
+            </a>
+          </div>
         </div>
       </div>
     </footer>

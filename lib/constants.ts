@@ -107,4 +107,6 @@ export const PAGES = [
   { path: '/about/founder', description: 'Meet Aaron Buchanan, MPP — founder of Forte AI Solutions.' },
   { path: '/services', description: 'Four service offerings: Foundation Sprint, Infrastructure & AI, Fractional Leadership, and Assessment.' },
   { path: '/contact', description: 'Contact form and discovery call information.' },
+  { path: '/privacy', description: 'Privacy Policy for Forte AI Solutions.' },
+  { path: '/terms', description: 'Terms of Service for Forte AI Solutions.' },
 ]

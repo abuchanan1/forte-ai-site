@@ -6,6 +6,7 @@ import { Providers } from '@/components/providers'
 import { Navbar } from '@/components/layout/Navbar'
 import { Footer } from '@/components/layout/Footer'
 import { ChatBot } from '@/components/ui/ChatBot'
+import { CookieBanner } from '@/components/ui/CookieBanner'
 import { COMPANY } from '@/lib/constants'
 import './globals.css'
 
@@ -55,6 +56,7 @@ export default function RootLayout({
           <main id="main-content">{children}</main>
           <Footer />
           <ChatBot />
+          <CookieBanner />
         </Providers>
         <JsonLd />
         {process.env.NODE_ENV === 'production' &&
