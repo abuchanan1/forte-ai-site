@@ -12,6 +12,7 @@ import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/Button'
 import { SectionLabel } from '@/components/ui/SectionLabel'
 import { FadeUp } from '@/components/ui/FadeUp'
+import jsPDF from 'jspdf'
 
 type OrgType = 'small-business' | 'nonprofit' | null
 type Step = 'intro' | 'quiz' | 'results'
@@ -295,36 +296,204 @@ function downloadResults(
   score: number,
   stage: MaturityStage
 ) {
-  const content = `FORTE AI SOLUTIONS
-Data & AI Readiness Assessment Results
+  const stageIndex = maturityStages.indexOf(stage)
+  const doc = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' })
+  const w = doc.internal.pageSize.getWidth()
+  const h = doc.internal.pageSize.getHeight()
 
-Organization Type: ${orgType === 'small-business' ? 'Small Business' : 'Nonprofit / Mission-Driven'}
-Maturity Stage: ${stage.name} (Score: ${score}/20)
+  // Brand colors
+  const navy = [12, 27, 51] as const       // #0C1B33
+  const navyDeep = [6, 14, 28] as const    // #060E1C
+  const brass = [196, 154, 88] as const    // #C49A58
+  const brassLight = [212, 180, 131] as const
+  const white = [247, 244, 238] as const   // #F7F4EE
+  const mutedText = [180, 177, 170] as const
 
-What This Means:
-${stage.description}
+  // Helper: wrap text and return lines
+  function wrapText(text: string, maxWidth: number, fontSize: number): string[] {
+    doc.setFontSize(fontSize)
+    return doc.splitTextToSize(text, maxWidth) as string[]
+  }
 
-ROI Focus:
-${stage.roiFocus}
+  // ── Full navy background ──
+  doc.setFillColor(...navyDeep)
+  doc.rect(0, 0, w, h, 'F')
 
-Recommended Next Step:
-${stage.service}
-${stage.serviceSubtext}
+  // ── Top brass accent line ──
+  doc.setFillColor(...brass)
+  doc.rect(0, 0, w, 2, 'F')
 
-${stage.closingMessage}
+  // ── Company name ──
+  let y = 22
+  doc.setFont('helvetica', 'normal')
+  doc.setFontSize(9)
+  doc.setTextColor(...brass)
+  doc.text('FORTE AI SOLUTIONS', w / 2, y, { align: 'center' })
 
-Book a discovery call: https://forteaisolutions.com/contact
-Learn more: https://forteaisolutions.com/blog/measuring-the-return-on-data-investment`
+  // ── Title ──
+  y += 14
+  doc.setFont('helvetica', 'bold')
+  doc.setFontSize(22)
+  doc.setTextColor(...white)
+  doc.text('Data & AI Readiness', w / 2, y, { align: 'center' })
+  y += 9
+  doc.text('Assessment Results', w / 2, y, { align: 'center' })
 
-  const blob = new Blob([content], { type: 'text/plain' })
-  const url = URL.createObjectURL(blob)
-  const a = document.createElement('a')
-  a.href = url
-  a.download = `FORTE-Assessment-Results-${stage.name}.txt`
-  document.body.appendChild(a)
-  a.click()
-  document.body.removeChild(a)
-  URL.revokeObjectURL(url)
+  // ── Decorative divider ──
+  y += 10
+  doc.setDrawColor(...brass)
+  doc.setLineWidth(0.4)
+  doc.line(w / 2 - 30, y, w / 2 + 30, y)
+
+  // ── Org type label ──
+  y += 12
+  doc.setFont('helvetica', 'normal')
+  doc.setFontSize(9)
+  doc.setTextColor(...mutedText)
+  const orgLabel = orgType === 'small-business' ? 'Small Business' : 'Nonprofit / Mission-Driven'
+  doc.text(`Organization Type: ${orgLabel}`, w / 2, y, { align: 'center' })
+
+  // ── Stage result box ──
+  y += 12
+  const boxX = 30
+  const boxW = w - 60
+  doc.setFillColor(...navy)
+  doc.roundedRect(boxX, y, boxW, 44, 3, 3, 'F')
+  doc.setDrawColor(...brass)
+  doc.setLineWidth(0.3)
+  doc.roundedRect(boxX, y, boxW, 44, 3, 3, 'S')
+
+  // Stage number + name
+  y += 14
+  doc.setFont('helvetica', 'normal')
+  doc.setFontSize(10)
+  doc.setTextColor(...brass)
+  doc.text(`STAGE ${stageIndex + 1} OF 4`, w / 2, y, { align: 'center' })
+
+  y += 12
+  doc.setFont('helvetica', 'bold')
+  doc.setFontSize(24)
+  doc.setTextColor(...white)
+  doc.text(stage.name, w / 2, y, { align: 'center' })
+
+  y += 12
+  doc.setFont('helvetica', 'normal')
+  doc.setFontSize(10)
+  doc.setTextColor(...brassLight)
+  doc.text(`Score: ${score} / 20`, w / 2, y, { align: 'center' })
+
+  // ── Maturity bar ──
+  y += 16
+  const barX = 30
+  const barW = w - 60
+  const barH = 5
+  const segW = barW / 4
+
+  for (let i = 0; i < 4; i++) {
+    const isActive = i <= stageIndex
+    doc.setFillColor(isActive ? brass[0] : navy[0], isActive ? brass[1] : navy[1], isActive ? brass[2] : navy[2])
+    if (!isActive) {
+      doc.setFillColor(22, 36, 68) // navy-mid
+    }
+    const rx = barX + i * segW
+    doc.roundedRect(rx + 1, y, segW - 2, barH, 2, 2, 'F')
+  }
+
+  // Stage labels under bar
+  y += 12
+  doc.setFontSize(7)
+  doc.setFont('helvetica', 'normal')
+  for (let i = 0; i < 4; i++) {
+    const isActive = i <= stageIndex
+    doc.setTextColor(isActive ? brass[0] : mutedText[0], isActive ? brass[1] : mutedText[1], isActive ? brass[2] : mutedText[2])
+    const label = maturityStages[i]!.name
+    const cx = barX + i * segW + segW / 2
+    doc.text(label, cx, y, { align: 'center' })
+  }
+
+  // ── Section helper ──
+  function drawSection(startY: number, label: string, body: string): number {
+    let sy = startY + 10
+    doc.setFont('helvetica', 'bold')
+    doc.setFontSize(8)
+    doc.setTextColor(...brass)
+    doc.text(label.toUpperCase(), 30, sy)
+
+    sy += 2
+    doc.setDrawColor(brass[0], brass[1], brass[2])
+    doc.setLineWidth(0.2)
+    doc.line(30, sy, 30 + doc.getTextWidth(label.toUpperCase()), sy)
+
+    sy += 7
+    doc.setFont('helvetica', 'normal')
+    doc.setFontSize(10)
+    doc.setTextColor(...white)
+    const lines = wrapText(body, w - 60, 10)
+    for (const line of lines) {
+      if (sy > h - 30) {
+        // New page
+        doc.addPage()
+        doc.setFillColor(...navyDeep)
+        doc.rect(0, 0, w, h, 'F')
+        doc.setFillColor(...brass)
+        doc.rect(0, 0, w, 2, 'F')
+        sy = 20
+      }
+      doc.text(line, 30, sy)
+      sy += 5.5
+    }
+    return sy
+  }
+
+  // ── Content sections ──
+  y = drawSection(y, 'What This Means', stage.description)
+  y = drawSection(y, 'ROI Focus', stage.roiFocus)
+  y = drawSection(y, 'Recommended Next Step', `${stage.service} — ${stage.serviceSubtext}`)
+  y = drawSection(y, 'Key Insight', stage.closingMessage)
+
+  // ── CTA box ──
+  y += 10
+  if (y > h - 55) {
+    doc.addPage()
+    doc.setFillColor(...navyDeep)
+    doc.rect(0, 0, w, h, 'F')
+    doc.setFillColor(...brass)
+    doc.rect(0, 0, w, 2, 'F')
+    y = 20
+  }
+
+  doc.setFillColor(brass[0], brass[1], brass[2])
+  doc.roundedRect(30, y, w - 60, 38, 3, 3, 'F')
+
+  y += 14
+  doc.setFont('helvetica', 'bold')
+  doc.setFontSize(13)
+  doc.setTextColor(...navyDeep)
+  doc.text('Ready to take the next step?', w / 2, y, { align: 'center' })
+
+  y += 8
+  doc.setFont('helvetica', 'normal')
+  doc.setFontSize(9)
+  doc.setTextColor(navyDeep[0], navyDeep[1], navyDeep[2])
+  doc.text('Book a discovery call: forteaisolutions.com/contact', w / 2, y, { align: 'center' })
+
+  y += 7
+  doc.setFontSize(8)
+  doc.text('hello@forteaisolutions.com', w / 2, y, { align: 'center' })
+
+  // ── Footer ──
+  const fy = h - 10
+  doc.setFontSize(7)
+  doc.setTextColor(...mutedText)
+  doc.text('forteaisolutions.com', w / 2, fy, { align: 'center' })
+  doc.setDrawColor(...brass)
+  doc.setLineWidth(0.3)
+  doc.line(0, h - 2, w, h - 2)
+  doc.setFillColor(...brass)
+  doc.rect(0, h - 2, w, 2, 'F')
+
+  // Save
+  doc.save(`FORTE-Assessment-Results-${stage.name}.pdf`)
 }
 
 interface AnswerCardProps {
