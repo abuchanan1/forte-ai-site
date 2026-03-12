@@ -41,6 +41,45 @@ body {
   color: #f7f4ee;
 }
 
+/* Blog prose styling */
+.prose-forte p {
+  font-family: var(--font-body), sans-serif;
+  font-weight: 300;
+  font-size: 1rem;
+  line-height: 1.7;
+  color: rgba(247, 244, 238, 0.6);
+  margin-bottom: 1.25rem;
+}
+
+.prose-forte h2 {
+  font-family: var(--font-display), serif;
+  font-weight: 400;
+  font-size: 1.75rem;
+  line-height: 1.05;
+  color: #f7f4ee;
+  margin-top: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+.prose-forte h3 {
+  font-family: var(--font-body), sans-serif;
+  font-weight: 500;
+  font-size: 1.125rem;
+  line-height: 1.4;
+  color: #f7f4ee;
+  margin-top: 2rem;
+  margin-bottom: 0.75rem;
+}
+
+.prose-forte strong {
+  font-weight: 500;
+  color: rgba(247, 244, 238, 0.85);
+}
+
+.prose-forte em {
+  color: #c49a58;
+}
+
 @media print {
   body {
     background: white;

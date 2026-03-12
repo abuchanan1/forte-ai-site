@@ -47,6 +47,17 @@ export interface ApiResponse<T = undefined> {
   errors?: Record<string, string[]>
 }
 
+export interface BlogPost {
+  slug: string
+  title: string
+  description: string
+  pillar: 'data-ai' | 'tech-gap' | 'decision-infrastructure'
+  publishedAt: string
+  readTime: string
+  featured?: boolean
+  faq: { question: string; answer: string }[]
+}
+
 export interface CompanyInfoResponse {
   name: string
   tagline: string
