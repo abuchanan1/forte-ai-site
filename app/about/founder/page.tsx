@@ -211,6 +211,33 @@ export default function FounderPage() {
           </FadeUp>
         </div>
       </section>
+      {/* Structured Data */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'Person',
+            name: 'Aaron Buchanan',
+            jobTitle: 'Founder',
+            honorificSuffix: 'MPP',
+            worksFor: {
+              '@type': 'Organization',
+              name: 'Forte AI Solutions',
+              url: 'https://forteaisolutions.com',
+            },
+            alumniOf: {
+              '@type': 'CollegeOrUniversity',
+              name: 'University of Chicago',
+            },
+            description:
+              'Founder of Forte AI Solutions. Builds decision infrastructure for small businesses, nonprofits, and school districts.',
+            url: 'https://forteaisolutions.com/about/founder',
+            image: 'https://forteaisolutions.com/aaron-buchanan.jpg',
+            sameAs: [],
+          }),
+        }}
+      />
     </>
   )
 }

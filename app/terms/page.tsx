@@ -180,11 +180,11 @@ export default function TermsPage() {
                 </h2>
                 <p className="font-body text-base font-light leading-body text-white/60">
                   These Terms shall be governed by and construed in accordance
-                  with the laws of the State of Oklahoma, without regard to its
+                  with the laws of the State of Florida, without regard to its
                   conflict of law provisions. Any dispute arising from or relating
                   to these Terms or your use of the Site shall be resolved
-                  exclusively in the state or federal courts located in Tulsa
-                  County, Oklahoma. You consent to the personal jurisdiction and
+                  exclusively in the state or federal courts located in the
+                  State of Florida. You consent to the personal jurisdiction and
                   venue of such courts. Before initiating formal legal proceedings,
                   you agree to first attempt to resolve any dispute informally by
                   contacting us at hello@forteaisolutions.com.
