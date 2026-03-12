@@ -1,6 +1,6 @@
 import { type NextRequest } from 'next/server'
 import Anthropic from '@anthropic-ai/sdk'
-import { SYSTEM_PROMPT, LEAD_CAPTURE_INSTRUCTION } from '@/lib/chatbot-prompt'
+import { getSystemPrompt, LEAD_CAPTURE_INSTRUCTION } from '@/lib/chatbot-prompt'
 
 export const runtime = 'nodejs'
 export const maxDuration = 30
@@ -38,7 +38,7 @@ export async function POST(request: NextRequest) {
     const stream = await client.messages.stream({
       model: 'claude-haiku-4-5-20251001',
       max_tokens: 400,
-      system: SYSTEM_PROMPT + LEAD_CAPTURE_INSTRUCTION,
+      system: getSystemPrompt() + LEAD_CAPTURE_INSTRUCTION,
       messages: trimmedMessages.map((m) => ({
         role: m.role,
         content: m.content,
