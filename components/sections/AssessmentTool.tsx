@@ -481,16 +481,253 @@ function downloadResults(
   doc.setFontSize(8)
   doc.text('hello@forteaisolutions.com', w / 2, y, { align: 'center' })
 
-  // ── Footer ──
-  const fy = h - 10
-  doc.setFontSize(7)
-  doc.setTextColor(...mutedText)
-  doc.text('forteaisolutions.com', w / 2, fy, { align: 'center' })
+  // ── Footer (page 1) ──
+  function drawFooter() {
+    doc.setFontSize(7)
+    doc.setTextColor(...mutedText)
+    doc.text('forteaisolutions.com', w / 2, h - 10, { align: 'center' })
+    doc.setFillColor(...brass)
+    doc.rect(0, h - 2, w, 2, 'F')
+  }
+
+  function drawPageBg() {
+    doc.setFillColor(...navyDeep)
+    doc.rect(0, 0, w, h, 'F')
+    doc.setFillColor(...brass)
+    doc.rect(0, 0, w, 2, 'F')
+  }
+
+  drawFooter()
+
+  // ═══════════════════════════════════════
+  // PAGE 2 — Frameworks
+  // ═══════════════════════════════════════
+  doc.addPage()
+  drawPageBg()
+
+  const navyMid = [22, 36, 68] as const
+  const margin = 25
+  const contentW = w - margin * 2
+
+  y = 18
+  doc.setFont('helvetica', 'normal')
+  doc.setFontSize(9)
+  doc.setTextColor(...brass)
+  doc.text('FORTE AI SOLUTIONS', w / 2, y, { align: 'center' })
+
+  y += 12
+  doc.setFont('helvetica', 'bold')
+  doc.setFontSize(18)
+  doc.setTextColor(...white)
+  doc.text('Your Frameworks', w / 2, y, { align: 'center' })
+
+  y += 6
   doc.setDrawColor(...brass)
-  doc.setLineWidth(0.3)
-  doc.line(0, h - 2, w, h - 2)
-  doc.setFillColor(...brass)
-  doc.rect(0, h - 2, w, 2, 'F')
+  doc.setLineWidth(0.4)
+  doc.line(w / 2 - 30, y, w / 2 + 30, y)
+
+  // ── DATA MATURITY CURVE ──
+  y += 12
+  doc.setFont('helvetica', 'bold')
+  doc.setFontSize(9)
+  doc.setTextColor(...brass)
+  doc.text('THE DATA MATURITY CURVE', margin, y)
+  y += 2
+  doc.setLineWidth(0.2)
+  doc.line(margin, y, margin + doc.getTextWidth('THE DATA MATURITY CURVE'), y)
+
+  y += 7
+  doc.setFont('helvetica', 'normal')
+  doc.setFontSize(7.5)
+  doc.setTextColor(...mutedText)
+  doc.text('Where you are determines what to invest in next.', margin, y)
+
+  const curveData = [
+    { stage: 'Scattered', summary: 'Data lives in silos. Reports are manual. Nobody fully trusts the numbers.', invest: 'Data strategy and clarity on what decisions matter.', roi: 'Layer 1: Time Recaptured' },
+    { stage: 'Centralized', summary: 'Data is accessible from one place. Basic reporting works. Shared definitions are forming.', invest: 'Decision infrastructure, dashboards, and team training.', roi: 'Layer 2: Decision Speed + Layer 4: Literacy' },
+    { stage: 'Integrated', summary: 'Data flows automatically. Dashboards are trusted. The team uses data as a habit.', invest: 'AI agents and advanced analytics.', roi: 'Layer 3: Decision Quality' },
+    { stage: 'Intelligent', summary: 'AI is embedded in workflows. Evidence-based decisions are how work happens.', invest: 'Fractional leadership to govern and optimize.', roi: 'All four layers compound' },
+  ]
+
+  y += 8
+  const cardH = 28
+  for (let i = 0; i < curveData.length; i++) {
+    const item = curveData[i]!
+    const isCurrent = i === stageIndex
+    const isPast = i < stageIndex
+
+    // Card background
+    if (isCurrent) {
+      doc.setFillColor(30, 38, 58)
+      doc.setDrawColor(brass[0], brass[1], brass[2])
+    } else if (isPast) {
+      doc.setFillColor(navyMid[0], navyMid[1], navyMid[2])
+      doc.setDrawColor(brass[0], brass[1], brass[2])
+    } else {
+      doc.setFillColor(navyMid[0], navyMid[1], navyMid[2])
+      doc.setDrawColor(50, 55, 75)
+    }
+    doc.setLineWidth(isCurrent ? 0.5 : 0.2)
+    doc.roundedRect(margin, y, contentW, cardH, 2, 2, 'FD')
+
+    // Stage dot
+    const dotY = y + 7
+    if (isCurrent) { doc.setFillColor(...brass) }
+    else if (isPast) { doc.setFillColor(brass[0], brass[1], brass[2]) }
+    else { doc.setFillColor(80, 85, 100) }
+    doc.circle(margin + 6, dotY, 1.5, 'F')
+
+    // Stage title
+    doc.setFont('helvetica', 'bold')
+    doc.setFontSize(9)
+    if (isCurrent) { doc.setTextColor(...brassLight) }
+    else if (isPast) { doc.setTextColor(white[0], white[1], white[2]) }
+    else { doc.setTextColor(140, 140, 150) }
+    const stageTitle = `Stage ${i + 1}: ${item.stage}`
+    doc.text(stageTitle, margin + 12, dotY + 1)
+
+    // "You are here" badge
+    if (isCurrent) {
+      const badgeX = margin + 12 + doc.getTextWidth(stageTitle) + 4
+      doc.setFillColor(brass[0], brass[1], brass[2])
+      doc.roundedRect(badgeX, dotY - 3.5, 22, 7, 3, 3, 'F')
+      doc.setFont('helvetica', 'bold')
+      doc.setFontSize(5.5)
+      doc.setTextColor(...navyDeep)
+      doc.text('YOU ARE HERE', badgeX + 2.5, dotY + 1)
+    }
+
+    // Summary
+    doc.setFont('helvetica', 'normal')
+    doc.setFontSize(7)
+    doc.setTextColor(160, 160, 165)
+    const summaryLines = wrapText(item.summary, contentW - 16, 7)
+    doc.text(summaryLines[0] || '', margin + 8, y + 14)
+
+    // Invest In / ROI row
+    doc.setFont('helvetica', 'bold')
+    doc.setFontSize(5.5)
+    doc.setTextColor(brass[0], brass[1], brass[2])
+    doc.text('INVEST IN', margin + 8, y + 20)
+    doc.text('ROI FOCUS', w / 2 + 5, y + 20)
+
+    doc.setFont('helvetica', 'normal')
+    doc.setFontSize(6.5)
+    doc.setTextColor(140, 140, 150)
+    doc.text(item.invest, margin + 8, y + 24.5)
+    doc.text(item.roi, w / 2 + 5, y + 24.5)
+
+    y += cardH + 3
+  }
+
+  // ── ROI LAYERS ──
+  y += 5
+  doc.setFont('helvetica', 'bold')
+  doc.setFontSize(9)
+  doc.setTextColor(...brass)
+  doc.text('THE FOUR LAYERS OF RETURN', margin, y)
+  y += 2
+  doc.setLineWidth(0.2)
+  doc.setDrawColor(...brass)
+  doc.line(margin, y, margin + doc.getTextWidth('THE FOUR LAYERS OF RETURN'), y)
+
+  y += 7
+  doc.setFont('helvetica', 'normal')
+  doc.setFontSize(7.5)
+  doc.setTextColor(...mutedText)
+  doc.text('Your focus layers are highlighted based on your maturity stage.', margin, y)
+
+  const focusLayers: Record<number, number[]> = {
+    0: [0], 1: [1, 3], 2: [2], 3: [0, 1, 2, 3],
+  }
+  const activeLayers = focusLayers[stageIndex] || [0]
+
+  const layersData = [
+    { name: 'Time Recaptured', desc: 'Hours your team spends on manual data work that can be eliminated.', measure: 'Hours pulling reports, reconciling systems, building presentations' },
+    { name: 'Decision Speed', desc: 'How fast you go from question to confident answer.', measure: 'Time from data request to delivery, decisions delayed waiting for data' },
+    { name: 'Decision Quality', desc: 'Better outcomes from better information. Strategies that looked impossible become routine.', measure: 'Resources allocated on evidence, problems caught early' },
+    { name: 'Capacity & Literacy', desc: 'The multiplier that makes everything else permanent. Your team learns to use data independently.', measure: 'Staff data confidence, independent report access, data literacy' },
+  ]
+
+  y += 8
+  const roiCardH = 26
+
+  for (let i = 0; i < layersData.length; i++) {
+    const layer = layersData[i]!
+    const isFocus = activeLayers.includes(i)
+
+    // Check if we need a new page
+    if (y + roiCardH > h - 15) {
+      drawFooter()
+      doc.addPage()
+      drawPageBg()
+      y = 18
+    }
+
+    // Card
+    if (isFocus) {
+      doc.setFillColor(30, 38, 58)
+      doc.setDrawColor(brass[0], brass[1], brass[2])
+    } else {
+      doc.setFillColor(navyMid[0], navyMid[1], navyMid[2])
+      doc.setDrawColor(50, 55, 75)
+    }
+    doc.setLineWidth(isFocus ? 0.5 : 0.2)
+    doc.roundedRect(margin, y, contentW, roiCardH, 2, 2, 'FD')
+
+    // Number circle
+    const numX = margin + 7
+    const numY = y + 7
+    doc.setDrawColor(isFocus ? brass[0] : 80, isFocus ? brass[1] : 85, isFocus ? brass[2] : 100)
+    doc.setFillColor(...navyDeep)
+    doc.setLineWidth(0.4)
+    doc.circle(numX, numY, 4, 'FD')
+
+    doc.setFont('helvetica', 'bold')
+    doc.setFontSize(7)
+    if (isFocus) { doc.setTextColor(...brass) } else { doc.setTextColor(100, 100, 110) }
+    doc.text(String(i + 1), numX - 1.5, numY + 2)
+
+    // Layer name
+    doc.setFont('helvetica', 'bold')
+    doc.setFontSize(9)
+    if (isFocus) { doc.setTextColor(...brassLight) } else { doc.setTextColor(140, 140, 150) }
+    doc.text(layer.name, margin + 15, numY + 1)
+
+    // Focus badge
+    if (isFocus) {
+      const bx = margin + 15 + doc.getTextWidth(layer.name) + 4
+      doc.setFillColor(brass[0], brass[1], brass[2])
+      doc.roundedRect(bx, numY - 3.5, 19, 7, 3, 3, 'F')
+      doc.setFont('helvetica', 'bold')
+      doc.setFontSize(5.5)
+      doc.setTextColor(...navyDeep)
+      doc.text('YOUR FOCUS', bx + 2, numY + 1)
+    }
+
+    // Description
+    doc.setFont('helvetica', 'normal')
+    doc.setFontSize(7)
+    doc.setTextColor(160, 160, 165)
+    const descLines = wrapText(layer.desc, contentW - 16, 7)
+    doc.text(descLines[0] || '', margin + 8, y + 14)
+
+    // What to measure
+    doc.setFont('helvetica', 'bold')
+    doc.setFontSize(5.5)
+    doc.setTextColor(brass[0], brass[1], brass[2])
+    doc.text('WHAT TO MEASURE', margin + 8, y + 19)
+
+    doc.setFont('helvetica', 'normal')
+    doc.setFontSize(6.5)
+    doc.setTextColor(140, 140, 150)
+    const measureLines = wrapText(layer.measure, contentW - 16, 6.5)
+    doc.text(measureLines[0] || '', margin + 8, y + 23)
+
+    y += roiCardH + 3
+  }
+
+  drawFooter()
 
   // Save
   doc.save(`FORTE-Assessment-Results-${stage.name}.pdf`)
