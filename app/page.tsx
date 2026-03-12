@@ -10,6 +10,7 @@ import { ServiceIcon } from '@/components/ui/ServiceIcon'
 import { Button } from '@/components/ui/Button'
 import { ParticleField } from '@/components/ui/ParticleField'
 import { TextReveal } from '@/components/ui/TextReveal'
+import { BrokenFlywheel } from '@/components/ui/BrokenFlywheel'
 
 export const metadata: Metadata = createMetadata({
   title: 'Data Intelligence. Democratized.',
@@ -53,30 +54,30 @@ export default function HomePage() {
           </FadeUp>
           <FadeUp delay={0.1}>
             <h1 className="mt-6 font-display text-5xl font-normal leading-display text-white md:text-7xl">
-              <TextReveal delay={0.2}>Your data is speaking.</TextReveal>
+              <TextReveal delay={0.2}>Messy data.</TextReveal>
               <br />
               <span className="inline-block">
-                <TextReveal delay={0.6}>We make it</TextReveal>{' '}
+                <TextReveal delay={0.6}>Clear</TextReveal>{' '}
                 <em className="not-italic text-brass-light" style={{ fontStyle: 'italic' }}>
-                  <TextReveal delay={0.9}>unmistakable.</TextReveal>
+                  <TextReveal delay={0.9}>decisions.</TextReveal>
                 </em>
               </span>
             </h1>
           </FadeUp>
           <FadeUp delay={0.2}>
             <p className="mt-6 max-w-2xl font-body text-lg font-light leading-body text-white/60">
-              Most organizations are sitting on more data than they know what to
-              do with. Forte connects it, interprets it, and puts it in front of
-              the people who need it most, without requiring a PhD to use it.
+              Most organizations already have data and dashboards. What they lack
+              is the decision infrastructure that connects raw data to leadership
+              decisions. Forte designs and implements that missing layer.
             </p>
           </FadeUp>
           <FadeUp delay={0.3}>
             <div className="mt-10 flex flex-wrap gap-4">
               <Button href="/services" size="lg">
-                See How It Works
+                Explore Our Solutions
               </Button>
               <Button href="/contact" variant="ghost" size="lg">
-                Request a Demo
+                Book a Discovery Call
               </Button>
             </div>
           </FadeUp>
@@ -97,15 +98,15 @@ export default function HomePage() {
         <div className="mx-auto max-w-7xl px-6">
           <FadeUp>
             <p className="mb-6 text-center font-mono text-[10px] font-normal uppercase tracking-mono text-white/40">
-              Built for organizations that run on data
+              Built for organizations ready to lead with data
             </p>
             <div className="flex flex-wrap items-center justify-center gap-10">
-              {['Healthcare', 'Finance', 'Logistics', 'Energy', 'Technology'].map((industry) => (
+              {['Small Businesses', 'Nonprofits', 'School Districts'].map((org) => (
                 <div
-                  key={industry}
+                  key={org}
                   className="rounded border border-brass/10 bg-white/[0.03] px-5 py-2 font-mono text-[10px] uppercase tracking-mono text-white/30"
                 >
-                  {industry}
+                  {org}
                 </div>
               ))}
             </div>
@@ -123,43 +124,39 @@ export default function HomePage() {
             <FadeUp delay={0.1}>
               <div>
                 <h2 className="font-display text-3xl font-normal leading-display text-white md:text-4xl">
-                  Your data should be your edge. Right now it is a liability.
+                  Your data flywheel should be powering every decision. Instead, it stalls at every turn.
                 </h2>
                 <p className="mt-6 font-body text-base font-light leading-body text-white/60">
-                  Your teams are pulling reports manually. Your executives are
-                  making calls based on last quarter&#39;s numbers. Your data
-                  lives in five different systems that have never spoken to each
-                  other. And the tools that were supposed to fix this require an
-                  engineering team just to maintain.
+                  It starts with collection. Data scattered across a dozen tools,
+                  entered manually, duplicated constantly. By the time it reaches
+                  quality, nobody agrees on which numbers are right. Access is
+                  bottlenecked through one or two people who know where to find
+                  anything. Reporting becomes a weekly scramble to compile
+                  spreadsheets that are outdated before they are finished.
                 </p>
                 <p className="mt-4 font-body text-base font-light leading-body text-white/60">
-                  You already have the data. What you are missing is the
-                  infrastructure to make it work for you.
+                  And strategic insights? They show up too late, point to the
+                  wrong priorities, or land in front of the wrong people at the
+                  wrong time. Leadership ends up making decisions on instinct
+                  because the system that was supposed to inform them broke down
+                  long before the data reached their desk.
+                </p>
+                <p className="mt-4 font-body text-base font-light leading-body text-white/60">
+                  The problem is not that you lack data. It is that every stage
+                  of turning data into decisions has fractures that compound on
+                  each other. Forte exists to rebuild that flywheel so data flows
+                  from collection to insight without breaking down along the way,
+                  leading you to better solutions and faster results that actually
+                  meet your goals.
                 </p>
               </div>
             </FadeUp>
-            <ScaleIn delay={0.2}>
-              <div className="relative overflow-hidden rounded-sm">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&q=80"
-                  alt="Data visualization dashboard showing analytics"
-                  className="h-full w-full object-cover rounded-sm opacity-70"
-                  loading="lazy"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-navy via-transparent to-transparent" />
-                <div className="absolute bottom-0 left-0 right-0 p-6">
-                  <h2 className="font-display text-3xl font-normal leading-display text-brass-light md:text-4xl">
-                    Forte closes the gap between data and decision.
-                  </h2>
-                  <p className="mt-4 font-body text-base font-light leading-body text-white/60">
-                    We build the pipelines that connect your systems, the
-                    dashboards that surface what matters, and the AI models that
-                    tell you what is coming before it arrives.
-                  </p>
-                </div>
-              </div>
-            </ScaleIn>
+            <FadeUp delay={0.2}>
+              <BrokenFlywheel />
+              <p className="mt-2 text-center font-mono text-[9px] uppercase tracking-wider text-white/25">
+                Hover each segment to see common challenges
+              </p>
+            </FadeUp>
           </div>
         </div>
       </section>
@@ -170,19 +167,20 @@ export default function HomePage() {
           <FadeUp>
             <SectionLabel label="What We Do" index={2} />
             <h2 className="mt-4 font-display text-3xl font-normal leading-display text-white md:text-4xl">
-              Three ways Forte turns your data into a competitive advantage.
+              Four ways to build the decision infrastructure you need.
             </h2>
           </FadeUp>
-          <div className="mt-12 grid gap-6 md:grid-cols-3">
+          <div className="mt-12 grid grid-rows-[1fr] gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {SERVICES.map((service, i) => (
-              <ScaleIn key={service.id} delay={0.1 * (i + 1)}>
+              <ScaleIn key={service.id} delay={0.1 * (i + 1)} className="flex">
                 <GlowCard
+                  className="flex-1"
                   header={
                     <>
                       <div className="mb-3">
-                        <ServiceIcon icon={service.icon as 'pipeline' | 'dashboard' | 'model'} />
+                        <ServiceIcon icon={service.icon as 'pipeline' | 'dashboard' | 'model' | 'advisory' | 'assessment'} />
                       </div>
-                      <h3 className="font-body text-lg font-medium text-white">
+                      <h3 className="font-body text-base font-medium text-white">
                         {service.title}
                       </h3>
                     </>
@@ -213,16 +211,10 @@ export default function HomePage() {
           <FadeUp>
             <blockquote>
               <p className="font-display text-2xl font-normal italic leading-display text-brass-light md:text-3xl">
-                Before Forte, our reporting cycle took two weeks and still left
-                us guessing. Now our leadership team has answers before they
-                finish asking the question.
+                We had the data and the dashboards but lacked the ability to
+                easily make meaning of what was happening quickly. That is the
+                gap decision infrastructure closes.
               </p>
-              <footer className="mt-8 flex items-center justify-center gap-3">
-                <div className="h-px w-6 bg-brass" />
-                <cite className="font-mono text-xs font-normal not-italic uppercase tracking-mono text-white/45">
-                  Chief Operating Officer, Regional Healthcare Network
-                </cite>
-              </footer>
             </blockquote>
           </FadeUp>
         </div>
@@ -242,19 +234,19 @@ export default function HomePage() {
           </FadeUp>
           <FadeUp delay={0.1}>
             <h2 className="mt-4 font-display text-4xl font-normal leading-display text-white md:text-5xl">
-              Stop guessing. Start knowing.
+              Start with a conversation, not a contract.
             </h2>
           </FadeUp>
           <FadeUp delay={0.2}>
             <p className="mx-auto mt-4 max-w-lg font-body text-base font-light leading-body text-white/60">
-              Most implementations are live within 12 weeks. Let us show you
-              what your data is already trying to tell you.
+              A 30-minute discovery call is all it takes to understand whether
+              Forte is the right fit for your organization. No pitch, no pressure.
             </p>
           </FadeUp>
           <FadeUp delay={0.3}>
             <div className="mt-8">
               <Button href="/contact" size="lg">
-                Request a Demo
+                Book a Discovery Call
               </Button>
             </div>
           </FadeUp>

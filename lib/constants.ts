@@ -4,7 +4,7 @@ export const COMPANY: CompanyInfo = {
   name: 'Forte AI Solutions',
   tagline: 'Data Intelligence. Democratized.',
   description:
-    'Forte transforms fragmented enterprise data into structured intelligence, enabling faster decisions, leaner operations, and compounding advantage at scale.',
+    'Forte designs and implements decision infrastructure — the systems that sit between raw data and leadership decisions. We help organizations turn messy data into clear, trusted metrics that drive action.',
   email: 'hello@forteaisolutions.com',
   founded: 2024,
 }
@@ -13,7 +13,7 @@ export const NAV_LINKS: NavLink[] = [
   {
     label: 'Solutions',
     href: '/services',
-    description: 'Data pipelines, dashboards, and custom AI models.',
+    description: 'Decision infrastructure, agentic AI, and fractional leadership.',
   },
   {
     label: 'About',
@@ -29,43 +29,56 @@ export const NAV_LINKS: NavLink[] = [
 
 export const SERVICES: Service[] = [
   {
-    id: 'data-pipeline',
-    title: 'Data Pipeline and Integration',
+    id: 'foundation-sprint',
+    title: 'Decision Intelligence Foundation Sprint',
     description:
-      'We connect your siloed systems into a single, clean, reliable data infrastructure. No more manual exports, no more conflicting numbers, no more waiting on engineering.',
+      'A 6–8 week engagement that gives your leadership team a clear operating system for decision-making. KPI frameworks, metric definitions, dashboard architecture, and a roadmap to implementation.',
     outcomes: [
-      'Automated pipelines that replace manual data exports and transfers',
-      'Unified data layer across all your existing systems and tools',
-      'Real-time sync so your numbers are never a day, a week, or a quarter behind',
-      'Built to scale as your organization grows without rebuilding from scratch',
+      'KPI framework and metric definitions your whole organization agrees on',
+      'Executive dashboard architecture designed around how leaders actually decide',
+      'Reporting governance and decision cadence for leadership',
+      'AI readiness evaluation and implementation roadmap',
     ],
     icon: 'pipeline',
   },
   {
-    id: 'ai-dashboards',
-    title: 'AI Dashboards and Reporting',
+    id: 'infrastructure',
+    title: 'Intelligent Data Infrastructure and Agentic AI',
     description:
-      'We build intelligent dashboards that surface the right information to the right people at the right time. Executives get clarity. Operators get direction. Everyone gets less noise.',
+      'Full-scale implementation of the decision infrastructure designed during the Foundation Sprint. Data pipelines, executive dashboards, KPI tracking, and custom AI agents that automate analysis.',
     outcomes: [
-      'Executive dashboards that surface priorities, not just metrics',
-      'Operational views built for the teams running the day-to-day',
-      'Automated alerts when something needs attention before it becomes a problem',
-      'Designed for non-technical users so insights reach the people who act on them',
-    ],
-    icon: 'dashboard',
-  },
-  {
-    id: 'custom-ai',
-    title: 'Custom AI Model Building',
-    description:
-      'We design and deploy AI models tailored to your specific business questions. Predictive, diagnostic, prescriptive, built on your data, tuned to your outcomes.',
-    outcomes: [
-      'Predictive models that anticipate outcomes before they happen',
-      'Diagnostic models that surface root causes instead of symptoms',
-      'Prescriptive recommendations that tell your team what to do next',
-      'Explainable outputs your leadership can trust and act on',
+      'Data pipelines, warehouse, and quality monitoring built for your systems',
+      'Executive dashboards and KPI tracking with automated reporting',
+      'Custom agentic AI systems — insight agents, forecasting, operations monitoring',
+      'AI-assisted intelligence that supports decisions, not replaces them',
     ],
     icon: 'model',
+  },
+  {
+    id: 'fractional',
+    title: 'Fractional Head of Decision Intelligence',
+    description:
+      'Ongoing senior-level data leadership without a full-time executive hire. We govern your metrics, evolve your dashboards, oversee AI agents, and facilitate the decision cadence that keeps leadership aligned.',
+    outcomes: [
+      'Metric governance and dashboard evolution as your organization grows',
+      'AI agent oversight and analytics strategy',
+      'Decision cadence facilitation for leadership teams',
+      'Data governance and continuous system optimization',
+    ],
+    icon: 'advisory',
+  },
+  {
+    id: 'assessment',
+    title: 'AI and Data Health Assessment',
+    description:
+      'A focused 2–3 week diagnostic that evaluates your organization\'s AI readiness, data maturity, and architecture. You walk away with a prioritized roadmap and clear next steps.',
+    outcomes: [
+      'Data maturity assessment across your current systems',
+      'AI risk evaluation and readiness scoring',
+      'Architecture recommendations tailored to your stack',
+      'Prioritized roadmap with clear, actionable next steps',
+    ],
+    icon: 'assessment',
   },
 ]
 
@@ -78,8 +91,7 @@ export const SOCIAL_LINKS: SocialLink[] = [
 ]
 
 export const STATS: Stat[] = [
-  { num: '12 wks', label: 'Avg. Deployment' },
-  { num: '5+', label: 'Industries Served' },
+  { num: '6–8 wks', label: 'Foundation Sprint' },
   { num: '100%', label: 'Client Ownership' },
   { num: '24/7', label: 'Data Monitoring' },
 ]
@@ -87,6 +99,6 @@ export const STATS: Stat[] = [
 export const PAGES = [
   { path: '/', description: 'Homepage with overview of Forte AI Solutions services and value proposition.' },
   { path: '/about', description: 'Mission, founder story, and company values.' },
-  { path: '/services', description: 'Detailed service offerings, process timeline, and FAQ.' },
+  { path: '/services', description: 'Four service offerings: Foundation Sprint, Infrastructure & AI, Fractional Leadership, and Assessment.' },
   { path: '/contact', description: 'Contact form and discovery call information.' },
 ]

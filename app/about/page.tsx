@@ -1,15 +1,15 @@
 import type { Metadata } from 'next'
 import { createMetadata } from '@/lib/metadata'
 import { FadeUp } from '@/components/ui/FadeUp'
-import { ScaleIn } from '@/components/ui/ScaleIn'
 import { SectionLabel } from '@/components/ui/SectionLabel'
-import { GlowCard } from '@/components/ui/GlowCard'
+import { ValueCard } from '@/components/ui/ValueCard'
+import { DataFlowGraphic } from '@/components/ui/DataFlowGraphic'
 import { Button } from '@/components/ui/Button'
 
 export const metadata: Metadata = createMetadata({
   title: 'About',
   description:
-    'Our mission, story, and values. Forte was built to democratize data intelligence.',
+    'Our mission, story, and values. Forte designs decision infrastructure that connects raw data to leadership decisions.',
   path: '/about',
 })
 
@@ -17,22 +17,22 @@ const VALUES = [
   {
     title: 'Clarity over complexity',
     body: 'We believe the best solution is the one your team will actually use. We build for the person making the decision, not the person who built the model.',
-    icon: '✦',
+    id: 'clarity',
   },
   {
     title: 'Outcomes over outputs',
     body: 'We do not measure success by dashboards delivered or models deployed. We measure it by the decisions your organization makes better because of them.',
-    icon: '◆',
+    id: 'outcomes',
   },
   {
     title: 'Access over exclusivity',
     body: 'Data intelligence should not require a Fortune 100 budget. We price, package, and build for organizations at every stage.',
-    icon: '●',
+    id: 'access',
   },
   {
     title: 'Trust through transparency',
     body: 'You own your data, your models, and your infrastructure. We build it. We hand it over. No lock-in, no black boxes.',
-    icon: '▲',
+    id: 'trust',
   },
 ]
 
@@ -74,7 +74,7 @@ export default function AboutPage() {
           <FadeUp>
             <SectionLabel label="How We Got Here" index={1} />
           </FadeUp>
-          <div className="mt-10 grid gap-12 md:grid-cols-2 md:gap-16">
+          <div className="mt-10 grid gap-12 md:grid-cols-2 md:gap-16 items-center">
             <FadeUp delay={0.1}>
               <div>
                 <h2 className="font-display text-3xl font-normal leading-display text-white md:text-4xl">
@@ -103,18 +103,9 @@ export default function AboutPage() {
                 </div>
               </div>
             </FadeUp>
-            <ScaleIn delay={0.2}>
-              <div className="relative flex items-center justify-center overflow-hidden rounded-sm">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src="https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=800&q=80"
-                  alt="Modern office workspace with data analytics on screens"
-                  className="aspect-[4/5] w-full max-w-sm rounded-sm object-cover opacity-80"
-                  loading="lazy"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-navy-deep/80 via-transparent to-navy-deep/20 rounded-sm" />
-              </div>
-            </ScaleIn>
+            <FadeUp delay={0.3}>
+              <DataFlowGraphic />
+            </FadeUp>
           </div>
         </div>
       </section>
@@ -130,25 +121,13 @@ export default function AboutPage() {
           </FadeUp>
           <div className="mt-12 grid gap-6 sm:grid-cols-2">
             {VALUES.map((value, i) => (
-              <ScaleIn key={value.title} delay={0.1 * (i + 1)}>
-                <GlowCard
-                  header={
-                    <>
-                      <div className="mb-3 flex h-10 w-10 items-center justify-center rounded bg-brass/10 text-brass-light text-lg">
-                        {value.icon}
-                      </div>
-                      <h3 className="font-body text-lg font-medium text-white">
-                        {value.title}
-                      </h3>
-                    </>
-                  }
-                  body={
-                    <p className="font-body text-sm font-light leading-body text-white/60">
-                      {value.body}
-                    </p>
-                  }
-                />
-              </ScaleIn>
+              <ValueCard
+                key={value.id}
+                title={value.title}
+                body={value.body}
+                id={value.id}
+                index={i}
+              />
             ))}
           </div>
         </div>

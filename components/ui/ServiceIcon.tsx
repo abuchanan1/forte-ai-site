@@ -1,7 +1,7 @@
 'use client'
 
 interface ServiceIconProps {
-  icon: 'pipeline' | 'dashboard' | 'model'
+  icon: 'pipeline' | 'dashboard' | 'model' | 'advisory' | 'assessment'
   size?: number
 }
 
@@ -35,6 +35,24 @@ export function ServiceIcon({ icon, size = 40 }: ServiceIconProps) {
         <circle cx="20" cy="14" r="1" fill="#C49A58" />
         <circle cx="12" cy="26" r="1" fill="#C49A58" />
         <circle cx="28" cy="26" r="1" fill="#C49A58" />
+      </svg>
+    ),
+    advisory: (
+      <svg width={size} height={size} viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect width="40" height="40" rx="8" fill="rgba(160,120,64,0.12)" />
+        <circle cx="20" cy="16" r="4" stroke="#C49A58" strokeWidth="1.5" />
+        <path d="M13 28c0-3.87 3.13-7 7-7s7 3.13 7 7" stroke="#C49A58" strokeWidth="1.5" strokeLinecap="round" />
+        <path d="M26 12l3-3M26 12l3 3" stroke="#C49A58" strokeWidth="1" strokeLinecap="round" opacity="0.5" />
+        <circle cx="29" cy="12" r="1.5" fill="#C49A58" opacity="0.4" />
+      </svg>
+    ),
+    assessment: (
+      <svg width={size} height={size} viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect width="40" height="40" rx="8" fill="rgba(160,120,64,0.12)" />
+        <path d="M14 12h12a2 2 0 012 2v12a2 2 0 01-2 2H14a2 2 0 01-2-2V14a2 2 0 012-2z" stroke="#C49A58" strokeWidth="1.5" />
+        <path d="M16 18h8M16 22h5" stroke="#C49A58" strokeWidth="1.5" strokeLinecap="round" />
+        <circle cx="27" cy="27" r="4" stroke="#C49A58" strokeWidth="1.5" />
+        <path d="M30 30l2 2" stroke="#C49A58" strokeWidth="1.5" strokeLinecap="round" />
       </svg>
     ),
   }
