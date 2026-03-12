@@ -1,18 +1,71 @@
 import type { BlogPost } from '@/types'
 
 export const PILLAR_LABELS: Record<BlogPost['pillar'], string> = {
-  'data-ai': 'Data & AI Strategy',
-  'tech-gap': 'Bridging the Gap',
+  'data-ai': 'Data & AI for Small Orgs',
+  'tech-gap': 'Bridging the Tech Gap',
   'decision-infrastructure': 'Decision Infrastructure',
 }
 
 export const BLOG_POSTS: BlogPost[] = [
   {
-    slug: 'what-is-decision-infrastructure',
-    title:
-      'What Is Decision Infrastructure? (And Why Your Organization Needs It)',
+    slug: 'the-mismatch-problem',
+    title: 'The Mismatch Problem: Why Your Technical Team Builds the Wrong Thing',
     description:
-      'Most organizations have data and dashboards but still struggle to make timely decisions. Decision infrastructure is the missing layer that connects raw data to leadership action.',
+      'The gap between what gets requested and what actually moves the needle is the most expensive problem most organizations never name.',
+    pillar: 'tech-gap',
+    publishedAt: '2026-03-15',
+    readTime: '6 min read',
+    featured: true,
+    faq: [
+      {
+        question: 'What is the mismatch problem in technical teams?',
+        answer:
+          'The mismatch problem is the gap between what an organization requests from its technical team and what the organization actually needs. Technical teams build exactly what was specified, but the specification itself missed the real business need.',
+      },
+      {
+        question: 'Why do technical teams build the wrong thing?',
+        answer:
+          'Non-technical staff often lack the language to describe their needs in terms a technical team can act on, while technical teams lack enough business context to fill in the gaps. Both sides are guessing, and the result is a product that technically works but nobody uses.',
+      },
+      {
+        question: 'How much does a data mismatch cost an organization?',
+        answer:
+          'Data mismatches can cost organizations six figures on abandoned analytics platforms, entire grant cycles on reporting systems that still require manual entry, and years of lost decision-making capacity.',
+      },
+    ],
+  },
+  {
+    slug: 'you-dont-need-a-data-team',
+    title: "You Don't Need a Data Team. You Need a Data Strategy.",
+    description:
+      'Most small organizations are already sitting on the data they need. What they are missing is a plan for turning it into decisions.',
+    pillar: 'data-ai',
+    publishedAt: '2026-03-15',
+    readTime: '5 min read',
+    featured: true,
+    faq: [
+      {
+        question: 'Do small businesses need a data team?',
+        answer:
+          'Most small businesses and nonprofits do not need a dedicated data team. What they need is a data strategy that clarifies what decisions they make, what information supports those decisions, and where that information already lives.',
+      },
+      {
+        question: 'What is a data strategy for small organizations?',
+        answer:
+          'A data strategy is a clarity decision, not a technology decision. It answers three questions: What decisions does your organization make regularly? What information would make those decisions better? Where does that information already live?',
+      },
+      {
+        question: 'Should I start with data or decisions?',
+        answer:
+          'Start with decisions, not data. Map the decisions your leadership makes regularly, then trace backwards to the data that supports them. Nine times out of ten, you need less data than you thought, from fewer sources, presented in simpler ways.',
+      },
+    ],
+  },
+  {
+    slug: 'what-is-decision-infrastructure',
+    title: 'What Is Decision Infrastructure? (And Why Your Organization Needs It)',
+    description:
+      'The connective tissue between raw information and better decisions. Most organizations skip it entirely and wonder why nothing changes.',
     pillar: 'decision-infrastructure',
     publishedAt: '2026-03-15',
     readTime: '7 min read',
@@ -21,120 +74,119 @@ export const BLOG_POSTS: BlogPost[] = [
       {
         question: 'What is decision infrastructure?',
         answer:
-          'Decision infrastructure is the complete system that connects raw data to leadership decisions. It includes KPI frameworks, metric definitions, dashboard architecture, reporting governance, and the decision cadences that ensure insights reach the right people at the right time.',
+          'Decision infrastructure is the combination of systems, processes, and habits that allow an organization to consistently turn information into action. It has three layers: collection, synthesis, and action.',
       },
       {
-        question: 'How is decision infrastructure different from business intelligence?',
+        question: 'What are the three layers of decision infrastructure?',
         answer:
-          'Business intelligence focuses on reporting what happened. Decision infrastructure goes further by defining which metrics matter, who sees them, how often decisions are reviewed, and what actions follow. It is the operating system for how your organization makes decisions, not just a set of dashboards.',
+          'Layer one is collection: where your data lives and whether you can access it. Layer two is synthesis: turning raw data into something a human can understand in five minutes. Layer three is action: ensuring the right information reaches the right person at the right time.',
       },
       {
-        question: 'What size organization needs decision infrastructure?',
+        question: 'Do small organizations need decision infrastructure?',
         answer:
-          'Any organization where leadership makes decisions based on data, typically those with 50 or more employees. At that scale, informal data sharing breaks down and a structured system becomes necessary to maintain alignment and speed.',
+          'Small organizations need it most. Large companies can absorb the waste from poor data practices. Small businesses, nonprofits, and school districts cannot afford to waste a grant cycle or a product decision on bad information.',
       },
       {
-        question: 'How long does it take to implement decision infrastructure?',
+        question: 'Does decision infrastructure require expensive software?',
         answer:
-          'A Foundation Sprint that designs the framework takes 6 to 8 weeks. Full implementation including data pipelines, dashboards, and AI agents takes 8 to 20 weeks depending on the complexity of your existing systems.',
-      },
-    ],
-  },
-  {
-    slug: 'the-mismatch-problem',
-    title:
-      'The Mismatch Problem: Why Your Technical Team Builds the Wrong Thing',
-    description:
-      'Technical teams build what they are asked for. The problem is that nobody asks for the right thing. The gap between technical capability and business need is where most data projects fail.',
-    pillar: 'tech-gap',
-    publishedAt: '2026-03-15',
-    readTime: '6 min read',
-    faq: [
-      {
-        question: 'Why do data projects fail even with good technical teams?',
-        answer:
-          'Most data projects fail not because of technical shortcomings but because of a mismatch between what leadership needs and what the technical team builds. Requirements get lost in translation, priorities shift without communication, and the final product solves the wrong problem.',
-      },
-      {
-        question: 'How do you bridge the gap between technical and non-technical teams?',
-        answer:
-          'Start by defining decisions, not requirements. Instead of asking what dashboard you want, ask what decision you need to make faster. Work backward from leadership outcomes to the data and tools needed to support them.',
-      },
-      {
-        question: 'What is the most common cause of the technical-business mismatch?',
-        answer:
-          'The most common cause is that technical teams receive requirements in the form of outputs (build this dashboard, pull this report) rather than outcomes (help us reduce churn by identifying at-risk accounts earlier). When the request is an output, the team builds exactly what was asked for, which is rarely what was needed.',
-      },
-    ],
-  },
-  {
-    slug: 'you-dont-need-a-data-team',
-    title:
-      "You Don't Need a Data Team. You Need a Data Strategy.",
-    description:
-      'Hiring a data analyst will not fix your data problems if you do not know what questions to ask. Strategy comes first. The team comes after.',
-    pillar: 'data-ai',
-    publishedAt: '2026-03-15',
-    readTime: '5 min read',
-    faq: [
-      {
-        question: 'Should we hire a data analyst or a data strategist first?',
-        answer:
-          'Strategy first. A data analyst without a clear framework of what to measure, why, and for whom will spend most of their time reacting to ad hoc requests. Define your KPI framework and decision cadence first, then hire the analyst to execute within that structure.',
-      },
-      {
-        question: 'What is the difference between a data strategy and a data team?',
-        answer:
-          'A data strategy defines what your organization needs to know, how data flows from collection to decision, and who is responsible for each stage. A data team executes that strategy. Without the strategy, a data team is a group of talented people solving the wrong problems.',
-      },
-      {
-        question: 'How do small organizations build a data strategy without a big budget?',
-        answer:
-          'Start with the three to five decisions your leadership makes most often. Define the metrics that inform those decisions. Identify where that data lives today and what it takes to get it in front of decision-makers reliably. That is your initial data strategy, and it does not require a large budget to define.',
-      },
-      {
-        question: 'When is the right time to invest in data infrastructure?',
-        answer:
-          'When your leadership team is making decisions based on gut instinct because the data is too slow, too scattered, or too unreliable to use. If your reporting cycle takes more than a few hours, or if different teams use different numbers for the same metric, it is time.',
+          'No. Decision infrastructure does not require a data team, expensive software, or a twelve-month implementation plan. It requires someone who understands your organization well enough to ask the right questions about how decisions get made.',
       },
     ],
   },
   {
     slug: 'both-sides-of-the-table',
-    title:
-      "I've Sat on Both Sides of the Table. Here's What Nobody Tells You.",
+    title: "I've Sat on Both Sides of the Table. Here's What Nobody Tells You.",
     description:
-      'After years as both the person requesting data and the person building the systems, the biggest insight is simple: both sides think the other one does not get it. They are both right.',
+      'What happens when you have been the person waiting for data and the person building reports nobody uses. The problem is not on either end. It is in the middle.',
     pillar: 'tech-gap',
     publishedAt: '2026-03-15',
-    readTime: '6 min read',
+    readTime: '5 min read',
+    featured: true,
     faq: [
       {
-        question: 'Why do technical and non-technical teams struggle to communicate?',
+        question: 'What is the gap between technical and non-technical teams?',
         answer:
-          'Each side operates with different mental models. Technical teams think in systems, constraints, and data structures. Business teams think in outcomes, timelines, and stakeholder needs. Neither model is wrong, but without a translator who understands both, critical context gets lost.',
+          'There is a space between what the organization needs and what gets built where nobody is in charge. The business side assumes the technical team will figure it out. The technical team assumes the business side knows what they want. Both assumptions are wrong.',
       },
       {
-        question: 'What does a fractional head of decision intelligence do?',
+        question: 'Why do non-technical teams struggle to get the right data?',
         answer:
-          'A fractional head of decision intelligence serves as the bridge between your leadership team and your data systems. They define what metrics matter, design how information flows to decision-makers, oversee AI and analytics strategy, and facilitate the cadence that keeps everyone aligned, without requiring a full-time executive hire.',
+          'Non-technical teams often do not know how to ask for what they need in terms a technical team can act on. They ask for what they have seen before, usually a dashboard or a report, and hope it gets them closer to the answer.',
       },
       {
-        question: 'How do you know if your organization has a communication gap around data?',
+        question: 'How do you bridge the gap between technical and non-technical teams?',
         answer:
-          'Common signs include leadership requesting reports that take weeks to produce, technical teams building tools that go unused, different departments using different numbers for the same metric, and executives making decisions based on intuition despite having a data team.',
+          'Stop waiting for perfect requirements and start watching how teams actually work. Understand what they pull up when decisions need to be made, what they wish they had, and where they waste time. Build from that reality instead of from specifications.',
+      },
+    ],
+  },
+  {
+    slug: 'ai-agents-are-not-automation',
+    title: 'AI Agents Are Not Automation. Here Is Why That Matters.',
+    description:
+      'Most people describing AI agents are really describing automation with a new name. The difference matters, especially for organizations that cannot afford to chase the wrong trend.',
+    pillar: 'data-ai',
+    publishedAt: '2026-03-20',
+    readTime: '7 min read',
+    featured: true,
+    faq: [
+      {
+        question: 'What is the difference between AI agents and automation?',
+        answer:
+          'Automation follows a set of predefined instructions and executes them the same way every time. AI agents can reason about information in context, identify patterns, surface insights, and connect data across sources in ways that automation cannot.',
+      },
+      {
+        question: 'What does AI-assisted decision-making mean?',
+        answer:
+          'AI-assisted decision-making means using AI agents to enhance and speed up human decisions, not replace them. The agent surfaces information, identifies patterns, and presents options. The human decides. Human plus AI makes the best equation for strategic outcomes.',
+      },
+      {
+        question: 'Can small organizations benefit from AI agents?',
+        answer:
+          'Yes. Small businesses and nonprofits have the same need for faster, better-informed decisions as large companies. AI agents built into the right decision infrastructure can remove hours of manual data synthesis and surface insights that would otherwise take weeks to find.',
+      },
+    ],
+  },
+  {
+    slug: 'ai-agents-are-only-as-good-as-your-infrastructure',
+    title: 'AI Agents Are Only as Good as Your Infrastructure',
+    description:
+      'Without the right data and a clear strategy, the smartest AI agent in the world is just a faster way to get bad answers. The foundation comes first.',
+    pillar: 'data-ai',
+    publishedAt: '2026-03-22',
+    readTime: '8 min read',
+    featured: true,
+    faq: [
+      {
+        question: 'Why do AI implementations fail at small organizations?',
+        answer:
+          'Most AI implementations fail not because the technology is wrong but because the underlying data infrastructure is broken. Incomplete data, inconsistent entry, and disconnected systems mean the AI generates confident answers built on unreliable information.',
+      },
+      {
+        question: 'What does AI need to work effectively?',
+        answer:
+          'AI agents need three things: data they can trust, context about the organization goals and constraints, and a clear path to action that gets the right insight to the right person at the right time. If any of those are missing, AI just adds complexity.',
+      },
+      {
+        question: 'What is the relationship between AI and decision infrastructure?',
+        answer:
+          'Decision infrastructure is the foundation. AI is the accelerant. A strong foundation with AI on top gives your team faster, sharper decisions. An accelerant on a weak foundation just amplifies the problems you already have.',
+      },
+      {
+        question: 'Is my organization ready for AI?',
+        answer:
+          'AI readiness is not about budget or buy-in. It is about having data that is reasonably complete and accessible, a clear strategy for what decisions you need to improve, and systems where information flows to the people who need it. Building that foundation is the first step.',
       },
     ],
   },
 ]
 
 export function getPostBySlug(slug: string): BlogPost | undefined {
-  return BLOG_POSTS.find((post) => post.slug === slug)
+  return BLOG_POSTS.find((p) => p.slug === slug)
 }
 
 export function getAllPosts(): BlogPost[] {
   return [...BLOG_POSTS].sort(
-    (a, b) =>
-      new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime(),
+    (a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime()
   )
 }
