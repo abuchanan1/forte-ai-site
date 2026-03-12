@@ -5,6 +5,7 @@ import { ScaleIn } from '@/components/ui/ScaleIn'
 import { SectionLabel } from '@/components/ui/SectionLabel'
 import { Button } from '@/components/ui/Button'
 import Image from 'next/image'
+import { SignalPath } from '@/components/ui/SignalPath'
 
 export const metadata: Metadata = createMetadata({
   title: 'Meet the Founder',
@@ -103,7 +104,7 @@ export default function FounderPage() {
           <FadeUp>
             <SectionLabel label="The Path" index={1} />
           </FadeUp>
-          <div className="mt-10 max-w-3xl">
+          <div className="mt-10 grid gap-8 md:grid-cols-2 md:gap-12 items-center">
             <FadeUp delay={0.1}>
               <div className="space-y-5">
                 <p className="font-body text-base font-light leading-body text-white/60">
@@ -120,6 +121,9 @@ export default function FounderPage() {
                   get a straight answer on what the business actually needed.
                 </p>
               </div>
+            </FadeUp>
+            <FadeUp delay={0.3}>
+              <SignalPath />
             </FadeUp>
           </div>
         </div>
