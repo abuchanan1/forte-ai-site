@@ -45,7 +45,7 @@ export default function BlogPage() {
               <FadeUp key={post.slug} delay={0.1 * (i + 1)}>
                 <Link
                   href={`/blog/${post.slug}`}
-                  className="group block rounded-sm border border-brass/10 bg-navy-mid p-6 transition-all duration-200 hover:border-brass/40 hover:shadow-[0_0_24px_rgba(160,120,64,0.08)] md:p-8"
+                  className="group flex h-full flex-col rounded-sm border border-brass/10 bg-navy-mid p-6 transition-all duration-200 hover:border-brass/40 hover:shadow-[0_0_24px_rgba(160,120,64,0.08)] md:p-8"
                 >
                   <div className="mb-3 flex items-center gap-3">
                     <span className="font-mono text-[10px] font-medium uppercase tracking-mono-wide text-brass">
@@ -58,7 +58,7 @@ export default function BlogPage() {
                   <h2 className="font-display text-2xl font-normal leading-display text-white transition-colors group-hover:text-brass-light">
                     {post.title}
                   </h2>
-                  <p className="mt-3 font-body text-sm font-light leading-body text-white/50">
+                  <p className="mt-3 flex-grow font-body text-sm font-light leading-body text-white/50">
                     {post.description}
                   </p>
                   <div className="mt-4 flex items-center gap-2">
