@@ -83,6 +83,7 @@ function JsonLd() {
       email: COMPANY.email,
       contactType: 'sales',
     },
+    sameAs: ['https://www.linkedin.com/company/forte-ai-solutions/'],
   }
 
   return (

@@ -234,7 +234,10 @@ export default function FounderPage() {
               'Founder of Forte AI Solutions. Builds decision infrastructure for small businesses, nonprofits, and school districts.',
             url: 'https://forteaisolutions.com/about/founder',
             image: 'https://forteaisolutions.com/aaron-buchanan.jpg',
-            sameAs: [],
+            sameAs: [
+              'https://www.linkedin.com/in/aaron-buchanan/',
+              'https://www.linkedin.com/company/forte-ai-solutions/',
+            ],
           }),
         }}
       />
