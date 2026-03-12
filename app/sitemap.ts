@@ -1,8 +1,9 @@
 import type { MetadataRoute } from 'next'
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl =
+  const rawUrl =
     process.env.NEXT_PUBLIC_SITE_URL ?? 'https://forteaisolutions.com'
+  const baseUrl = rawUrl.replace(/\/+$/, '')
 
   return [
     {

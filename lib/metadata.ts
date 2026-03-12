@@ -7,7 +7,7 @@ interface CreateMetadataOptions {
   path?: string
 }
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://forteaisolutions.com'
+const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL ?? 'https://forteaisolutions.com').replace(/\/+$/, '')
 
 export function createMetadata({
   title,
