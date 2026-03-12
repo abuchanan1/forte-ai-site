@@ -20,6 +20,7 @@ interface Question {
   text: string
   options: {
     text: string
+    example?: { 'small-business': string; nonprofit: string }
     score: number
   }[]
 }
@@ -43,18 +44,34 @@ const questions: Question[] = [
     options: [
       {
         text: 'We dig through emails, spreadsheets, and files scattered across the org',
+        example: {
+          'small-business': 'e.g. Sales in one spreadsheet, finances in QuickBooks, marketing in another tool',
+          nonprofit: 'e.g. Program data in one system, donor records in another, grant tracking in spreadsheets',
+        },
         score: 1,
       },
       {
         text: 'We have a few tools, but pulling data still takes time and effort',
+        example: {
+          'small-business': 'e.g. CRM has customer data but reconciling it with revenue numbers is manual',
+          nonprofit: 'e.g. Your database has enrollment data but building a board report still takes hours',
+        },
         score: 2,
       },
       {
         text: 'We have dashboards and reports that most of the team uses regularly',
+        example: {
+          'small-business': 'e.g. Sales and ops leads check the same dashboard for weekly performance',
+          nonprofit: 'e.g. Program directors pull their own reports and leadership reviews a shared dashboard',
+        },
         score: 3,
       },
       {
         text: 'Data flows automatically and surfaces insights before we ask',
+        example: {
+          'small-business': 'e.g. Alerts flag underperforming product lines before the quarterly review',
+          nonprofit: 'e.g. Enrollment drops trigger automatic flags to program leadership the same week',
+        },
         score: 4,
       },
     ],
@@ -64,18 +81,34 @@ const questions: Question[] = [
     options: [
       {
         text: 'Days or weeks. Someone has to build a report from scratch',
+        example: {
+          'small-business': 'e.g. The founder asks for margins by product line and it takes the team two weeks',
+          nonprofit: 'e.g. A funder asks for outcome data and it takes days of emails between departments',
+        },
         score: 1,
       },
       {
         text: 'A few days. We know where to look, but pulling it together takes work',
+        example: {
+          'small-business': 'e.g. Revenue data is accessible but combining it with cost data is still manual',
+          nonprofit: 'e.g. You can find program numbers quickly but formatting them for the board takes time',
+        },
         score: 2,
       },
       {
         text: 'Hours. We have reporting systems that mostly have what we need',
+        example: {
+          'small-business': 'e.g. A dashboard shows KPIs, just needs minor filtering or date adjustments',
+          nonprofit: 'e.g. Leadership can pull a grant performance snapshot with a few clicks',
+        },
         score: 3,
       },
       {
         text: 'Minutes. The information is already available in real-time',
+        example: {
+          'small-business': 'e.g. Any team lead can see their P&L, pipeline, and forecast right now',
+          nonprofit: 'e.g. Board members can access a live dashboard with outcomes, enrollment, and financials',
+        },
         score: 4,
       },
     ],
@@ -85,18 +118,34 @@ const questions: Question[] = [
     options: [
       {
         text: 'One person knows where everything is. If they left, we would be lost',
+        example: {
+          'small-business': 'e.g. The founder or one ops person is the only one who understands the numbers',
+          nonprofit: 'e.g. One staff member built all the reports and nobody else knows the systems',
+        },
         score: 1,
       },
       {
         text: 'A few people share the knowledge, but there is no formal structure',
+        example: {
+          'small-business': 'e.g. The sales lead and finance person each know their own data but not each other\'s',
+          nonprofit: 'e.g. Program and development teams track their own metrics with no shared definitions',
+        },
         score: 2,
       },
       {
         text: 'We have clear ownership and shared definitions for key metrics',
+        example: {
+          'small-business': 'e.g. Everyone agrees on how revenue, churn, and margin are calculated',
+          nonprofit: 'e.g. "Outcomes" and "enrollment" mean the same thing across every department',
+        },
         score: 3,
       },
       {
         text: 'Data governance is embedded in how we operate, with documentation and processes',
+        example: {
+          'small-business': 'e.g. Metric definitions are documented, new hires onboard into the data systems easily',
+          nonprofit: 'e.g. Data policies are part of operations, with clear stewardship and audit processes',
+        },
         score: 4,
       },
     ],
@@ -106,18 +155,34 @@ const questions: Question[] = [
     options: [
       {
         text: 'Most decisions are made on gut instinct. Data is an afterthought',
+        example: {
+          'small-business': 'e.g. Expansion decisions are based on hunches or a board member\'s suggestion',
+          nonprofit: 'e.g. Program decisions follow passion or advocacy rather than evidence',
+        },
         score: 1,
       },
       {
         text: 'We look at data when we can, but it does not consistently drive decisions',
+        example: {
+          'small-business': 'e.g. You check the numbers sometimes but still rely on instinct for big calls',
+          nonprofit: 'e.g. Data shows up in board reports but rarely shapes the actual discussion',
+        },
         score: 2,
       },
       {
         text: 'Data informs most major decisions. We have regular reporting rhythms',
+        example: {
+          'small-business': 'e.g. Weekly reviews use dashboard data to drive ops and sales decisions',
+          nonprofit: 'e.g. Quarterly reviews are data-driven and leadership references metrics in meetings',
+        },
         score: 3,
       },
       {
         text: 'Every significant decision is evidence-based. Our team asks data questions naturally',
+        example: {
+          'small-business': 'e.g. No budget gets approved without a data case. The team thinks in metrics',
+          nonprofit: 'e.g. Funding proposals are grounded in outcome data and the board expects evidence',
+        },
         score: 4,
       },
     ],
@@ -127,18 +192,34 @@ const questions: Question[] = [
     options: [
       {
         text: 'We have not started thinking about AI yet',
+        example: {
+          'small-business': 'e.g. You know AI is out there but it has not come up in planning conversations',
+          nonprofit: 'e.g. The board has mentioned AI but no one has explored what it means for your work',
+        },
         score: 1,
       },
       {
         text: 'We are curious but do not know where to start or if we are ready',
+        example: {
+          'small-business': 'e.g. You have seen competitors use AI tools and wonder if you should too',
+          nonprofit: 'e.g. Funders are asking about AI readiness and you are not sure what to say',
+        },
         score: 2,
       },
       {
         text: 'We have explored some AI tools but have not integrated them into our workflow',
+        example: {
+          'small-business': 'e.g. A few people use ChatGPT for writing but nothing is connected to your data',
+          nonprofit: 'e.g. Staff use AI for grant writing or summaries but not for program decisions',
+        },
         score: 3,
       },
       {
         text: 'We are actively using AI agents or tools that are integrated into our processes',
+        example: {
+          'small-business': 'e.g. AI surfaces sales insights, flags anomalies, or automates reporting',
+          nonprofit: 'e.g. AI tools help analyze program data, predict trends, or generate funder reports',
+        },
         score: 4,
       },
     ],
@@ -248,6 +329,7 @@ Learn more: https://forteaisolutions.com/blog/measuring-the-return-on-data-inves
 
 interface AnswerCardProps {
   text: string
+  example: string | undefined
   onClick: () => void
   isSelected: boolean
   delay: number
@@ -256,6 +338,7 @@ interface AnswerCardProps {
 
 function AnswerCard({
   text,
+  example,
   onClick,
   isSelected,
   delay,
@@ -302,26 +385,35 @@ function AnswerCard({
         />
       )}
 
-      <div className="relative z-10 flex items-start gap-4">
-        <p className="flex-1 font-body text-base font-light leading-body text-white/70">
-          {text}
-        </p>
-        {isSelected && (
-          <m.div
-            initial={{ scale: 0, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ duration: 0.3, ease: easing }}
-            className="flex-shrink-0 text-brass"
-          >
-            <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-              <path
-                fillRule="evenodd"
-                d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                clipRule="evenodd"
-              />
-            </svg>
-          </m.div>
-        )}
+      <div className="relative z-10">
+        <div className="flex items-start gap-4">
+          <div className="flex-1">
+            <p className="font-body text-base font-light leading-body text-white/70">
+              {text}
+            </p>
+            {example && (
+              <p className="mt-1.5 font-body text-xs font-light leading-body text-white/30 italic">
+                {example}
+              </p>
+            )}
+          </div>
+          {isSelected && (
+            <m.div
+              initial={{ scale: 0, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ duration: 0.3, ease: easing }}
+              className="flex-shrink-0 text-brass"
+            >
+              <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                <path
+                  fillRule="evenodd"
+                  d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                  clipRule="evenodd"
+                />
+              </svg>
+            </m.div>
+          )}
+        </div>
       </div>
     </m.button>
   )
@@ -960,6 +1052,7 @@ export function AssessmentTool() {
                       <AnswerCard
                         key={idx}
                         text={option.text}
+                        example={option.example && orgType ? option.example[orgType] : undefined}
                         onClick={() => handleSelectAnswer(option.score)}
                         isSelected={selectedScore === option.score}
                         delay={idx * 0.05}
