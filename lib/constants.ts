@@ -21,6 +21,11 @@ export const NAV_LINKS: NavLink[] = [
     description: 'Our mission, story, and values.',
   },
   {
+    label: 'Founder',
+    href: '/about/founder',
+    description: 'Meet Aaron Buchanan, MPP.',
+  },
+  {
     label: 'Contact',
     href: '/contact',
     description: 'Start a conversation with our team.',
@@ -99,6 +104,7 @@ export const STATS: Stat[] = [
 export const PAGES = [
   { path: '/', description: 'Homepage with overview of Forte AI Solutions services and value proposition.' },
   { path: '/about', description: 'Mission, founder story, and company values.' },
+  { path: '/about/founder', description: 'Meet Aaron Buchanan, MPP — founder of Forte AI Solutions.' },
   { path: '/services', description: 'Four service offerings: Foundation Sprint, Infrastructure & AI, Fractional Leadership, and Assessment.' },
   { path: '/contact', description: 'Contact form and discovery call information.' },
 ]

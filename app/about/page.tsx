@@ -101,6 +101,11 @@ export default function AboutPage() {
                     mean when we say democratized.
                   </p>
                 </div>
+                <div className="mt-6">
+                  <Button href="/about/founder" variant="ghost" size="sm">
+                    Meet the Founder →
+                  </Button>
+                </div>
               </div>
             </FadeUp>
             <FadeUp delay={0.3}>
