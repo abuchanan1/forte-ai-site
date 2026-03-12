@@ -116,7 +116,7 @@ The best time to measure your ROI is the moment you start. Not three months in. 
 
 Identify your current stage. Pick the layer that matches where you are. Measure it starting today. In three months, you'll have a real answer to "was it worth it?" You'll know what's working. You'll know what needs to shift. And you'll have a roadmap for the next investment.
 
-If you're not sure which stage you're in or which layer to focus on first, [take our free Data & AI Readiness Assessment](/assessment). It takes two minutes and tells you exactly where you stand on the maturity curve and what your smartest next step is.
+If you're not sure which stage you're in or which layer to focus on first, there's one conversation that clarifies everything. It's worth having sooner rather than later, especially if you've been wondering whether your data investment is actually paying off.
 
 The foundation comes first, yes. But building it intentionally, with clear metrics that match your readiness, transforms it from cost into evidence.
 

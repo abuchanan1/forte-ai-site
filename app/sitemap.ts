@@ -6,9 +6,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
     process.env.NEXT_PUBLIC_SITE_URL ?? 'https://forteaisolutions.com'
   const baseUrl = rawUrl.replace(/\/+$/, '')
 
-  const blogPosts = getAllPosts().map((post) => ({
+  const posts = getAllPosts()
+  const blogUrls = posts.map((post) => ({
     url: `${baseUrl}/blog/${post.slug}`,
-    lastModified: new Date(post.publishedAt),
+    lastModified: new Date(),
     changeFrequency: 'monthly' as const,
     priority: 0.7,
   }))
@@ -44,7 +45,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'weekly',
       priority: 0.8,
     },
-    ...blogPosts,
+    {
+      url: `${baseUrl}/assessment`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly',
+      priority: 0.9,
+    },
+    ...blogUrls,
     {
       url: `${baseUrl}/contact`,
       lastModified: new Date(),

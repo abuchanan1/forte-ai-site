@@ -179,6 +179,92 @@ export const BLOG_POSTS: BlogPost[] = [
       },
     ],
   },
+  {
+    slug: 'how-to-know-if-your-organization-is-ready-for-ai',
+    title: 'How to Know If Your Organization Is Ready for AI',
+    description:
+      '42% of AI projects fail, almost never because of the technology. Five honest questions that tell you whether your data, strategy, and team are ready.',
+    pillar: 'data-ai',
+    publishedAt: '2026-03-25',
+    readTime: '6 min read',
+    featured: true,
+    faq: [
+      {
+        question: 'How do I know if my organization is ready for AI?',
+        answer:
+          'AI readiness is not about budget or technical talent. It comes down to three things: data you can trust, clarity on which decisions matter most, and a team that will actually use what you build. If any of those are missing, start there before investing in AI.',
+      },
+      {
+        question: 'What are the signs an organization is not ready for AI?',
+        answer:
+          'Key warning signs include: leadership cannot agree on which decisions drive the organization, teams argue about which numbers are right, data lives in disconnected silos, nobody formally owns the data, and the organization has never used data to change an actual decision.',
+      },
+      {
+        question: 'What should I do before implementing AI?',
+        answer:
+          'Start with a data strategy conversation, not a tool purchase. Identify your key decisions, assess whether your data is trustworthy and accessible, and determine who owns it. The right next step might be infrastructure, not AI.',
+      },
+    ],
+  },
+  {
+    slug: 'why-nobody-owns-your-data',
+    title: 'Why Nobody Owns Your Data (And What It Is Costing You)',
+    description:
+      'The biggest data problem most organizations have is not technical. It is structural. Nobody owns the data, and when that one person leaves, everything breaks.',
+    pillar: 'tech-gap',
+    publishedAt: '2026-03-27',
+    readTime: '6 min read',
+    featured: true,
+    faq: [
+      {
+        question: 'What is data ownership and why does it matter?',
+        answer:
+          'Data ownership means someone is accountable for data quality, there are shared definitions for key metrics, documentation exists outside of one persons head, and there is a rhythm for maintaining data. Without ownership, data becomes a liability instead of an asset.',
+      },
+      {
+        question: 'What happens when nobody owns the data?',
+        answer:
+          'Teams waste hours hunting for information, reports show conflicting numbers, leadership makes decisions on incomplete data, and institutional knowledge walks out the door when key employees leave. The cost shows up in time, money, trust, and missed opportunities.',
+      },
+      {
+        question: 'How do I fix data ownership at my organization?',
+        answer:
+          'Start with an audit: Where does your data live? Who maintains it? What happens if they stop? The answers reveal your risk. From there, assign accountability, create shared metric definitions, document processes, and build a maintenance rhythm.',
+      },
+    ],
+  },
+  {
+    slug: 'measuring-the-return-on-data-investment',
+    title: 'Measuring the Return on Your Data Investment (A Framework That Actually Works)',
+    description:
+      'Traditional ROI was built for factories. Data investment returns are strategic: faster decisions, smarter allocation, a team that compounds. Here is how to measure all four layers.',
+    pillar: 'decision-infrastructure',
+    publishedAt: '2026-03-29',
+    readTime: '8 min read',
+    featured: true,
+    faq: [
+      {
+        question: 'How do you measure ROI on a data investment?',
+        answer:
+          'Measure four layers: Time Recaptured (hours saved on manual work), Decision Speed (how fast you get from question to answer), Decision Quality (are better decisions being made), and Capacity and Literacy Created (what can your team do now that they could not before).',
+      },
+      {
+        question: 'What is data maturity and how does it affect ROI?',
+        answer:
+          'Data maturity has four stages: Scattered, Centralized, Integrated, and Intelligent. The ROI layer you should focus on depends on your stage. Stage 1 organizations measure time savings. Stage 3 organizations measure decision quality. Investing at the wrong layer for your maturity is the most expensive mistake.',
+      },
+      {
+        question: 'Why do data investments fail to show ROI?',
+        answer:
+          'Most organizations measure only cost savings, which misses the biggest returns. They also invest at the wrong altitude for their maturity level, buying Stage 3 tools when they are still at Stage 1. The investment is real but the organization is not ready for it.',
+      },
+      {
+        question: 'What is a data maturity model for small organizations?',
+        answer:
+          'Four stages: Scattered (data in silos, manual reports), Centralized (data accessible, basic reporting), Integrated (automatic flows, trusted dashboards), and Intelligent (AI embedded, evidence-based rhythm). Each stage has a different ROI focus and investment priority.',
+      },
+    ],
+  },
 ]
 
 export function getPostBySlug(slug: string): BlogPost | undefined {
