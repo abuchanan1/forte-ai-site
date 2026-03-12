@@ -302,192 +302,19 @@ function downloadResults(
   const h = doc.internal.pageSize.getHeight()
 
   // Brand colors
-  const navy = [12, 27, 51] as const       // #0C1B33
-  const navyDeep = [6, 14, 28] as const    // #060E1C
-  const brass = [196, 154, 88] as const    // #C49A58
+  const navy = [12, 27, 51] as const
+  const navyDeep = [6, 14, 28] as const
+  const navyMid = [22, 36, 68] as const
+  const brass = [196, 154, 88] as const
   const brassLight = [212, 180, 131] as const
-  const white = [247, 244, 238] as const   // #F7F4EE
+  const white = [247, 244, 238] as const
   const mutedText = [180, 177, 170] as const
+  const margin = 25
+  const contentW = w - margin * 2
 
-  // Helper: wrap text and return lines
   function wrapText(text: string, maxWidth: number, fontSize: number): string[] {
     doc.setFontSize(fontSize)
     return doc.splitTextToSize(text, maxWidth) as string[]
-  }
-
-  // ── Full navy background ──
-  doc.setFillColor(...navyDeep)
-  doc.rect(0, 0, w, h, 'F')
-
-  // ── Top brass accent line ──
-  doc.setFillColor(...brass)
-  doc.rect(0, 0, w, 2, 'F')
-
-  // ── Company name ──
-  let y = 22
-  doc.setFont('helvetica', 'normal')
-  doc.setFontSize(9)
-  doc.setTextColor(...brass)
-  doc.text('FORTE AI SOLUTIONS', w / 2, y, { align: 'center' })
-
-  // ── Title ──
-  y += 14
-  doc.setFont('helvetica', 'bold')
-  doc.setFontSize(22)
-  doc.setTextColor(...white)
-  doc.text('Data & AI Readiness', w / 2, y, { align: 'center' })
-  y += 9
-  doc.text('Assessment Results', w / 2, y, { align: 'center' })
-
-  // ── Decorative divider ──
-  y += 10
-  doc.setDrawColor(...brass)
-  doc.setLineWidth(0.4)
-  doc.line(w / 2 - 30, y, w / 2 + 30, y)
-
-  // ── Org type label ──
-  y += 12
-  doc.setFont('helvetica', 'normal')
-  doc.setFontSize(9)
-  doc.setTextColor(...mutedText)
-  const orgLabel = orgType === 'small-business' ? 'Small Business' : 'Nonprofit / Mission-Driven'
-  doc.text(`Organization Type: ${orgLabel}`, w / 2, y, { align: 'center' })
-
-  // ── Stage result box ──
-  y += 12
-  const boxX = 30
-  const boxW = w - 60
-  doc.setFillColor(...navy)
-  doc.roundedRect(boxX, y, boxW, 44, 3, 3, 'F')
-  doc.setDrawColor(...brass)
-  doc.setLineWidth(0.3)
-  doc.roundedRect(boxX, y, boxW, 44, 3, 3, 'S')
-
-  // Stage number + name
-  y += 14
-  doc.setFont('helvetica', 'normal')
-  doc.setFontSize(10)
-  doc.setTextColor(...brass)
-  doc.text(`STAGE ${stageIndex + 1} OF 4`, w / 2, y, { align: 'center' })
-
-  y += 12
-  doc.setFont('helvetica', 'bold')
-  doc.setFontSize(24)
-  doc.setTextColor(...white)
-  doc.text(stage.name, w / 2, y, { align: 'center' })
-
-  y += 12
-  doc.setFont('helvetica', 'normal')
-  doc.setFontSize(10)
-  doc.setTextColor(...brassLight)
-  doc.text(`Score: ${score} / 20`, w / 2, y, { align: 'center' })
-
-  // ── Maturity bar ──
-  y += 16
-  const barX = 30
-  const barW = w - 60
-  const barH = 5
-  const segW = barW / 4
-
-  for (let i = 0; i < 4; i++) {
-    const isActive = i <= stageIndex
-    doc.setFillColor(isActive ? brass[0] : navy[0], isActive ? brass[1] : navy[1], isActive ? brass[2] : navy[2])
-    if (!isActive) {
-      doc.setFillColor(22, 36, 68) // navy-mid
-    }
-    const rx = barX + i * segW
-    doc.roundedRect(rx + 1, y, segW - 2, barH, 2, 2, 'F')
-  }
-
-  // Stage labels under bar
-  y += 12
-  doc.setFontSize(7)
-  doc.setFont('helvetica', 'normal')
-  for (let i = 0; i < 4; i++) {
-    const isActive = i <= stageIndex
-    doc.setTextColor(isActive ? brass[0] : mutedText[0], isActive ? brass[1] : mutedText[1], isActive ? brass[2] : mutedText[2])
-    const label = maturityStages[i]!.name
-    const cx = barX + i * segW + segW / 2
-    doc.text(label, cx, y, { align: 'center' })
-  }
-
-  // ── Section helper ──
-  function drawSection(startY: number, label: string, body: string): number {
-    let sy = startY + 10
-    doc.setFont('helvetica', 'bold')
-    doc.setFontSize(8)
-    doc.setTextColor(...brass)
-    doc.text(label.toUpperCase(), 30, sy)
-
-    sy += 2
-    doc.setDrawColor(brass[0], brass[1], brass[2])
-    doc.setLineWidth(0.2)
-    doc.line(30, sy, 30 + doc.getTextWidth(label.toUpperCase()), sy)
-
-    sy += 7
-    doc.setFont('helvetica', 'normal')
-    doc.setFontSize(10)
-    doc.setTextColor(...white)
-    const lines = wrapText(body, w - 60, 10)
-    for (const line of lines) {
-      if (sy > h - 30) {
-        // New page
-        doc.addPage()
-        doc.setFillColor(...navyDeep)
-        doc.rect(0, 0, w, h, 'F')
-        doc.setFillColor(...brass)
-        doc.rect(0, 0, w, 2, 'F')
-        sy = 20
-      }
-      doc.text(line, 30, sy)
-      sy += 5.5
-    }
-    return sy
-  }
-
-  // ── Content sections ──
-  y = drawSection(y, 'What This Means', stage.description)
-  y = drawSection(y, 'ROI Focus', stage.roiFocus)
-  y = drawSection(y, 'Recommended Next Step', `${stage.service} — ${stage.serviceSubtext}`)
-  y = drawSection(y, 'Key Insight', stage.closingMessage)
-
-  // ── CTA box ──
-  y += 10
-  if (y > h - 55) {
-    doc.addPage()
-    doc.setFillColor(...navyDeep)
-    doc.rect(0, 0, w, h, 'F')
-    doc.setFillColor(...brass)
-    doc.rect(0, 0, w, 2, 'F')
-    y = 20
-  }
-
-  doc.setFillColor(brass[0], brass[1], brass[2])
-  doc.roundedRect(30, y, w - 60, 38, 3, 3, 'F')
-
-  y += 14
-  doc.setFont('helvetica', 'bold')
-  doc.setFontSize(13)
-  doc.setTextColor(...navyDeep)
-  doc.text('Ready to take the next step?', w / 2, y, { align: 'center' })
-
-  y += 8
-  doc.setFont('helvetica', 'normal')
-  doc.setFontSize(9)
-  doc.setTextColor(navyDeep[0], navyDeep[1], navyDeep[2])
-  doc.text('Book a discovery call: forteaisolutions.com/contact', w / 2, y, { align: 'center' })
-
-  y += 7
-  doc.setFontSize(8)
-  doc.text('hello@forteaisolutions.com', w / 2, y, { align: 'center' })
-
-  // ── Footer (page 1) ──
-  function drawFooter() {
-    doc.setFontSize(7)
-    doc.setTextColor(...mutedText)
-    doc.text('forteaisolutions.com', w / 2, h - 10, { align: 'center' })
-    doc.setFillColor(...brass)
-    doc.rect(0, h - 2, w, 2, 'F')
   }
 
   function drawPageBg() {
@@ -497,66 +324,190 @@ function downloadResults(
     doc.rect(0, 0, w, 2, 'F')
   }
 
-  drawFooter()
+  function drawFooter() {
+    doc.setFontSize(7)
+    doc.setTextColor(...mutedText)
+    doc.text('forteaisolutions.com', w / 2, h - 8, { align: 'center' })
+    doc.setFillColor(...brass)
+    doc.rect(0, h - 2, w, 2, 'F')
+  }
 
   // ═══════════════════════════════════════
-  // PAGE 2 — Frameworks
+  // PAGE 1 — Results (compact layout)
   // ═══════════════════════════════════════
-  doc.addPage()
   drawPageBg()
 
-  const navyMid = [22, 36, 68] as const
-  const margin = 25
-  const contentW = w - margin * 2
-
-  y = 18
+  let y = 18
   doc.setFont('helvetica', 'normal')
   doc.setFontSize(9)
   doc.setTextColor(...brass)
   doc.text('FORTE AI SOLUTIONS', w / 2, y, { align: 'center' })
 
-  y += 12
+  y += 10
   doc.setFont('helvetica', 'bold')
-  doc.setFontSize(18)
+  doc.setFontSize(20)
   doc.setTextColor(...white)
-  doc.text('Your Frameworks', w / 2, y, { align: 'center' })
+  doc.text('Data & AI Readiness Assessment Results', w / 2, y, { align: 'center' })
 
-  y += 6
+  y += 7
   doc.setDrawColor(...brass)
   doc.setLineWidth(0.4)
   doc.line(w / 2 - 30, y, w / 2 + 30, y)
 
-  // ── DATA MATURITY CURVE ──
-  y += 12
-  doc.setFont('helvetica', 'bold')
+  y += 8
+  doc.setFont('helvetica', 'normal')
+  doc.setFontSize(8)
+  doc.setTextColor(...mutedText)
+  const orgLabel = orgType === 'small-business' ? 'Small Business' : 'Nonprofit / Mission-Driven'
+  doc.text(`Organization Type: ${orgLabel}`, w / 2, y, { align: 'center' })
+
+  // Stage result box (compact)
+  y += 8
+  doc.setFillColor(...navy)
+  doc.roundedRect(margin, y, contentW, 36, 3, 3, 'F')
+  doc.setDrawColor(...brass)
+  doc.setLineWidth(0.3)
+  doc.roundedRect(margin, y, contentW, 36, 3, 3, 'S')
+
+  y += 11
+  doc.setFont('helvetica', 'normal')
   doc.setFontSize(9)
   doc.setTextColor(...brass)
-  doc.text('THE DATA MATURITY CURVE', margin, y)
-  y += 2
-  doc.setLineWidth(0.2)
-  doc.line(margin, y, margin + doc.getTextWidth('THE DATA MATURITY CURVE'), y)
+  doc.text(`STAGE ${stageIndex + 1} OF 4`, w / 2, y, { align: 'center' })
+
+  y += 10
+  doc.setFont('helvetica', 'bold')
+  doc.setFontSize(22)
+  doc.setTextColor(...white)
+  doc.text(stage.name, w / 2, y, { align: 'center' })
+
+  y += 9
+  doc.setFont('helvetica', 'normal')
+  doc.setFontSize(9)
+  doc.setTextColor(...brassLight)
+  doc.text(`Score: ${score} / 20`, w / 2, y, { align: 'center' })
+
+  // Maturity bar
+  y += 10
+  const segW = contentW / 4
+  for (let i = 0; i < 4; i++) {
+    const isActive = i <= stageIndex
+    doc.setFillColor(isActive ? brass[0] : navyMid[0], isActive ? brass[1] : navyMid[1], isActive ? brass[2] : navyMid[2])
+    doc.roundedRect(margin + i * segW + 1, y, segW - 2, 4, 2, 2, 'F')
+  }
+
+  y += 9
+  doc.setFontSize(6.5)
+  doc.setFont('helvetica', 'normal')
+  for (let i = 0; i < 4; i++) {
+    const isActive = i <= stageIndex
+    doc.setTextColor(isActive ? brass[0] : mutedText[0], isActive ? brass[1] : mutedText[1], isActive ? brass[2] : mutedText[2])
+    doc.text(maturityStages[i]!.name, margin + i * segW + segW / 2, y, { align: 'center' })
+  }
+
+  // Section helper (compact — smaller font, tighter spacing, no page breaks)
+  function drawSection(startY: number, label: string, body: string): number {
+    let sy = startY + 7
+    doc.setFont('helvetica', 'bold')
+    doc.setFontSize(7)
+    doc.setTextColor(...brass)
+    doc.text(label.toUpperCase(), margin, sy)
+    sy += 1.5
+    doc.setDrawColor(brass[0], brass[1], brass[2])
+    doc.setLineWidth(0.2)
+    doc.line(margin, sy, margin + doc.getTextWidth(label.toUpperCase()), sy)
+    sy += 5
+    doc.setFont('helvetica', 'normal')
+    doc.setFontSize(8.5)
+    doc.setTextColor(...white)
+    const lines = wrapText(body, contentW, 8.5)
+    for (const line of lines) {
+      doc.text(line, margin, sy)
+      sy += 4.2
+    }
+    return sy
+  }
+
+  y = drawSection(y, 'What This Means', stage.description)
+  y = drawSection(y, 'ROI Focus', stage.roiFocus)
+  y = drawSection(y, 'Recommended Next Step', `${stage.service} \u2014 ${stage.serviceSubtext}`)
+  y = drawSection(y, 'Key Insight', stage.closingMessage)
+
+  // CTA box (compact)
+  y += 6
+  doc.setFillColor(brass[0], brass[1], brass[2])
+  doc.roundedRect(margin, y, contentW, 30, 3, 3, 'F')
+
+  y += 10
+  doc.setFont('helvetica', 'bold')
+  doc.setFontSize(11)
+  doc.setTextColor(...navyDeep)
+  doc.text('Ready to take the next step?', w / 2, y, { align: 'center' })
 
   y += 7
   doc.setFont('helvetica', 'normal')
-  doc.setFontSize(7.5)
+  doc.setFontSize(8)
+  doc.text('Book a discovery call: forteaisolutions.com/contact', w / 2, y, { align: 'center' })
+
+  y += 6
+  doc.setFontSize(7)
+  doc.text('hello@forteaisolutions.com', w / 2, y, { align: 'center' })
+
+  drawFooter()
+
+  // ═══════════════════════════════════════
+  // PAGE 2 — Frameworks (compact layout)
+  // ═══════════════════════════════════════
+  doc.addPage()
+  drawPageBg()
+
+  y = 16
+  doc.setFont('helvetica', 'normal')
+  doc.setFontSize(8)
+  doc.setTextColor(...brass)
+  doc.text('FORTE AI SOLUTIONS', w / 2, y, { align: 'center' })
+
+  y += 9
+  doc.setFont('helvetica', 'bold')
+  doc.setFontSize(16)
+  doc.setTextColor(...white)
+  doc.text('Your Frameworks', w / 2, y, { align: 'center' })
+
+  y += 5
+  doc.setDrawColor(...brass)
+  doc.setLineWidth(0.4)
+  doc.line(w / 2 - 25, y, w / 2 + 25, y)
+
+  // ── DATA MATURITY CURVE ──
+  y += 8
+  doc.setFont('helvetica', 'bold')
+  doc.setFontSize(8)
+  doc.setTextColor(...brass)
+  doc.text('THE DATA MATURITY CURVE', margin, y)
+  y += 1.5
+  doc.setLineWidth(0.2)
+  doc.line(margin, y, margin + doc.getTextWidth('THE DATA MATURITY CURVE'), y)
+
+  y += 5
+  doc.setFont('helvetica', 'normal')
+  doc.setFontSize(7)
   doc.setTextColor(...mutedText)
   doc.text('Where you are determines what to invest in next.', margin, y)
 
   const curveData = [
-    { stage: 'Scattered', summary: 'Data lives in silos. Reports are manual. Nobody fully trusts the numbers.', invest: 'Data strategy and clarity on what decisions matter.', roi: 'Layer 1: Time Recaptured' },
-    { stage: 'Centralized', summary: 'Data is accessible from one place. Basic reporting works. Shared definitions are forming.', invest: 'Decision infrastructure, dashboards, and team training.', roi: 'Layer 2: Decision Speed + Layer 4: Literacy' },
-    { stage: 'Integrated', summary: 'Data flows automatically. Dashboards are trusted. The team uses data as a habit.', invest: 'AI agents and advanced analytics.', roi: 'Layer 3: Decision Quality' },
-    { stage: 'Intelligent', summary: 'AI is embedded in workflows. Evidence-based decisions are how work happens.', invest: 'Fractional leadership to govern and optimize.', roi: 'All four layers compound' },
+    { stage: 'Scattered', summary: 'Data lives in silos. Reports are manual.', invest: 'Data strategy and clarity on decisions.', roi: 'Layer 1: Time Recaptured' },
+    { stage: 'Centralized', summary: 'Data accessible from one place. Basic reporting works.', invest: 'Dashboards, reporting rhythms, training.', roi: 'Layer 2: Speed + Layer 4: Literacy' },
+    { stage: 'Integrated', summary: 'Data flows automatically. Team uses data as habit.', invest: 'AI agents and advanced analytics.', roi: 'Layer 3: Decision Quality' },
+    { stage: 'Intelligent', summary: 'AI embedded in workflows. Evidence-based decisions.', invest: 'Fractional leadership to optimize.', roi: 'All four layers compound' },
   ]
 
-  y += 8
-  const cardH = 28
+  y += 5
+  const cardH = 24
   for (let i = 0; i < curveData.length; i++) {
     const item = curveData[i]!
     const isCurrent = i === stageIndex
     const isPast = i < stageIndex
 
-    // Card background
     if (isCurrent) {
       doc.setFillColor(30, 38, 58)
       doc.setDrawColor(brass[0], brass[1], brass[2])
@@ -570,70 +521,67 @@ function downloadResults(
     doc.setLineWidth(isCurrent ? 0.5 : 0.2)
     doc.roundedRect(margin, y, contentW, cardH, 2, 2, 'FD')
 
-    // Stage dot
-    const dotY = y + 7
+    // Dot + title
+    const dotY = y + 6
     if (isCurrent) { doc.setFillColor(...brass) }
     else if (isPast) { doc.setFillColor(brass[0], brass[1], brass[2]) }
     else { doc.setFillColor(80, 85, 100) }
-    doc.circle(margin + 6, dotY, 1.5, 'F')
+    doc.circle(margin + 5, dotY, 1.2, 'F')
 
-    // Stage title
     doc.setFont('helvetica', 'bold')
-    doc.setFontSize(9)
+    doc.setFontSize(8)
     if (isCurrent) { doc.setTextColor(...brassLight) }
     else if (isPast) { doc.setTextColor(white[0], white[1], white[2]) }
     else { doc.setTextColor(140, 140, 150) }
-    const stageTitle = `Stage ${i + 1}: ${item.stage}`
-    doc.text(stageTitle, margin + 12, dotY + 1)
+    const title = `Stage ${i + 1}: ${item.stage}`
+    doc.text(title, margin + 10, dotY + 1)
 
-    // "You are here" badge
     if (isCurrent) {
-      const badgeX = margin + 12 + doc.getTextWidth(stageTitle) + 4
+      const bx = margin + 10 + doc.getTextWidth(title) + 3
       doc.setFillColor(brass[0], brass[1], brass[2])
-      doc.roundedRect(badgeX, dotY - 3.5, 22, 7, 3, 3, 'F')
+      doc.roundedRect(bx, dotY - 3, 20, 6, 3, 3, 'F')
       doc.setFont('helvetica', 'bold')
-      doc.setFontSize(5.5)
+      doc.setFontSize(5)
       doc.setTextColor(...navyDeep)
-      doc.text('YOU ARE HERE', badgeX + 2.5, dotY + 1)
+      doc.text('YOU ARE HERE', bx + 2, dotY + 0.5)
     }
 
     // Summary
     doc.setFont('helvetica', 'normal')
-    doc.setFontSize(7)
+    doc.setFontSize(6.5)
     doc.setTextColor(160, 160, 165)
-    const summaryLines = wrapText(item.summary, contentW - 16, 7)
-    doc.text(summaryLines[0] || '', margin + 8, y + 14)
+    doc.text(item.summary, margin + 7, y + 12)
 
-    // Invest In / ROI row
+    // Invest / ROI
     doc.setFont('helvetica', 'bold')
-    doc.setFontSize(5.5)
+    doc.setFontSize(5)
     doc.setTextColor(brass[0], brass[1], brass[2])
-    doc.text('INVEST IN', margin + 8, y + 20)
-    doc.text('ROI FOCUS', w / 2 + 5, y + 20)
+    doc.text('INVEST IN', margin + 7, y + 17)
+    doc.text('ROI FOCUS', w / 2 + 5, y + 17)
 
     doc.setFont('helvetica', 'normal')
-    doc.setFontSize(6.5)
+    doc.setFontSize(6)
     doc.setTextColor(140, 140, 150)
-    doc.text(item.invest, margin + 8, y + 24.5)
-    doc.text(item.roi, w / 2 + 5, y + 24.5)
+    doc.text(item.invest, margin + 7, y + 21)
+    doc.text(item.roi, w / 2 + 5, y + 21)
 
-    y += cardH + 3
+    y += cardH + 2.5
   }
 
   // ── ROI LAYERS ──
-  y += 5
+  y += 4
   doc.setFont('helvetica', 'bold')
-  doc.setFontSize(9)
+  doc.setFontSize(8)
   doc.setTextColor(...brass)
   doc.text('THE FOUR LAYERS OF RETURN', margin, y)
-  y += 2
+  y += 1.5
   doc.setLineWidth(0.2)
   doc.setDrawColor(...brass)
   doc.line(margin, y, margin + doc.getTextWidth('THE FOUR LAYERS OF RETURN'), y)
 
-  y += 7
+  y += 5
   doc.setFont('helvetica', 'normal')
-  doc.setFontSize(7.5)
+  doc.setFontSize(7)
   doc.setTextColor(...mutedText)
   doc.text('Your focus layers are highlighted based on your maturity stage.', margin, y)
 
@@ -643,28 +591,19 @@ function downloadResults(
   const activeLayers = focusLayers[stageIndex] || [0]
 
   const layersData = [
-    { name: 'Time Recaptured', desc: 'Hours your team spends on manual data work that can be eliminated.', measure: 'Hours pulling reports, reconciling systems, building presentations' },
-    { name: 'Decision Speed', desc: 'How fast you go from question to confident answer.', measure: 'Time from data request to delivery, decisions delayed waiting for data' },
-    { name: 'Decision Quality', desc: 'Better outcomes from better information. Strategies that looked impossible become routine.', measure: 'Resources allocated on evidence, problems caught early' },
-    { name: 'Capacity & Literacy', desc: 'The multiplier that makes everything else permanent. Your team learns to use data independently.', measure: 'Staff data confidence, independent report access, data literacy' },
+    { name: 'Time Recaptured', desc: 'Hours spent on manual data work that can be eliminated.', measure: 'Hours pulling reports, reconciling systems' },
+    { name: 'Decision Speed', desc: 'How fast you go from question to confident answer.', measure: 'Time from request to delivery, delayed decisions' },
+    { name: 'Decision Quality', desc: 'Better outcomes from better information.', measure: 'Resources on evidence, problems caught early' },
+    { name: 'Capacity & Literacy', desc: 'Your team learns to use data independently.', measure: 'Staff confidence, independent report access' },
   ]
 
-  y += 8
-  const roiCardH = 26
+  y += 5
+  const roiCardH = 22
 
   for (let i = 0; i < layersData.length; i++) {
     const layer = layersData[i]!
     const isFocus = activeLayers.includes(i)
 
-    // Check if we need a new page
-    if (y + roiCardH > h - 15) {
-      drawFooter()
-      doc.addPage()
-      drawPageBg()
-      y = 18
-    }
-
-    // Card
     if (isFocus) {
       doc.setFillColor(30, 38, 58)
       doc.setDrawColor(brass[0], brass[1], brass[2])
@@ -676,55 +615,52 @@ function downloadResults(
     doc.roundedRect(margin, y, contentW, roiCardH, 2, 2, 'FD')
 
     // Number circle
-    const numX = margin + 7
-    const numY = y + 7
+    const numX = margin + 6
+    const numY = y + 6
     doc.setDrawColor(isFocus ? brass[0] : 80, isFocus ? brass[1] : 85, isFocus ? brass[2] : 100)
     doc.setFillColor(...navyDeep)
     doc.setLineWidth(0.4)
-    doc.circle(numX, numY, 4, 'FD')
+    doc.circle(numX, numY, 3.5, 'FD')
 
     doc.setFont('helvetica', 'bold')
-    doc.setFontSize(7)
+    doc.setFontSize(6.5)
     if (isFocus) { doc.setTextColor(...brass) } else { doc.setTextColor(100, 100, 110) }
-    doc.text(String(i + 1), numX - 1.5, numY + 2)
+    doc.text(String(i + 1), numX - 1.2, numY + 1.8)
 
-    // Layer name
+    // Name
     doc.setFont('helvetica', 'bold')
-    doc.setFontSize(9)
+    doc.setFontSize(8)
     if (isFocus) { doc.setTextColor(...brassLight) } else { doc.setTextColor(140, 140, 150) }
-    doc.text(layer.name, margin + 15, numY + 1)
+    doc.text(layer.name, margin + 13, numY + 1)
 
-    // Focus badge
     if (isFocus) {
-      const bx = margin + 15 + doc.getTextWidth(layer.name) + 4
+      const bx = margin + 13 + doc.getTextWidth(layer.name) + 3
       doc.setFillColor(brass[0], brass[1], brass[2])
-      doc.roundedRect(bx, numY - 3.5, 19, 7, 3, 3, 'F')
+      doc.roundedRect(bx, numY - 3, 17, 6, 3, 3, 'F')
       doc.setFont('helvetica', 'bold')
-      doc.setFontSize(5.5)
+      doc.setFontSize(5)
       doc.setTextColor(...navyDeep)
-      doc.text('YOUR FOCUS', bx + 2, numY + 1)
+      doc.text('YOUR FOCUS', bx + 1.5, numY + 0.5)
     }
 
-    // Description
-    doc.setFont('helvetica', 'normal')
-    doc.setFontSize(7)
-    doc.setTextColor(160, 160, 165)
-    const descLines = wrapText(layer.desc, contentW - 16, 7)
-    doc.text(descLines[0] || '', margin + 8, y + 14)
-
-    // What to measure
-    doc.setFont('helvetica', 'bold')
-    doc.setFontSize(5.5)
-    doc.setTextColor(brass[0], brass[1], brass[2])
-    doc.text('WHAT TO MEASURE', margin + 8, y + 19)
-
+    // Desc
     doc.setFont('helvetica', 'normal')
     doc.setFontSize(6.5)
-    doc.setTextColor(140, 140, 150)
-    const measureLines = wrapText(layer.measure, contentW - 16, 6.5)
-    doc.text(measureLines[0] || '', margin + 8, y + 23)
+    doc.setTextColor(160, 160, 165)
+    doc.text(layer.desc, margin + 7, y + 12.5)
 
-    y += roiCardH + 3
+    // Measure
+    doc.setFont('helvetica', 'bold')
+    doc.setFontSize(5)
+    doc.setTextColor(brass[0], brass[1], brass[2])
+    doc.text('WHAT TO MEASURE', margin + 7, y + 16.5)
+
+    doc.setFont('helvetica', 'normal')
+    doc.setFontSize(6)
+    doc.setTextColor(140, 140, 150)
+    doc.text(layer.measure, margin + 7, y + 20)
+
+    y += roiCardH + 2.5
   }
 
   drawFooter()
