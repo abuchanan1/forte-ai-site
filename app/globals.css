@@ -80,6 +80,32 @@ body {
   color: #c49a58;
 }
 
+.prose-forte h1 {
+  font-family: var(--font-display), serif;
+  font-weight: 400;
+  font-size: 2.25rem;
+  line-height: 1.05;
+  color: #f7f4ee;
+  margin-bottom: 1.5rem;
+}
+
+.prose-forte a {
+  color: #c49a58;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  transition: color 0.2s;
+}
+
+.prose-forte a:hover {
+  color: #a07840;
+}
+
+.prose-forte hr {
+  border: none;
+  border-top: 1px solid rgba(160, 120, 64, 0.15);
+  margin: 2.5rem 0;
+}
+
 @media print {
   body {
     background: white;

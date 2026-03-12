@@ -30,9 +30,16 @@ export function generateMetadata({ params }: PageProps): Metadata {
 function parseMarkdown(md: string): string {
   let html = md
 
-  // Headings (## and ###)
+  // Horizontal rules
+  html = html.replace(/^---$/gm, '<hr />')
+
+  // Headings (# ## ###)
   html = html.replace(/^### (.+)$/gm, '<h3>$1</h3>')
   html = html.replace(/^## (.+)$/gm, '<h2>$1</h2>')
+  html = html.replace(/^# (.+)$/gm, '<h1>$1</h1>')
+
+  // Links [text](url)
+  html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>')
 
   // Bold
   html = html.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
@@ -53,7 +60,7 @@ function parseMarkdown(md: string): string {
         result.push('</p>')
         inParagraph = false
       }
-    } else if (trimmed.startsWith('<h')) {
+    } else if (trimmed.startsWith('<h') || trimmed.startsWith('<hr')) {
       if (inParagraph) {
         result.push('</p>')
         inParagraph = false

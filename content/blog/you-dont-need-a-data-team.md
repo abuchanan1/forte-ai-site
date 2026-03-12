@@ -1,59 +1,75 @@
-When organizations realize they have a data problem, the first instinct is to hire. Post a job for a data analyst. Maybe a data engineer. Find someone who can wrangle the spreadsheets, build the dashboards, and make sense of the numbers.
+# You Don't Need a Data Team. You Need a Data Strategy.
 
-It sounds reasonable. And it is almost always premature.
+I hear this all the time from small businesses and nonprofits. "We are not big enough for analytics." Or, "We will invest in data once we scale." Or my personal favorite, "We just need someone to build us a dashboard."
 
-## The hire-first trap
+None of that is the real problem.
 
-Here is what happens. You hire a talented data analyst. They show up on day one, ready to work. And then they ask the question that reveals the real problem:
+The real problem is that somewhere along the way, "doing data well" became synonymous with hiring a team of analysts and buying expensive software. And if you cannot afford that, the assumption is you just wait until you can.
 
-"What should I be measuring?"
+That assumption is wrong. And it is costing organizations years of better decisions they could have been making.
 
-If your organization cannot answer that question clearly, a new hire will not fix your data problem. They will spend their first six months responding to ad hoc requests, building one-off reports for whoever shouts loudest, and trying to reverse-engineer a strategy from the chaos.
+## The Enterprise Lie
 
-This is not a failure of the analyst. It is a failure of sequence. You hired for execution before you had a plan worth executing.
+The big tech companies and the enterprise software vendors have done an incredible job selling a specific version of what data maturity looks like. It looks like a data lake. A BI platform. A team of analysts writing SQL. Machine learning models. AI integrations. The whole stack.
 
-## Strategy is the foundation
+And for a Fortune 500 company, that makes sense. They have the volume, the complexity, and the budget to justify it.
 
-A data strategy answers the questions that make everything else possible:
+But that model has trickled down to organizations where it makes no sense at all. I have watched nonprofits with 15 employees try to implement the same analytics platforms used by companies with 15,000. I have seen school districts purchase enterprise CRMs because a vendor told them they needed one. I have sat in meetings where a startup founder with two years of runway was debating which cloud data warehouse to set up.
 
-**What decisions does our leadership make regularly?** Not all data matters equally. The metrics that inform your most consequential decisions are the ones that deserve infrastructure.
+None of them needed any of that. What they needed was a strategy.
 
-**Where does that data live today?** Scattered across your CRM, your ERP, spreadsheets, email threads, and the institutional knowledge in one person's head.
+## What a Data Strategy Actually Is
 
-**Who needs to see it, and how often?** The CEO needs a different view than the operations manager. Weekly decisions need different cadences than quarterly ones.
+A data strategy is not a technology decision. It is a clarity decision.
 
-**What does good look like?** Without targets and definitions, a metric is just a number. Your team needs to know what "on track" means before a dashboard can tell them whether they are.
+It answers three questions. What decisions does your organization make regularly? What information would make those decisions better? And where does that information already live?
 
-**What happens when something goes wrong?** Alerting, escalation paths, and decision protocols are part of strategy, not afterthoughts.
+That is it. No platform required. No analyst headcount. No six-month implementation. Just honest answers to those three questions.
 
-## Why small organizations skip this
+Because here is what I have found after years of doing this work. Most small organizations are already sitting on the data they need. It is in their CRM. It is in their program management tool. It is in spreadsheets that one person maintains and nobody else looks at. It is in the enrollment system or the donor database or the invoicing platform they have been using for years.
 
-There is a belief that data strategy is something large enterprises do. That organizations with under 500 employees can get by with spreadsheets and good instincts.
+The data exists. What does not exist is a plan for turning it into decisions. (I call that plan [decision infrastructure](/blog/what-is-decision-infrastructure).)
 
-This was never true, but it is especially wrong now. The organizations most harmed by poor data practices are the ones with the least margin for error. A school district allocating limited resources based on bad data. A nonprofit measuring program impact with inconsistent metrics. A growing business scaling operations without visibility into what is actually working.
+## The Spreadsheet Is Not the Problem
 
-These organizations cannot afford to waste a hire on directionless data work. They need strategy first.
+People love to make fun of spreadsheets. Every tech company pitches their product as the thing that will finally get you off spreadsheets.
 
-## What a data strategy costs
+I am going to push back on that.
 
-Less than you think. A data strategy does not require a six-month consulting engagement or a seven-figure technology investment.
+A spreadsheet maintained by someone who understands the business and updates it consistently beats a six-figure analytics platform that nobody trusts. I have seen it over and over. The most data-driven person in the organization is often the one with a well-organized Excel file, not the one with the fanciest tool.
 
-At its simplest, it requires answering the five questions above with enough specificity that someone, whether a new hire, a contractor, or a partner like Forte, can execute against them.
+The problem is not the spreadsheet. The problem is when the spreadsheet is the only source of truth, lives on one person's laptop, has no documentation, and disappears when that person leaves. That is not a tool problem. That is a strategy problem.
 
-A Foundation Sprint delivers this in six to eight weeks. Your organization walks away with a KPI framework, metric definitions, dashboard architecture, and a roadmap for implementation. That is your strategy. Everything after that is execution.
+A real data strategy takes what already works, even if it is messy, and gives it structure. It identifies what is worth keeping, what needs to be shared, what should be automated, and what can stay manual for now. It meets the organization where it is instead of where some vendor thinks it should be.
 
-## Then you hire
+## Start With Decisions, Not Data
 
-Once the strategy is in place, hiring becomes dramatically easier.
+The biggest mistake I see organizations make is starting with the data. They look at everything they collect and ask, "What can we do with all this?"
 
-You can write a job description that specifies what the analyst will actually do. You can evaluate candidates based on the skills your specific infrastructure requires. You can onboard someone into a clear framework instead of expecting them to create one.
+That is backwards.
 
-Or you can skip the hire entirely and bring in fractional leadership that governs your data systems, evolves your dashboards, and ensures the strategy stays aligned as your organization grows.
+Start with the decisions. What does your executive director need to know every month to run the organization well? What does your program team need to see every week to know if things are working? What does the board need once a quarter to feel confident about direction?
 
-## The sequence matters
+Map those decisions. Then trace backwards to the data that supports them. Nine times out of ten, you will find that you need less data than you thought, from fewer sources, presented in simpler ways.
 
-Data team without strategy: expensive, directionless, frustrating for everyone involved.
+That is a data strategy. And it does not require a single new hire or a single new tool to start.
 
-Data strategy without a team: clear, actionable, ready for execution whenever you are.
+## When You Do Need Help
 
-Get the sequence right. Strategy first. Team second. Everything else follows.
+I am not saying organizations should never invest in technology or bring in outside expertise. There is absolutely a point where you outgrow what manual processes can handle. Where the volume or the complexity justifies a real platform and real technical support.
+
+But that point comes after you have a strategy. Not before.
+
+When you bring in a tool or a consultant or an analyst before you have clarity on what decisions you are trying to improve, you end up with [the mismatch](/blog/the-mismatch-problem). You get a technically sound system that does not match how your team actually works. You get beautiful dashboards that answer questions nobody is asking.
+
+Get the strategy right first. The technology becomes obvious after that.
+
+## What Forte Does
+
+We do not start with tools. We start with decisions. We figure out what your organization actually needs to run better, then we build the simplest possible path to get there.
+
+You do not need a data team. You need a plan. And you needed it yesterday.
+
+---
+
+*Aaron Buchanan, MPP, is the founder of Forte AI Solutions. [Book a discovery call](/contact) and we will show you what a data strategy looks like for an organization your size.*
