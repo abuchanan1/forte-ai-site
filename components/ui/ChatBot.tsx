@@ -117,10 +117,44 @@ export function ChatBot() {
 
   // Qualification tracking
   const qualificationRef = useRef<LeadQualification | null>(null)
+  const transcriptSentRef = useRef(false)
 
   const endRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
   const abortRef = useRef<AbortController | null>(null)
+
+  // Always save transcript on page unload (regardless of email capture)
+  useEffect(() => {
+    function sendTranscriptBeacon() {
+      const msgs = messagesRef.current
+      if (msgs.length < 2 || transcriptSentRef.current) return
+      transcriptSentRef.current = true
+
+      const transcript = msgs
+        .filter((m) => m.role !== 'status')
+        .map((m) => `${m.role === 'user' ? 'Visitor' : 'Assistant'}: ${m.content}`)
+        .join('\n\n')
+
+      // Use sendBeacon so it works even during page unload
+      const payload = JSON.stringify({
+        name: leadRef.current.name || 'Anonymous Visitor',
+        email: leadRef.current.email || 'not-captured@anonymous',
+        message: 'Chatbot transcript (auto-captured on session end)',
+        transcript,
+        qualification: qualificationRef.current,
+      })
+      navigator.sendBeacon('/api/chatbot-lead', payload)
+    }
+
+    window.addEventListener('beforeunload', sendTranscriptBeacon)
+    return () => window.removeEventListener('beforeunload', sendTranscriptBeacon)
+  }, [])
+
+  // Keep refs in sync for beacon access
+  const messagesRef = useRef<Message[]>([])
+  useEffect(() => { messagesRef.current = messages }, [messages])
+  const leadRef = useRef(lead)
+  useEffect(() => { leadRef.current = lead }, [lead])
 
   // Scroll on new messages
   useEffect(() => {

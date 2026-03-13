@@ -1070,6 +1070,8 @@ export function AssessmentTool() {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
   const [answers, setAnswers] = useState<Map<number, number>>(new Map())
   const [selectedScore, setSelectedScore] = useState<number | null>(null)
+  const [resultsEmail, setResultsEmail] = useState('')
+  const [emailSent, setEmailSent] = useState(false)
   const prefersReducedMotion = useReducedMotion() ?? false
 
   const totalScore = useMemo(() => {
@@ -1583,6 +1585,56 @@ export function AssessmentTool() {
                 >
                   Learn more about how we measure the return on data investment →
                 </Link>
+              </FadeUp>
+
+              {/* Optional Email Capture */}
+              <FadeUp delay={0.73} className="mb-6">
+                <div className="rounded-sm border border-brass/15 bg-navy-mid/30 p-6">
+                  {!emailSent ? (
+                    <>
+                      <p className="mb-3 font-body text-sm font-light text-white/50">
+                        Want us to send a copy to your inbox? <span className="text-white/30">(optional)</span>
+                      </p>
+                      <form
+                        onSubmit={async (e) => {
+                          e.preventDefault()
+                          if (!resultsEmail.trim()) return
+                          setEmailSent(true)
+                          try {
+                            await fetch('/api/contact', {
+                              method: 'POST',
+                              headers: { 'Content-Type': 'application/json' },
+                              body: JSON.stringify({
+                                name: 'Assessment Lead',
+                                email: resultsEmail,
+                                message: `Assessment completed — Stage: ${maturityStage.name} (${totalScore}/20), Org: ${orgType === 'small-business' ? 'Small Business' : 'Nonprofit'}, Service: ${maturityStage.service}`,
+                              }),
+                            })
+                          } catch { /* silent */ }
+                        }}
+                        className="flex gap-3"
+                      >
+                        <input
+                          type="email"
+                          placeholder="you@company.com"
+                          value={resultsEmail}
+                          onChange={(e) => setResultsEmail(e.target.value)}
+                          className="flex-1 rounded-sm border border-brass/15 bg-navy-deep px-4 py-3 font-body text-sm text-white placeholder-white/20 outline-none transition-colors focus:border-brass/40"
+                        />
+                        <button
+                          type="submit"
+                          className="rounded-sm bg-brass/20 px-6 py-3 font-body text-sm font-medium text-brass transition-all hover:bg-brass/30"
+                        >
+                          Send
+                        </button>
+                      </form>
+                    </>
+                  ) : (
+                    <p className="font-body text-sm font-light text-brass/70">
+                      Thanks! We&apos;ll follow up with your results.
+                    </p>
+                  )}
+                </div>
               </FadeUp>
 
               {/* Download Button */}

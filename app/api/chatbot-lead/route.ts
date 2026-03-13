@@ -36,7 +36,9 @@ function levelBadge(level: string | undefined): string {
 
 export async function POST(request: NextRequest) {
   try {
-    const body: unknown = await request.json()
+    // Support both JSON content-type and text/plain (from sendBeacon)
+    const text = await request.text()
+    const body: unknown = JSON.parse(text)
     const result = leadSchema.safeParse(body)
 
     if (!result.success) {
@@ -99,7 +101,8 @@ export async function POST(request: NextRequest) {
       `
       : ''
 
-    const fitLabel = q?.fit_score === 'strong' ? ' [HIGH PRIORITY]' : q?.fit_score === 'moderate' ? ' [QUALIFIED]' : ''
+    const isAnonymous = email === 'not-captured@anonymous'
+    const fitLabel = isAnonymous ? ' [TRANSCRIPT]' : q?.fit_score === 'strong' ? ' [HIGH PRIORITY]' : q?.fit_score === 'moderate' ? ' [QUALIFIED]' : ''
 
     const { error: emailError } = await resend.emails.send({
       from: 'Forte AI Solutions <onboarding@resend.dev>',

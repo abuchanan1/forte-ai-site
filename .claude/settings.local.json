@@ -14,7 +14,24 @@
       "Bash(git add .env.local.example .eslintrc.json .gitignore .nvmrc .prettierrc CHANGELOG.md README.md app/ components/ lib/ middleware.ts next.config.mjs package-lock.json package.json postcss.config.mjs public/ scripts/ tailwind.config.ts tsconfig.json types/)",
       "Bash(git commit -m \"$\\(cat <<'EOF'\nInitial scaffold of Forte AI Solutions marketing site\n\nNext.js 14 with TypeScript strict mode, Tailwind CSS, and Framer Motion.\nIncludes all pages, components, API routes, brand identity system, SEO,\nsecurity headers, analytics, and build-time llms.txt generation.\n\nCo-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>\nEOF\n\\)\")",
       "Bash(gh repo create forte-ai-site --public --source=. --push --description \"Marketing site for Forte AI Solutions. Next.js 14, TypeScript, Tailwind CSS.\" 2>&1)",
-      "Bash(npm install resend 2>&1 | tail -5)"
+      "Bash(npm install resend 2>&1 | tail -5)",
+      "Bash(mkdir -p ~/forte-trading && cd ~/forte-trading && python3 --version && docker --version && pip3 --version)",
+      "Bash(brew install --cask docker 2>&1 | tail -5)",
+      "Bash(cd ~/forte-trading && pip3 install --upgrade pip --break-system-packages 2>&1 | tail -3)",
+      "Bash(cd ~/forte-trading && pip3 install --upgrade pip 2>&1 | tail -3)",
+      "Bash(cd ~/forte-trading && pip3 install -r requirements.txt 2>&1 | tail -10)",
+      "Bash(cd ~/forte-trading && python3 -m pytest tests/test_signals.py tests/test_risk.py tests/test_paper_trader.py -v 2>&1 | tee test_results.txt)",
+      "Bash(brew install docker docker-compose 2>&1 | tail -10)",
+      "Bash(docker --version 2>&1 && docker info 2>&1 | head -5)",
+      "Bash(docker info 2>&1 | grep -i \"server version\\\\|error\\\\|Cannot connect\")",
+      "Bash(docker info 2>&1 | tail -5)",
+      "Bash(brew install colima 2>&1 | tail -5)",
+      "Bash(cd ~/forte-trading && python3 -c \"\nimport asyncio, sys\nsys.path.insert\\(0, '.'\\)\n\nasync def seed\\(\\):\n    from data.scrapers.github_scraper import fetch_commit_velocity\n    from data.scrapers.alt_data import fetch_fear_greed, fetch_coingecko_trending\n    from data.pipelines.crypto_feed import fetch_mock_price\n    from data.pipelines.prediction_markets import fetch_prediction_market_data\n    from db.connection import write_to_db\n    from config.settings import TRACKED_ASSETS, GITHUB_REPOS\n\n    print\\('Seeding price data...'\\)\n    for asset in TRACKED_ASSETS:\n        for _ in range\\(5\\):\n            data = await fetch_mock_price\\(asset\\)\n            await write_to_db\\('price_feeds', data\\)\n\n    print\\('Seeding GitHub data...'\\)\n    for repo in GITHUB_REPOS:\n        data = await fetch_commit_velocity\\(repo\\)\n        await write_to_db\\('scrape_data', data\\)\n\n    print\\('Seeding alt data...'\\)\n    fg = await fetch_fear_greed\\(\\)\n    await write_to_db\\('scrape_data', fg\\)\n    cg = await fetch_coingecko_trending\\(\\)\n    await write_to_db\\('scrape_data', cg\\)\n\n    print\\('Seeding prediction markets...'\\)\n    markets = await fetch_prediction_market_data\\(\\)\n    for m in markets:\n        await write_to_db\\('price_feeds', m\\)\n\n    print\\('Seed complete.'\\)\n\nasyncio.run\\(seed\\(\\)\\)\n\" 2>&1)",
+      "Bash(cd ~/forte-trading && docker exec forte_db psql -U forte -d forte_trading -c \"SELECT 'price_feeds' as tbl, COUNT\\(*\\) FROM price_feeds UNION ALL SELECT 'signals', COUNT\\(*\\) FROM signals UNION ALL SELECT 'trades', COUNT\\(*\\) FROM trades UNION ALL SELECT 'scrape_data', COUNT\\(*\\) FROM scrape_data UNION ALL SELECT 'portfolio_history', COUNT\\(*\\) FROM portfolio_history UNION ALL SELECT 'risk_log', COUNT\\(*\\) FROM risk_log;\")",
+      "Bash(cd ~/forte-trading && python3 -m pytest tests/ -v 2>&1)",
+      "Bash(cd ~/forte-trading && python3 -c \"\nimport asyncio, sys\nsys.path.insert\\(0, '.'\\)\n# Test all imports first\nfrom data.pipelines.crypto_feed import run_crypto_feed\nfrom data.pipelines.prediction_markets import run_prediction_market_feed\nfrom data.scrapers.github_scraper import run_github_scraper\nfrom data.scrapers.alt_data import run_alt_data_scraper\nfrom data.scrapers.narrative_scraper import run_narrative_scraper\nfrom data.scrapers.onchain_scraper import run_onchain_scraper\nfrom agents.signals.github_velocity_signal import GitHubVelocitySignal\nfrom agents.signals.fear_greed_signal import FearGreedSignal\nfrom agents.signals.order_flow_entropy_signal import OrderFlowEntropySignal\nfrom agents.signals.narrative_diffusion_signal import NarrativeDiffusionSignal\nfrom agents.conviction.conviction_aggregator import ConvictionAggregator\nfrom agents.regime.regime_detector import run_regime_detector\nfrom agents.meta_learning.meta_learner import MetaLearner\nfrom backtesting.paper_trader import PaperTrader\nfrom monitoring.dashboard import run_dashboard\nprint\\('ALL IMPORTS SUCCESSFUL'\\)\n\")",
+      "Bash(brew install screen 2>&1 | tail -5)",
+      "Bash(screen -dmS forte bash -c 'cd ~/forte-trading && python3 main.py' && sleep 5 && screen -ls)"
     ]
   }
 }
