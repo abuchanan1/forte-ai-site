@@ -11,9 +11,9 @@ export const COMPANY: CompanyInfo = {
 
 export const NAV_LINKS: NavLink[] = [
   {
-    label: 'Solutions',
+    label: 'Insights',
     href: '/services',
-    description: 'Decision infrastructure, agentic AI, and fractional leadership.',
+    description: 'Data strategy consulting and intelligent automation.',
   },
   {
     label: 'About',
@@ -21,19 +21,24 @@ export const NAV_LINKS: NavLink[] = [
     description: 'Our mission, story, and values.',
   },
   {
-    label: 'Founder',
-    href: '/about/founder',
-    description: 'Meet Aaron Buchanan, MPP.',
-  },
-  {
     label: 'Assessment',
     href: '/assessment',
     description: 'Find out where you stand on the data maturity curve.',
   },
   {
-    label: 'Insights',
+    label: 'Blog',
     href: '/blog',
-    description: 'Thought leadership and insights.',
+    description: 'Thought leadership on data, decisions, and AI.',
+  },
+  {
+    label: 'Learn',
+    href: '/learn',
+    description: 'AI-powered K-12 education. Coming soon.',
+  },
+  {
+    label: 'Labs',
+    href: '/labs',
+    description: 'Research and development at the frontier of AI.',
   },
   {
     label: 'Contact',
@@ -117,6 +122,8 @@ export const PAGES = [
   { path: '/about/founder', description: 'Meet Aaron Buchanan, MPP — founder of Forte AI Solutions.' },
   { path: '/services', description: 'Four service offerings: Foundation Sprint, Infrastructure & AI, Fractional Leadership, and Assessment.' },
   { path: '/blog', description: 'Thought leadership on data strategy, decision infrastructure, and bridging technical and non-technical teams.' },
+  { path: '/learn', description: 'AI-powered K-12 education. Coming soon.' },
+  { path: '/labs', description: 'Research and development at the frontier of AI.' },
   { path: '/contact', description: 'Contact form and discovery call information.' },
   { path: '/privacy', description: 'Privacy Policy for Forte AI Solutions.' },
   { path: '/terms', description: 'Terms of Service for Forte AI Solutions.' },

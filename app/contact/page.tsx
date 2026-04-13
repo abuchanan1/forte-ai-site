@@ -3,6 +3,7 @@ import { createMetadata } from '@/lib/metadata'
 import { FadeUp } from '@/components/ui/FadeUp'
 import { SectionLabel } from '@/components/ui/SectionLabel'
 import { ContactForm } from '@/components/sections/ContactForm'
+import { CalendlyButton } from '@/components/ui/CalendlyButton'
 
 export const metadata: Metadata = createMetadata({
   title: 'Contact',
@@ -29,6 +30,19 @@ export default function ContactPage() {
                 faster, and whether Forte is the right fit. No pitch. No
                 pressure. Just an honest conversation about whether we can help.
               </p>
+
+              <div className="mt-8 rounded-sm border border-brass/20 bg-navy-mid/40 p-6">
+                <p className="font-mono text-[10px] uppercase tracking-mono text-brass-light">
+                  Prefer to skip the form
+                </p>
+                <p className="mt-2 font-body text-sm font-light leading-body text-white/65">
+                  Pick a time on the calendar. Thirty minutes, no pitch.
+                </p>
+                <div className="mt-4">
+                  <CalendlyButton size="md">Book a 30-min Call</CalendlyButton>
+                </div>
+              </div>
+
               <ul className="mt-8 space-y-3">
                 {[
                   'Response within one business day',

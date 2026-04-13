@@ -13,9 +13,9 @@ import {
 } from '@/components/ui/ServiceGraphics'
 
 export const metadata: Metadata = createMetadata({
-  title: 'Solutions',
+  title: 'Forte Insights | Services',
   description:
-    'Decision infrastructure for organizations ready to lead with data. Foundation Sprint, Intelligent Infrastructure, Fractional Leadership, and AI Readiness Assessment.',
+    'Forte Insights — data strategy consulting and intelligent automation. Foundation Sprint, Intelligent Infrastructure, Fractional Leadership, and AI Readiness Assessment.',
   path: '/services',
 })
 
@@ -85,7 +85,7 @@ export default function ServicesPage() {
         />
         <div className="relative mx-auto max-w-7xl px-6">
           <FadeUp>
-            <SectionLabel label="Our Solutions" />
+            <SectionLabel label="Forte Insights" />
           </FadeUp>
           <FadeUp delay={0.1}>
             <h1 className="mt-6 font-display text-5xl font-normal leading-display text-white md:text-7xl">
@@ -96,6 +96,12 @@ export default function ServicesPage() {
           </FadeUp>
           <FadeUp delay={0.2}>
             <p className="mt-6 max-w-2xl font-body text-lg font-light leading-body text-white/60">
+              Data strategy consulting and intelligent automation for
+              organizations ready to make better decisions.
+            </p>
+          </FadeUp>
+          <FadeUp delay={0.25}>
+            <p className="mt-4 max-w-2xl font-body text-base font-light leading-body text-white/50">
               Every Forte engagement is designed around a single question: what
               does your leadership team need to know, and how do we build the
               infrastructure to deliver it?
@@ -341,8 +347,62 @@ export default function ServicesPage() {
         </div>
       </section>
 
-      {/* Process */}
+      {/* What's Next: Agentic AI */}
       <section className="bg-navy-deep py-20 md:py-28">
+        <div className="mx-auto max-w-7xl px-6">
+          <div className="grid gap-12 md:grid-cols-12 md:gap-16">
+            <div className="md:col-span-5">
+              <FadeUp>
+                <div className="inline-flex items-center gap-2 rounded-sm border border-brass/30 bg-brass/5 px-3 py-1.5">
+                  <span className="h-1.5 w-1.5 rounded-full bg-brass-light" />
+                  <span className="font-mono text-[10px] uppercase tracking-mono text-brass-light">
+                    In Development
+                  </span>
+                </div>
+              </FadeUp>
+              <FadeUp delay={0.1}>
+                <h2 className="mt-6 font-display text-3xl font-normal leading-display text-white md:text-4xl">
+                  What&rsquo;s next:
+                  <br />
+                  <span className="text-brass-light">Agentic AI.</span>
+                </h2>
+              </FadeUp>
+              <FadeUp delay={0.2}>
+                <p className="mt-6 font-body text-base font-light leading-body text-white/60">
+                  Today we build your decision infrastructure. The systems,
+                  metrics, and dashboards your team trusts. Tomorrow, we
+                  automate the decisions that don&rsquo;t need a human in the
+                  loop. Agentic AI that acts on your data — not just reports
+                  on it.
+                </p>
+              </FadeUp>
+            </div>
+            <div className="md:col-span-7">
+              <FadeUp delay={0.2}>
+                <ul className="space-y-5">
+                  {[
+                    'AI agent design that understands your business context before it automates anything',
+                    'Workflow automation built on top of proven data strategy, not bolted onto broken systems',
+                    'Intelligent monitoring that flags exceptions and handles routine decisions',
+                    'The consulting side de-risks the automation side — we understand your business before we automate it',
+                  ].map((point) => (
+                    <li
+                      key={point}
+                      className="flex items-start gap-4 rounded-sm border border-brass/10 bg-navy-mid/40 p-5 font-body text-sm font-light leading-body text-white/70"
+                    >
+                      <span className="mt-2 block h-px w-3 shrink-0 bg-brass" />
+                      {point}
+                    </li>
+                  ))}
+                </ul>
+              </FadeUp>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Process */}
+      <section className="bg-navy py-20 md:py-28">
         <div className="mx-auto max-w-7xl px-6">
           <FadeUp>
             <SectionLabel label="How We Work" />
@@ -375,7 +435,7 @@ export default function ServicesPage() {
       </section>
 
       {/* FAQ */}
-      <section className="bg-navy py-20 md:py-28">
+      <section className="bg-navy-deep py-20 md:py-28">
         <div className="mx-auto max-w-3xl px-6">
           <FadeUp>
             <SectionLabel label="Common Questions" />

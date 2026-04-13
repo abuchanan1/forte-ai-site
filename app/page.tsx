@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import Link from 'next/link'
 import { createMetadata } from '@/lib/metadata'
 import { COMPANY, SERVICES, STATS } from '@/lib/constants'
 import { FadeUp } from '@/components/ui/FadeUp'
@@ -52,6 +53,12 @@ export default function HomePage() {
           <FadeUp>
             <SectionLabel label="Data Intelligence. Democratized." />
           </FadeUp>
+          <FadeUp delay={0.05}>
+            <p className="mt-3 max-w-2xl font-body text-sm font-light leading-body text-white/45">
+              We build the systems that sit between raw data and the decisions
+              that matter.
+            </p>
+          </FadeUp>
           <FadeUp delay={0.1}>
             <h1 className="mt-6 font-display text-5xl font-normal leading-display text-white md:text-7xl">
               <TextReveal delay={0.2}>Messy data.</TextReveal>
@@ -90,6 +97,89 @@ export default function HomePage() {
               ))}
             </div>
           </FadeUp>
+        </div>
+      </section>
+
+      {/* Divisions */}
+      <section className="bg-navy-deep py-20 md:py-28">
+        <div className="mx-auto max-w-7xl px-6">
+          <FadeUp>
+            <SectionLabel label="One company, three efforts" />
+          </FadeUp>
+
+          <div className="mt-10 grid gap-6 lg:grid-cols-12">
+            {/* Insights — primary */}
+            <FadeUp delay={0.1} className="lg:col-span-7">
+              <div className="flex h-full flex-col rounded-sm border border-brass/25 bg-gradient-to-br from-navy-mid/70 to-navy-deep/40 p-8 md:p-10">
+                <p className="font-mono text-[10px] uppercase tracking-mono text-brass-light">
+                  Forte Insights
+                </p>
+                <h3 className="mt-4 font-display text-2xl font-normal leading-display text-white md:text-3xl">
+                  Data strategy and decision infrastructure.
+                </h3>
+                <p className="mt-5 font-body text-base font-light leading-body text-white/65">
+                  For organizations that are sitting on information they are
+                  not using. We figure out what decisions your data should be
+                  driving, then build the simplest system to make it happen.
+                </p>
+                <div className="mt-8">
+                  <Button href="/services" size="md">
+                    See how we work
+                  </Button>
+                </div>
+              </div>
+            </FadeUp>
+
+            {/* Learn — secondary */}
+            <FadeUp delay={0.2} className="lg:col-span-5">
+              <div className="flex h-full flex-col rounded-sm border border-brass/10 bg-navy-mid/40 p-8">
+                <div className="flex items-center gap-3">
+                  <p className="font-mono text-[10px] uppercase tracking-mono text-white/60">
+                    Forte Learn
+                  </p>
+                  <span className="inline-flex items-center gap-1.5 rounded-sm border border-brass/30 bg-brass/5 px-2 py-0.5">
+                    <span className="h-1 w-1 rounded-full bg-brass-light" />
+                    <span className="font-mono text-[9px] uppercase tracking-mono text-brass-light">
+                      Coming Soon
+                    </span>
+                  </span>
+                </div>
+                <h3 className="mt-4 font-display text-xl font-normal leading-display text-white md:text-2xl">
+                  K-12 education that adapts.
+                </h3>
+                <p className="mt-4 font-body text-sm font-light leading-body text-white/60">
+                  K-12 education loses students the same way organizations
+                  lose decisions — the system cannot adapt fast enough. We
+                  are building the fix.
+                </p>
+                <div className="mt-6">
+                  <Button href="/learn" variant="ghost" size="sm">
+                    Learn More
+                  </Button>
+                </div>
+              </div>
+            </FadeUp>
+
+            {/* Labs — tertiary */}
+            <FadeUp delay={0.3} className="lg:col-span-12">
+              <div className="flex flex-col items-start justify-between gap-3 rounded-sm border border-brass/10 bg-navy-mid/20 px-6 py-5 md:flex-row md:items-center">
+                <div className="flex flex-col gap-1 md:flex-row md:items-center md:gap-4">
+                  <p className="font-mono text-[10px] uppercase tracking-mono text-white/50">
+                    Forte Labs
+                  </p>
+                  <p className="font-body text-sm font-light text-white/55">
+                    Where we test ideas before they become products.
+                  </p>
+                </div>
+                <Link
+                  href="/labs"
+                  className="font-body text-xs text-white/55 underline decoration-brass/40 underline-offset-4 transition-colors hover:text-brass-light"
+                >
+                  See what we are building →
+                </Link>
+              </div>
+            </FadeUp>
+          </div>
         </div>
       </section>
 
