@@ -8,6 +8,98 @@ export const PILLAR_LABELS: Record<BlogPost['pillar'], string> = {
 
 export const BLOG_POSTS: BlogPost[] = [
   {
+    slug: 'building-agent-teams',
+    title:
+      'When One Agent Is Not Enough: How to Architect AI Like You Architect a Team',
+    description:
+      'The same instincts that tell you when to hire your first manager tell you when one agent should become two. Capacity, context, and coordination.',
+    pillar: 'decision-infrastructure',
+    publishedAt: '2026-04-18',
+    readTime: '6 min read',
+    featured: true,
+    faq: [
+      {
+        question: 'When should one AI agent become two?',
+        answer:
+          'When a single agent starts losing context, mixing audiences and formats, or producing output the leader stops trusting. The same signals that tell a manager one person is overloaded tell you an agent needs to be split. Capacity for an agent is the context window, the prompt complexity, and the breadth of judgment you are asking for in a single call.',
+      },
+      {
+        question: 'Why do single AI agents fail when given too many jobs?',
+        answer:
+          'Cramming multiple jobs into one prompt forces the model to make tradeoffs you cannot see. It produces worse versions of all of them, and the failure is quiet. The output still looks plausible, so the leader can be making decisions on degraded outputs for weeks before anyone notices.',
+      },
+      {
+        question: 'What does good AI agent architecture look like?',
+        answer:
+          'It looks like org design more than engineering. Define jobs to be done, decide which jobs belong to one agent versus separate ones, specify triggers (what wakes each agent up), define handoffs between agents, set coordination rules when two agents touch the same data, and assign accountability for the overall outcome.',
+      },
+      {
+        question: 'What questions should I ask before building an AI agent system?',
+        answer:
+          'What is the smallest piece of work that, done well by an agent, would change someone\'s week? What does the agent need to know that is not in any database? What does success look like in a sentence? What happens when the agent is unsure, and who does it ask? What other agents will it coordinate with, and on what cadence? What is the human role in the loop? When should this agent get split into two?',
+      },
+    ],
+  },
+  {
+    slug: 'the-missing-map',
+    title: 'The Missing Map: Why Your Data Needs a Model Before It Needs a Dashboard',
+    description:
+      'Most organizations jump straight from raw data to dashboards. The step they skip is the one that actually decides whether any of it works.',
+    pillar: 'decision-infrastructure',
+    publishedAt: '2026-04-18',
+    readTime: '6 min read',
+    featured: true,
+    faq: [
+      {
+        question: 'What is a data model?',
+        answer:
+          'A data model is the agreed-upon structure of an organization\'s core information: the entities it tracks (clients, programs, staff, etc.), the events and outcomes it measures (enrollments, donations, service hours, revenue), and the definitions that make each of those unambiguous. Every dashboard, report, and AI agent pulls from this model.',
+      },
+      {
+        question: 'Why do AI agents need a data model to work?',
+        answer:
+          'AI agents do not hold contradictions the way humans do. When the data underneath is ambiguous, they produce confident wrong answers instead of flagging the ambiguity. A clean data model gives the agent a canonical source of truth, which is what makes its outputs reliable.',
+      },
+      {
+        question: 'What is a Decision Data Model?',
+        answer:
+          'Forte\'s Decision Data Model is a three-part deliverable: the map (a diagram of dimensions, facts, and their relationships), the tables (schemas with field names, types, keys, and grain), and the dictionary (every field defined in business terms, with ownership). Together, they are the canonical map of the organization.',
+      },
+      {
+        question: 'When should we build a data model?',
+        answer:
+          'Before you invest in dashboards, reporting, or AI agents. The model is the foundation those investments sit on top of. Building dashboards before building the model is how organizations end up with three dashboards that disagree with each other.',
+      },
+    ],
+  },
+  {
+    slug: 'dashboards-taught-me-how-to-build-agents',
+    title: 'What Years of Building Dashboards Taught Me About Building Agents',
+    description:
+      'The skill of turning raw data into something a leader can act on did not start with AI. It started long before. And it transfers more than people think.',
+    pillar: 'tech-gap',
+    publishedAt: '2026-04-17',
+    readTime: '5 min read',
+    featured: true,
+    faq: [
+      {
+        question: 'What is the difference between a dashboard and an AI agent?',
+        answer:
+          'A dashboard compresses messy reality into a rectangle a human looks at. An agent compresses it into a sentence a human reads. A dashboard waits for you to find it; an agent finds you. A dashboard shows you the number; an agent tells you what the number means and what to do next. The underlying skill of compressing data into something a leader can act on is the same.',
+      },
+      {
+        question: 'Who builds the best AI agents?',
+        answer:
+          'The people who will build the best agents are not the prompt engineers or the model fine-tuners. They are the people who spent years learning how to turn raw data into something a human could actually use to make a decision. That is an interpretive skill, and it transfers directly from dashboard work to agent work.',
+      },
+      {
+        question: 'How are agent failures different from dashboard failures?',
+        answer:
+          'A dashboard fails loudly. The chart is wrong, the numbers do not match, someone notices. An agent fails quietly. It gives you a confident answer that sounds right. You act on it. You find out six weeks later it was wrong. That is why building agents well requires the foundational work of understanding data and decisions, not just the technology.',
+      },
+    ],
+  },
+  {
     slug: 'the-mismatch-problem',
     title: 'The Mismatch Problem: Why Your Technical Team Builds the Wrong Thing',
     description:

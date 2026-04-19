@@ -138,6 +138,76 @@ export default function AboutPage() {
         </div>
       </section>
 
+      {/* How We Build */}
+      <section className="bg-navy-deep py-20 md:py-28">
+        <div className="mx-auto max-w-5xl px-6">
+          <FadeUp>
+            <SectionLabel label="Our Approach to Tools" index={3} />
+          </FadeUp>
+          <FadeUp delay={0.1}>
+            <h2 className="mt-4 font-display text-3xl font-normal leading-display text-white md:text-4xl">
+              How we build.
+            </h2>
+          </FadeUp>
+          <FadeUp delay={0.15}>
+            <p className="mt-6 font-body text-base font-light leading-body text-white/65">
+              The right stack depends on the organization. A 50-person
+              nonprofit with a limited budget does not need the same
+              infrastructure as a 400-person services firm with a mature data
+              team. Matching the tooling to the client is part of the work.
+            </p>
+            <p className="mt-4 font-body text-base font-light leading-body text-white/65">
+              We&apos;ve built decision infrastructure across a wide range of
+              platforms. Our typical toolkit includes:
+            </p>
+          </FadeUp>
+          <FadeUp delay={0.2}>
+            <ul className="mt-6 space-y-4">
+              {[
+                {
+                  bold: 'AI and agentic systems:',
+                  rest: 'Claude and the Anthropic API for reliable agent behavior, especially when agents need to reason over real organizational data',
+                },
+                {
+                  bold: 'Data warehousing:',
+                  rest: 'BigQuery, Postgres, and other modern databases depending on scale and existing stack',
+                },
+                {
+                  bold: 'Dashboards and reporting:',
+                  rest: 'Looker Studio and adjacent tools that put insights in front of leadership without requiring a license per seat',
+                },
+                {
+                  bold: 'Meetings and workflow:',
+                  rest: 'Zoom transcripts, email, calendar data, and other operational signals as inputs to agents and dashboards',
+                },
+                {
+                  bold: 'Whatever else the organization already uses:',
+                  rest: "We meet clients where they are. If your team lives in Google Workspace, we build there. If you're on Microsoft, we build there. If you already have a warehouse, we integrate with it.",
+                },
+              ].map((item) => (
+                <li
+                  key={item.bold}
+                  className="flex items-start gap-3 font-body text-base font-light leading-body text-white/70"
+                >
+                  <span className="mt-3 block h-px w-3 shrink-0 bg-brass" />
+                  <span>
+                    <strong className="font-medium text-white">{item.bold}</strong>{' '}
+                    {item.rest}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </FadeUp>
+          <FadeUp delay={0.25}>
+            <p className="mt-8 font-body text-base font-light leading-body text-white/65">
+              The goal is never to sell a stack. The goal is to build decision
+              infrastructure your team can actually operate, with tools that
+              match your size, your budget, and where you are headed.
+            </p>
+          </FadeUp>
+        </div>
+      </section>
+
       {/* CTA */}
       <section className="relative bg-navy-deep py-20 md:py-28 overflow-hidden">
         <div

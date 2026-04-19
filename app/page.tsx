@@ -1,11 +1,10 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { createMetadata } from '@/lib/metadata'
-import { COMPANY, SERVICES, STATS } from '@/lib/constants'
+import { COMPANY, SERVICES } from '@/lib/constants'
 import { FadeUp } from '@/components/ui/FadeUp'
 import { ScaleIn } from '@/components/ui/ScaleIn'
 import { SectionLabel } from '@/components/ui/SectionLabel'
-import { AnimatedCounter } from '@/components/ui/AnimatedCounter'
 import { GlowCard } from '@/components/ui/GlowCard'
 import { ServiceIcon } from '@/components/ui/ServiceIcon'
 import { Button } from '@/components/ui/Button'
@@ -19,11 +18,17 @@ export const metadata: Metadata = createMetadata({
   path: '/',
 })
 
+const HERO_STATS = [
+  { bold: 'Agents shipped,', rest: 'not demos shown' },
+  { bold: '100% client ownership,', rest: 'no lock-in' },
+  { bold: 'Iterative by design,', rest: 'so your system compounds' },
+]
+
 export default function HomePage() {
   return (
     <>
       {/* Hero */}
-      <section className="relative overflow-hidden bg-navy pt-32 pb-20 md:pt-44 md:pb-28">
+      <section className="relative flex min-h-screen flex-col justify-center overflow-hidden bg-navy pt-32 pb-16 md:pt-40 md:pb-24">
         <div
           className="absolute inset-0"
           style={{
@@ -51,37 +56,30 @@ export default function HomePage() {
         />
         <div className="relative mx-auto max-w-7xl px-6">
           <FadeUp>
-            <SectionLabel label="Data Intelligence. Democratized." />
-          </FadeUp>
-          <FadeUp delay={0.05}>
-            <p className="mt-3 max-w-2xl font-body text-sm font-light leading-body text-white/45">
-              We build the systems that sit between raw data and the decisions
-              that matter.
-            </p>
+            <SectionLabel label="For leadership teams at 50–500 person organizations" />
           </FadeUp>
           <FadeUp delay={0.1}>
-            <h1 className="mt-6 font-display text-5xl font-normal leading-display text-white md:text-7xl">
-              <TextReveal delay={0.2}>Messy data.</TextReveal>
+            <h1 className="mt-6 font-display text-5xl font-normal leading-display text-white md:text-7xl xl:text-[5.5rem] 2xl:text-[6.25rem]">
+              <TextReveal delay={0.2}>We build AI agents</TextReveal>
               <br />
-              <span className="inline-block">
-                <TextReveal delay={0.6}>Clear</TextReveal>{' '}
-                <em className="not-italic text-brass-light" style={{ fontStyle: 'italic' }}>
-                  <TextReveal delay={0.9}>decisions.</TextReveal>
-                </em>
-              </span>
+              <TextReveal delay={0.5}>that give leadership teams</TextReveal>
+              <br />
+              <em className="not-italic text-brass-light" style={{ fontStyle: 'italic' }}>
+                <TextReveal delay={0.9}>their time back.</TextReveal>
+              </em>
             </h1>
           </FadeUp>
           <FadeUp delay={0.2}>
-            <p className="mt-6 max-w-2xl font-body text-lg font-light leading-body text-white/60">
-              Most organizations already have data and dashboards. What they lack
-              is the decision infrastructure that connects raw data to leadership
-              decisions. Forte designs and implements that missing layer.
+            <p className="mt-6 max-w-2xl font-body text-lg font-light leading-body text-white/60 xl:text-xl">
+              The agent surfaces. The humans decide. And because every agent we
+              build runs on a clean, canonical data foundation, it produces
+              answers you can actually trust.
             </p>
           </FadeUp>
           <FadeUp delay={0.3}>
             <div className="mt-10 flex flex-wrap gap-4">
-              <Button href="/services" size="lg">
-                Explore Our Solutions
+              <Button href="/agents" size="lg">
+                See Our Agents
               </Button>
               <Button href="/contact" variant="ghost" size="lg">
                 Book a Discovery Call
@@ -89,10 +87,18 @@ export default function HomePage() {
             </div>
           </FadeUp>
           <FadeUp delay={0.4}>
-            <div className="mt-16 flex flex-wrap items-start gap-8 md:gap-0 md:divide-x md:divide-brass/15">
-              {STATS.map((stat) => (
-                <div key={stat.label} className="md:px-8 first:md:pl-0 last:md:pr-0">
-                  <AnimatedCounter value={stat.num} label={stat.label} />
+            <div className="mt-16 grid gap-8 md:grid-cols-3 md:divide-x md:divide-brass/15 md:gap-0">
+              {HERO_STATS.map((stat) => (
+                <div
+                  key={stat.bold}
+                  className="md:px-10"
+                >
+                  <p className="font-body text-base font-normal leading-snug text-brass-light md:text-lg">
+                    {stat.bold}
+                  </p>
+                  <p className="mt-1 font-body text-sm font-light leading-body text-white/55">
+                    {stat.rest}
+                  </p>
                 </div>
               ))}
             </div>
@@ -100,8 +106,44 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Divisions */}
+      {/* An agent is a dashboard that talks back */}
       <section className="bg-navy-deep py-20 md:py-28">
+        <div className="mx-auto max-w-5xl px-6">
+          <FadeUp>
+            <SectionLabel label="How we think about agents" />
+          </FadeUp>
+          <FadeUp delay={0.1}>
+            <h2 className="mt-4 font-display text-3xl font-normal leading-display text-white md:text-4xl">
+              An agent is a dashboard that talks back.
+            </h2>
+          </FadeUp>
+          <FadeUp delay={0.2}>
+            <p className="mt-6 font-body text-base font-light leading-body text-white/65">
+              A dashboard waits for you to come find it. An agent finds you. A
+              dashboard shows you the number. An agent tells you what the
+              number means, writes the email for you, and asks your team member
+              to take the action.
+            </p>
+            <p className="mt-4 font-body text-base font-light leading-body text-white/65">
+              We build agents that do specific jobs for leadership teams.
+              Synthesizing meetings. Drafting weekly reports. Answering the
+              questions your team used to ask a dashboard. Every one of them
+              queries a clean, canonical source of truth, which is why ours
+              produce reliable outputs instead of confident guesses.
+            </p>
+          </FadeUp>
+          <FadeUp delay={0.3}>
+            <div className="mt-8">
+              <Button href="/agents" size="md">
+                Explore our agents
+              </Button>
+            </div>
+          </FadeUp>
+        </div>
+      </section>
+
+      {/* Divisions */}
+      <section className="bg-navy py-20 md:py-28">
         <div className="mx-auto max-w-7xl px-6">
           <FadeUp>
             <SectionLabel label="One company, three efforts" />
@@ -115,12 +157,13 @@ export default function HomePage() {
                   Forte Insights
                 </p>
                 <h3 className="mt-4 font-display text-2xl font-normal leading-display text-white md:text-3xl">
-                  Data strategy and decision infrastructure.
+                  Agents, and the data foundation that makes them reliable.
                 </h3>
                 <p className="mt-5 font-body text-base font-light leading-body text-white/65">
-                  For organizations that are sitting on information they are
-                  not using. We figure out what decisions your data should be
-                  driving, then build the simplest system to make it happen.
+                  For leadership teams that want their time back. We build
+                  AI agents that do specific jobs, on top of a clean,
+                  canonical data foundation. The agents surface. Your
+                  leaders decide.
                 </p>
                 <div className="mt-8">
                   <Button href="/services" size="md">
@@ -149,7 +192,7 @@ export default function HomePage() {
                 </h3>
                 <p className="mt-4 font-body text-sm font-light leading-body text-white/60">
                   K-12 education loses students the same way organizations
-                  lose decisions — the system cannot adapt fast enough. We
+                  lose decisions. The system cannot adapt fast enough. We
                   are building the fix.
                 </p>
                 <div className="mt-6">
@@ -204,7 +247,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Problem & Solution */}
+      {/* Problem & Solution (Your data flywheel) */}
       <section className="bg-navy py-20 md:py-28">
         <div className="mx-auto max-w-7xl px-6">
           <FadeUp>
@@ -301,11 +344,35 @@ export default function HomePage() {
           <FadeUp>
             <blockquote>
               <p className="font-display text-2xl font-normal italic leading-display text-brass-light md:text-3xl">
-                We had the data and the dashboards but lacked the ability to
-                easily make meaning of what was happening quickly. That is the
-                gap decision infrastructure closes.
+                I was spending five hours a week turning meeting notes into
+                action items. Forte built an agent that reads my emails and
+                Zoom transcripts and hands me a prioritized list of next steps
+                for every person on my team, already tied to our strategic
+                priorities. I got my Fridays back, and my team is more
+                accountable than it has ever been.
               </p>
+              <footer className="mt-6 font-mono text-[11px] uppercase tracking-mono text-white/50">
+                Executive leader, Forte client
+              </footer>
             </blockquote>
+          </FadeUp>
+        </div>
+      </section>
+
+      {/* Iterative by design callout */}
+      <section className="bg-navy-deep py-16 md:py-20">
+        <div className="mx-auto max-w-3xl px-6">
+          <FadeUp>
+            <div className="rounded-sm border border-brass/20 bg-navy-mid/50 px-6 py-6 md:px-8 md:py-8">
+              <p className="font-mono text-[10px] uppercase tracking-mono text-brass-light">
+                Iterative by design
+              </p>
+              <p className="mt-3 font-body text-base font-light leading-body text-white/70 md:text-lg">
+                AI is evolving in real time, and so is the work we do. We ship,
+                we watch, we refine. Every system we build compounds in value
+                because we stay in the work with you.
+              </p>
+            </div>
           </FadeUp>
         </div>
       </section>

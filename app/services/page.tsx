@@ -15,7 +15,7 @@ import {
 export const metadata: Metadata = createMetadata({
   title: 'Forte Insights | Services',
   description:
-    'Forte Insights — data strategy consulting and intelligent automation. Foundation Sprint, Intelligent Infrastructure, Fractional Leadership, and AI Readiness Assessment.',
+    'Four engagements. One decision infrastructure. AI agents, the data foundation underneath them, and the ongoing partnership that makes everything compound.',
   path: '/services',
 })
 
@@ -23,29 +23,33 @@ const PROCESS_STEPS = [
   {
     num: '01',
     title: 'Assess',
-    body: 'We evaluate your current data landscape, identify gaps, and determine your AI readiness. This can be a standalone engagement or the first step in a longer relationship.',
+    body: 'We evaluate your current data landscape, identify the gaps, and determine your readiness. You leave with the Decision Readiness Report and a clear next step.',
   },
   {
     num: '02',
     title: 'Design',
-    body: 'We define the KPI framework, metric governance, dashboard architecture, and decision cadence your leadership needs to operate with clarity.',
+    body: 'We build the canonical map of your organization. The Decision Data Model, the KPI Framework, the Dashboard Blueprint. Leadership sees the shape of its own business, often for the first time.',
   },
   {
     num: '03',
     title: 'Build',
-    body: 'We implement the infrastructure — data pipelines, executive dashboards, reporting governance, and custom AI agents — rigorously tested before anyone touches it.',
+    body: 'We implement the Decision Engine. Pipelines, warehouse, dashboards, AI agents. Rigorously tested before anyone touches it.',
   },
   {
     num: '04',
     title: 'Evolve',
-    body: 'Decision infrastructure is not static. Through fractional leadership, we govern your metrics, evolve your dashboards, and ensure AI stays aligned with your goals.',
+    body: 'Through fractional leadership, we keep your metrics, dashboards, and agents aligned with where the organization is going, and stay close to the Decision Cadence your team runs.',
   },
 ]
 
 const FAQS = [
   {
     q: 'Where should we start if we are not sure what we need?',
-    a: 'Most organizations start with either the AI and Data Health Assessment (2–3 weeks) to get a clear picture of where they stand, or jump directly into a Foundation Sprint if they know they need better decision infrastructure. A discovery call helps us recommend the right starting point.',
+    a: 'Most organizations start with either the AI and Data Health Assessment to get the Decision Readiness Report, or jump directly into the Foundation Sprint if they know they need a Decision Data Model. A 30-minute discovery call is usually enough to recommend the right starting point.',
+  },
+  {
+    q: 'Do you only build AI agents, or do you still build dashboards?',
+    a: 'We build both, but we lead with agents. Most leadership teams we work with already have dashboards, or have tried dashboards, and they still cannot get decisions made quickly. Agents are what move the needle. We still build dashboards where they are genuinely the best tool for the job, because sometimes a human just needs to see the number. But the wedge has shifted. Leaders want their time back, not more reports.',
   },
   {
     q: 'Do we need a technical team to work with Forte?',
@@ -53,7 +57,7 @@ const FAQS = [
   },
   {
     q: 'What size organization is Forte built for?',
-    a: 'Our sweet spot is organizations with 50 to 500 employees — large enough to have real data complexity, but often without dedicated data leadership. We also work with mission-driven organizations and nonprofits.',
+    a: 'Our sweet spot is organizations with 50 to 500 employees. Large enough to have real data complexity, but often without dedicated data leadership. We also work with mission-driven organizations and nonprofits.',
   },
   {
     q: 'Do we own everything Forte builds?',
@@ -61,14 +65,17 @@ const FAQS = [
   },
   {
     q: 'What does "agentic AI" mean in practice?',
-    a: 'Agentic AI systems are intelligent assistants that automate specific analytical tasks — generating executive insight summaries, monitoring data quality, running forecasts, or flagging operational anomalies. They support human decision-making rather than replacing it.',
+    a: 'Agentic AI systems are intelligent assistants that do specific jobs. Synthesizing meetings into action items. Generating audience-specific reporting. Answering the questions your team used to ask a dashboard. At Forte, every agent we build queries your Decision Data Model directly and keeps a human in the loop on decisions that matter, which is why ours are reliable instead of impressive-sounding.',
+  },
+  {
+    q: 'What tools and platforms do you use?',
+    a: 'It depends on the organization. We match the stack to the client\'s size, budget, and existing infrastructure. Our typical toolkit includes BigQuery and other modern databases, Looker Studio and similar reporting tools, Claude and the Anthropic API for AI agents, and integrations with the systems clients already use every day (Zoom, Google Workspace, email, and more). We meet organizations where they are. We do not force a proprietary stack.',
   },
   {
     q: 'How is Forte different from a data engineering contractor?',
-    a: 'Contractors require detailed requirements and management capacity that most teams don\'t have. Forte designs the decision infrastructure itself — the frameworks, governance, and systems that determine what gets built and why. We start with leadership decisions and work backward to the data, not the other way around.',
+    a: 'Contractors require detailed requirements and management capacity that most teams don\'t have. Forte designs the decision infrastructure itself. The Decision Data Model, the governance framework, and the systems that determine what gets built and why. We start with leadership decisions and work backward to the data, not the other way around.',
   },
 ]
-
 
 export default function ServicesPage() {
   return (
@@ -85,26 +92,21 @@ export default function ServicesPage() {
         />
         <div className="relative mx-auto max-w-7xl px-6">
           <FadeUp>
-            <SectionLabel label="Forte Insights" />
+            <SectionLabel label="Our Solutions" />
           </FadeUp>
           <FadeUp delay={0.1}>
             <h1 className="mt-6 font-display text-5xl font-normal leading-display text-white md:text-7xl">
               Four engagements.
               <br />
-              <span className="text-brass-light">One goal: better decisions.</span>
+              <span className="text-brass-light">One decision infrastructure.</span>
             </h1>
           </FadeUp>
           <FadeUp delay={0.2}>
             <p className="mt-6 max-w-2xl font-body text-lg font-light leading-body text-white/60">
-              Data strategy consulting and intelligent automation for
-              organizations ready to make better decisions.
-            </p>
-          </FadeUp>
-          <FadeUp delay={0.25}>
-            <p className="mt-4 max-w-2xl font-body text-base font-light leading-body text-white/50">
-              Every Forte engagement is designed around a single question: what
-              does your leadership team need to know, and how do we build the
-              infrastructure to deliver it?
+              Every Forte engagement produces a named, tangible artifact. Not a
+              deck. Not a set of recommendations. A concrete piece of your
+              decision infrastructure that your team owns, operates, and builds
+              on.
             </p>
           </FadeUp>
 
@@ -113,27 +115,124 @@ export default function ServicesPage() {
             <div className="mt-12 rounded-sm border border-brass/15 bg-navy-mid/50 px-6 py-5">
               <p className="font-mono text-[10px] uppercase tracking-mono text-brass-light mb-3">Typical Client Journey</p>
               <div className="flex flex-wrap items-center gap-3 font-body text-sm text-white/60">
-                <span className="rounded border border-brass/20 bg-brass/5 px-3 py-1.5 text-white/80">Assessment</span>
+                <span className="rounded border border-brass/20 bg-brass/5 px-3 py-1.5 text-white/80">Decision Readiness Report</span>
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className="text-brass/40 shrink-0"><path d="M6 4l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" /></svg>
-                <span className="rounded border border-brass/20 bg-brass/5 px-3 py-1.5 text-white/80">Foundation Sprint</span>
+                <span className="rounded border border-brass/20 bg-brass/5 px-3 py-1.5 text-white/80">Decision Data Model</span>
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className="text-brass/40 shrink-0"><path d="M6 4l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" /></svg>
-                <span className="rounded border border-brass/20 bg-brass/5 px-3 py-1.5 text-white/80">Infrastructure</span>
+                <span className="rounded border border-brass/20 bg-brass/5 px-3 py-1.5 text-white/80">Decision Engine</span>
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className="text-brass/40 shrink-0"><path d="M6 4l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" /></svg>
-                <span className="rounded border border-brass/20 bg-brass/5 px-3 py-1.5 text-white/80">Fractional Advisory</span>
+                <span className="rounded border border-brass/20 bg-brass/5 px-3 py-1.5 text-white/80">Decision Cadence</span>
               </div>
-              <p className="mt-3 font-body text-xs text-white/40">Many organizations start directly with the Foundation Sprint.</p>
+              <p className="mt-3 font-body text-xs text-white/50">
+                Most clients come to us because they want a Decision Engine. The agents. The Foundation Sprint exists because the agents need a clean place to run.
+              </p>
             </div>
           </FadeUp>
         </div>
       </section>
 
-      {/* Service 1: Foundation Sprint */}
-      <section className="bg-navy-deep py-20 md:py-28">
+      {/* OFFERING 1: Building Your Decision Engine (Flagship) */}
+      <section id="decision-engine" className="bg-navy-deep py-20 md:py-28">
         <div className="mx-auto max-w-7xl px-6">
           <div className="grid gap-12 md:grid-cols-2 md:gap-16 items-center">
             <div>
               <FadeUp>
-                <SectionLabel label="Most Popular" index={1} />
+                <SectionLabel label="Flagship" index={1} />
+              </FadeUp>
+              <FadeUp delay={0.1}>
+                <div className="mt-4 mb-3">
+                  <ServiceIcon icon="model" size={48} />
+                </div>
+                <h2 className="max-w-3xl font-display text-3xl font-normal leading-display text-white md:text-4xl">
+                  Building Your Decision Engine
+                </h2>
+              </FadeUp>
+              <FadeUp delay={0.15}>
+                <p className="mt-2 font-body text-sm font-medium text-brass-light">
+                  8–20 weeks. The Foundation Sprint, made real.
+                </p>
+              </FadeUp>
+              <FadeUp delay={0.2}>
+                <p className="mt-6 max-w-3xl font-body text-base font-light leading-body text-white/60">
+                  This is where we build the AI agents that give your leadership
+                  team its time back. Agents that synthesize your meetings,
+                  draft your weekly reporting, and answer the questions your
+                  team used to ask a dashboard. Every agent runs on a clean
+                  data foundation we build in tandem, because an agent without
+                  a reliable source of truth is just a fast way to get
+                  confident wrong answers.
+                </p>
+              </FadeUp>
+              <FadeUp delay={0.25}>
+                <div className="mt-6 rounded-sm border border-brass/30 bg-brass/5 px-5 py-4">
+                  <p className="font-mono text-[10px] uppercase tracking-mono text-brass-light">
+                    Signature deliverable
+                  </p>
+                  <p className="mt-2 font-display text-xl font-normal leading-display text-white">
+                    The Decision Engine
+                  </p>
+                  <p className="mt-2 font-body text-sm font-light leading-body text-white/70">
+                    Your live, operating decision infrastructure. Data flows
+                    in. Dashboards update. AI agents surface insights on your
+                    canonical data. Leadership makes decisions from a single
+                    source of truth.
+                  </p>
+                </div>
+              </FadeUp>
+              <FadeUp delay={0.3}>
+                <p className="mt-6 font-mono text-[10px] uppercase tracking-mono text-white/50">
+                  What you walk away with
+                </p>
+                <ul className="mt-3 space-y-3">
+                  {[
+                    {
+                      bold: 'Custom AI agents built for specific jobs in your organization.',
+                      rest: 'Meeting synthesis, automated reporting, priority alignment, branded collateral, and more',
+                    },
+                    {
+                      bold: 'The data foundation underneath them.',
+                      rest: 'Pipelines, warehouse, and the canonical model that makes the agents reliable',
+                    },
+                    {
+                      bold: 'Dashboards where they still add value.',
+                      rest: 'Because sometimes a human just needs to see the number',
+                    },
+                    {
+                      bold: 'Complete documentation and full ownership.',
+                      rest: 'No lock-in, no proprietary dependencies',
+                    },
+                  ].map((point) => (
+                    <li
+                      key={point.bold}
+                      className="flex items-start gap-3 font-body text-sm font-light leading-body text-white/65"
+                    >
+                      <span className="mt-2 block h-px w-3 shrink-0 bg-brass" />
+                      <span>
+                        <strong className="font-medium text-white/85">{point.bold}</strong>{' '}
+                        {point.rest}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </FadeUp>
+            </div>
+            <ScaleIn delay={0.3}>
+              <InfrastructureGraphic />
+            </ScaleIn>
+          </div>
+        </div>
+      </section>
+
+      {/* OFFERING 2: Foundation Sprint */}
+      <section id="foundation-sprint" className="bg-navy py-20 md:py-28">
+        <div className="mx-auto max-w-7xl px-6">
+          <div className="grid gap-12 md:grid-cols-2 md:gap-16 items-center">
+            <ScaleIn delay={0.1} className="order-2 md:order-1">
+              <FoundationGraphic />
+            </ScaleIn>
+            <div className="order-1 md:order-2">
+              <FadeUp>
+                <SectionLabel label="Foundation" index={2} />
               </FadeUp>
               <FadeUp delay={0.1}>
                 <div className="mt-4 mb-3">
@@ -145,82 +244,46 @@ export default function ServicesPage() {
               </FadeUp>
               <FadeUp delay={0.15}>
                 <p className="mt-2 font-body text-sm font-medium text-brass-light">
-                  6–8 weeks — The most common starting engagement
+                  6–8 weeks. The most common starting engagement.
                 </p>
               </FadeUp>
               <FadeUp delay={0.2}>
                 <p className="mt-6 max-w-3xl font-body text-base font-light leading-body text-white/60">
                   Your leadership team gains a clear operating system for
-                  decision-making. We define the metrics that matter, design the
-                  dashboards that surface them, and build the governance framework
-                  that keeps everyone aligned.
+                  decision-making, and the foundation every AI agent needs to
+                  be reliable. We define the metrics that matter, design the
+                  canonical model of your organization&apos;s data, and hand off a
+                  blueprint that every dashboard, report, and AI agent will
+                  build on.
                 </p>
               </FadeUp>
-              <FadeUp delay={0.3}>
-                <ul className="mt-6 space-y-3">
-                  {[
-                    'KPI framework and metric definitions the whole organization agrees on',
-                    'Executive dashboard architecture designed for how leaders actually decide',
-                    'Reporting governance and decision cadence for leadership',
-                    'AI readiness evaluation and implementation roadmap',
-                  ].map((point) => (
-                    <li
-                      key={point}
-                      className="flex items-start gap-3 font-body text-sm font-light leading-body text-white/60"
-                    >
-                      <span className="mt-2 block h-px w-3 shrink-0 bg-brass" />
-                      {point}
-                    </li>
-                  ))}
-                </ul>
-              </FadeUp>
-            </div>
-            <ScaleIn delay={0.3}>
-              <FoundationGraphic />
-            </ScaleIn>
-          </div>
-        </div>
-      </section>
-
-      {/* Service 2: Infrastructure & AI */}
-      <section className="bg-navy py-20 md:py-28">
-        <div className="mx-auto max-w-7xl px-6">
-          <div className="grid gap-12 md:grid-cols-2 md:gap-16 items-center">
-            <ScaleIn delay={0.1} className="order-2 md:order-1">
-              <InfrastructureGraphic />
-            </ScaleIn>
-            <div className="order-1 md:order-2">
-              <FadeUp>
-                <SectionLabel label="Full Implementation" index={2} />
-              </FadeUp>
-              <FadeUp delay={0.1}>
-                <div className="mt-4 mb-3">
-                  <ServiceIcon icon="model" size={48} />
+              <FadeUp delay={0.25}>
+                <div className="mt-6 rounded-sm border border-brass/30 bg-brass/5 px-5 py-4">
+                  <p className="font-mono text-[10px] uppercase tracking-mono text-brass-light">
+                    Signature deliverable
+                  </p>
+                  <p className="mt-2 font-display text-xl font-normal leading-display text-white">
+                    The Decision Data Model
+                  </p>
+                  <p className="mt-2 font-body text-sm font-light leading-body text-white/70">
+                    The dimensions, facts, and data dictionary that become the
+                    canonical map of your organization. Every downstream
+                    investment, dashboards, reporting, AI, pulls from this
+                    model.
+                  </p>
                 </div>
-                <h2 className="max-w-3xl font-display text-3xl font-normal leading-display text-white md:text-4xl">
-                  Intelligent Data Infrastructure and Agentic AI Systems
-                </h2>
-              </FadeUp>
-              <FadeUp delay={0.15}>
-                <p className="mt-2 font-body text-sm font-medium text-brass-light">
-                  8–20 weeks — Implements the full decision infrastructure
-                </p>
-              </FadeUp>
-              <FadeUp delay={0.2}>
-                <p className="mt-6 max-w-3xl font-body text-base font-light leading-body text-white/60">
-                  This is where the Foundation Sprint comes to life. We build the
-                  data pipelines, executive dashboards, KPI tracking, and custom
-                  agentic AI systems that automate analysis and surface the
-                  insights your leadership needs.
-                </p>
               </FadeUp>
               <FadeUp delay={0.3}>
-                <ul className="mt-6 space-y-3">
+                <p className="mt-6 font-mono text-[10px] uppercase tracking-mono text-white/50">
+                  What you walk away with
+                </p>
+                <ul className="mt-3 space-y-3">
                   {[
-                    'Data pipelines, warehouse, and quality monitoring built for your systems',
-                    'Executive dashboards and KPI tracking with automated reporting',
-                    'Custom AI agents — insight summaries, forecasting, operations monitoring',
-                    'AI-assisted intelligence that supports decisions, not replaces them',
+                    'The Decision Data Model (the map, the tables, the dictionary)',
+                    'The KPI Framework (the metrics that matter, defined and owned)',
+                    'The Dashboard Blueprint (what leadership needs to see, and how)',
+                    'A build-ready implementation roadmap',
+                    'AI readiness evaluation and governance foundation',
                   ].map((point) => (
                     <li
                       key={point}
@@ -237,71 +300,13 @@ export default function ServicesPage() {
         </div>
       </section>
 
-      {/* Service 3: Fractional Leadership */}
-      <section className="bg-navy-deep py-20 md:py-28">
+      {/* OFFERING 3: Assessment */}
+      <section id="assessment" className="bg-navy-deep py-20 md:py-28">
         <div className="mx-auto max-w-7xl px-6">
           <div className="grid gap-12 md:grid-cols-2 md:gap-16 items-center">
             <div>
               <FadeUp>
-                <SectionLabel label="Ongoing Advisory" index={3} />
-              </FadeUp>
-              <FadeUp delay={0.1}>
-                <div className="mt-4 mb-3">
-                  <ServiceIcon icon="advisory" size={48} />
-                </div>
-                <h2 className="max-w-3xl font-display text-3xl font-normal leading-display text-white md:text-4xl">
-                  Fractional Head of Decision Intelligence
-                </h2>
-              </FadeUp>
-              <FadeUp delay={0.15}>
-                <p className="mt-2 font-body text-sm font-medium text-brass-light">
-                  Monthly advisory — Senior data leadership without a full-time hire
-                </p>
-              </FadeUp>
-              <FadeUp delay={0.2}>
-                <p className="mt-6 max-w-3xl font-body text-base font-light leading-body text-white/60">
-                  Decision infrastructure is not a one-time project. As your
-                  organization evolves, your metrics, dashboards, and AI systems
-                  need to evolve with it. Forte provides ongoing senior-level
-                  leadership to keep everything aligned.
-                </p>
-              </FadeUp>
-              <FadeUp delay={0.3}>
-                <ul className="mt-6 space-y-3">
-                  {[
-                    'Metric governance and dashboard evolution as your organization grows',
-                    'AI agent oversight and analytics strategy',
-                    'Decision cadence facilitation for leadership teams',
-                    'Data governance and continuous system optimization',
-                  ].map((point) => (
-                    <li
-                      key={point}
-                      className="flex items-start gap-3 font-body text-sm font-light leading-body text-white/60"
-                    >
-                      <span className="mt-2 block h-px w-3 shrink-0 bg-brass" />
-                      {point}
-                    </li>
-                  ))}
-                </ul>
-              </FadeUp>
-            </div>
-            <ScaleIn delay={0.3}>
-              <FractionalGraphic />
-            </ScaleIn>
-          </div>
-        </div>
-      </section>
-
-      {/* Service 4: Assessment */}
-      <section className="bg-navy py-20 md:py-28">
-        <div className="mx-auto max-w-7xl px-6">
-          <div className="grid gap-12 md:grid-cols-2 md:gap-16 items-center">
-            <ScaleIn delay={0.1} className="order-2 md:order-1">
-              <AssessmentGraphic />
-            </ScaleIn>
-            <div className="order-1 md:order-2">
-              <FadeUp>
-                <SectionLabel label="Starting Point" index={4} />
+                <SectionLabel label="Starting Point" index={3} />
               </FadeUp>
               <FadeUp delay={0.1}>
                 <div className="mt-4 mb-3">
@@ -313,24 +318,43 @@ export default function ServicesPage() {
               </FadeUp>
               <FadeUp delay={0.15}>
                 <p className="mt-2 font-body text-sm font-medium text-brass-light">
-                  2–3 weeks — A diagnostic before you invest
+                  2–3 weeks. A diagnostic before you invest.
                 </p>
               </FadeUp>
               <FadeUp delay={0.2}>
                 <p className="mt-6 max-w-3xl font-body text-base font-light leading-body text-white/60">
-                  Not sure where you stand? This focused diagnostic evaluates
-                  your data maturity, AI readiness, and current architecture.
-                  You walk away with a clear picture of what to prioritize and
-                  a roadmap for getting there.
+                  Before you spend six figures on infrastructure or AI, you
+                  should know exactly where you stand. This focused diagnostic
+                  evaluates your data maturity, your decision clarity, and your
+                  AI readiness, and tells you honestly whether you are ready to
+                  build or whether the foundation needs work first.
                 </p>
               </FadeUp>
+              <FadeUp delay={0.25}>
+                <div className="mt-6 rounded-sm border border-brass/30 bg-brass/5 px-5 py-4">
+                  <p className="font-mono text-[10px] uppercase tracking-mono text-brass-light">
+                    Signature deliverable
+                  </p>
+                  <p className="mt-2 font-display text-xl font-normal leading-display text-white">
+                    The Decision Readiness Report
+                  </p>
+                  <p className="mt-2 font-body text-sm font-light leading-body text-white/70">
+                    A written assessment of your organization&apos;s readiness
+                    across four dimensions, scored and prioritized, ending in
+                    a specific recommendation for what to do next.
+                  </p>
+                </div>
+              </FadeUp>
               <FadeUp delay={0.3}>
-                <ul className="mt-6 space-y-3">
+                <p className="mt-6 font-mono text-[10px] uppercase tracking-mono text-white/50">
+                  What you walk away with
+                </p>
+                <ul className="mt-3 space-y-3">
                   {[
-                    'Data maturity assessment across your current systems and tools',
-                    'AI risk evaluation and organizational readiness scoring',
-                    'Architecture recommendations tailored to your stack',
-                    'Prioritized roadmap with clear, actionable next steps',
+                    'The Decision Readiness Report',
+                    'A prioritized gap analysis (what to fix first, and why)',
+                    'Architecture recommendations tailored to your existing stack',
+                    'A clear roadmap for getting to decision-ready',
                   ].map((point) => (
                     <li
                       key={point}
@@ -343,52 +367,78 @@ export default function ServicesPage() {
                 </ul>
               </FadeUp>
             </div>
+            <ScaleIn delay={0.3}>
+              <AssessmentGraphic />
+            </ScaleIn>
           </div>
         </div>
       </section>
 
-      {/* What's Next: Agentic AI */}
-      <section className="bg-navy-deep py-20 md:py-28">
+      {/* OFFERING 4: Fractional */}
+      <section id="fractional" className="bg-navy py-20 md:py-28">
         <div className="mx-auto max-w-7xl px-6">
-          <div className="grid gap-12 md:grid-cols-12 md:gap-16">
-            <div className="md:col-span-5">
+          <div className="grid gap-12 md:grid-cols-2 md:gap-16 items-center">
+            <ScaleIn delay={0.1} className="order-2 md:order-1">
+              <FractionalGraphic />
+            </ScaleIn>
+            <div className="order-1 md:order-2">
               <FadeUp>
-                <div className="inline-flex items-center gap-2 rounded-sm border border-brass/30 bg-brass/5 px-3 py-1.5">
-                  <span className="h-1.5 w-1.5 rounded-full bg-brass-light" />
-                  <span className="font-mono text-[10px] uppercase tracking-mono text-brass-light">
-                    In Development
-                  </span>
-                </div>
+                <SectionLabel label="Ongoing Advisory" index={4} />
               </FadeUp>
               <FadeUp delay={0.1}>
-                <h2 className="mt-6 font-display text-3xl font-normal leading-display text-white md:text-4xl">
-                  What&rsquo;s next:
-                  <br />
-                  <span className="text-brass-light">Agentic AI.</span>
+                <div className="mt-4 mb-3">
+                  <ServiceIcon icon="advisory" size={48} />
+                </div>
+                <h2 className="max-w-3xl font-display text-3xl font-normal leading-display text-white md:text-4xl">
+                  Fractional Head of Decision Intelligence
                 </h2>
               </FadeUp>
-              <FadeUp delay={0.2}>
-                <p className="mt-6 font-body text-base font-light leading-body text-white/60">
-                  Today we build your decision infrastructure. The systems,
-                  metrics, and dashboards your team trusts. Tomorrow, we
-                  automate the decisions that don&rsquo;t need a human in the
-                  loop. Agentic AI that acts on your data — not just reports
-                  on it.
+              <FadeUp delay={0.15}>
+                <p className="mt-2 font-body text-sm font-medium text-brass-light">
+                  We don&apos;t do handoffs. We develop partnerships.
                 </p>
               </FadeUp>
-            </div>
-            <div className="md:col-span-7">
               <FadeUp delay={0.2}>
-                <ul className="space-y-5">
+                <p className="mt-6 max-w-3xl font-body text-base font-light leading-body text-white/60">
+                  A Decision Engine is not a finished product. It is a living
+                  system that needs to evolve as your organization does, and
+                  as the AI itself does. Fractional keeps your metrics
+                  governed, your dashboards current, and your AI agents sharp.
+                  You own the decisions. We own the engine that powers them.
+                </p>
+              </FadeUp>
+              <FadeUp delay={0.25}>
+                <div className="mt-6 rounded-sm border border-brass/30 bg-brass/5 px-5 py-4">
+                  <p className="font-mono text-[10px] uppercase tracking-mono text-brass-light">
+                    Signature deliverable
+                  </p>
+                  <p className="mt-2 font-display text-xl font-normal leading-display text-white">
+                    The Decision Engine Brief
+                  </p>
+                  <p className="mt-2 font-body text-sm font-light leading-body text-white/70">
+                    A monthly written report on your decision engine: status,
+                    what we caught, what we shipped, what is emerging in AI
+                    that applies to your engine, and the lean-in time
+                    available for the month. The watching and tuning is on
+                    us. The decisions stay with you. The engine compounds in
+                    capability month over month.
+                  </p>
+                </div>
+              </FadeUp>
+              <FadeUp delay={0.3}>
+                <p className="mt-6 font-mono text-[10px] uppercase tracking-mono text-white/50">
+                  What you walk away with (every month)
+                </p>
+                <ul className="mt-3 space-y-3">
                   {[
-                    'AI agent design that understands your business context before it automates anything',
-                    'Workflow automation built on top of proven data strategy, not bolted onto broken systems',
-                    'Intelligent monitoring that flags exceptions and handles routine decisions',
-                    'The consulting side de-risks the automation side — we understand your business before we automate it',
+                    'The Decision Engine Brief — a monthly written report on engine status, what we shipped, what we are watching, and what is emerging in AI that applies to you',
+                    'Continuous tuning of your AI agents — reconfigured as priorities shift, upgraded as models improve',
+                    'Ongoing stewardship of your data model and dashboards — kept clean, current, and aligned with your organization',
+                    'Up to 2 hours of lean-in time per month — strategic calls, team presentations, or coaching when you want me at the table',
                   ].map((point) => (
                     <li
                       key={point}
-                      className="flex items-start gap-4 rounded-sm border border-brass/10 bg-navy-mid/40 p-5 font-body text-sm font-light leading-body text-white/70"
+                      className="flex items-start gap-3 font-body text-sm font-light leading-body text-white/60"
                     >
                       <span className="mt-2 block h-px w-3 shrink-0 bg-brass" />
                       {point}
@@ -396,13 +446,168 @@ export default function ServicesPage() {
                   ))}
                 </ul>
               </FadeUp>
+              <FadeUp delay={0.35}>
+                <div className="mt-8 rounded-sm border border-brass/20 bg-navy-mid/50 px-5 py-4">
+                  <p className="font-mono text-[10px] uppercase tracking-mono text-brass-light">
+                    Iterative by design
+                  </p>
+                  <p className="mt-2 font-body text-sm font-light leading-body text-white/70">
+                    AI is improving in real time, and so is the work we do.
+                    Every system we build is designed to be refined. We ship,
+                    we watch, we test, we iterate, alongside the tools and
+                    alongside our clients. The agent we deploy today is better
+                    in six weeks because we are still in the work with you.
+                    This is not a handoff. This is a compounding partnership.
+                  </p>
+                </div>
+              </FadeUp>
             </div>
           </div>
         </div>
       </section>
 
+      {/* CASE STUDY SECTION */}
+      <section
+        id="case-study"
+        className="relative py-20 md:py-28"
+        style={{
+          background:
+            'linear-gradient(135deg, #060E1C 0%, #0f1a33 50%, rgba(160,120,64,0.08) 100%)',
+        }}
+      >
+        <div className="mx-auto max-w-5xl px-6">
+          <FadeUp>
+            <SectionLabel label="Case Study" />
+          </FadeUp>
+          <FadeUp delay={0.1}>
+            <h2 className="mt-4 font-display text-3xl font-normal leading-display text-white md:text-4xl">
+              Our flagship agent: five hours back every week for one executive leader.
+            </h2>
+          </FadeUp>
+
+          <div className="mt-10 grid gap-10 md:grid-cols-2 md:gap-12">
+            <FadeUp delay={0.15}>
+              <div>
+                <p className="font-mono text-[10px] uppercase tracking-mono text-brass-light">
+                  The situation
+                </p>
+                <p className="mt-3 font-body text-base font-light leading-body text-white/70">
+                  An executive leader was spending five-plus hours every week
+                  doing the same work by hand: reading back through her Zoom
+                  transcripts, sifting through email threads, and trying to
+                  pull out what actually needed to happen, who needed to do
+                  it, and how it connected to her organization&apos;s strategic
+                  priorities. The information was there. The synthesis was
+                  killing her Fridays. And without a consistent system for
+                  surfacing commitments, accountability across her team was
+                  slipping through the cracks.
+                </p>
+              </div>
+            </FadeUp>
+            <FadeUp delay={0.2}>
+              <div>
+                <p className="font-mono text-[10px] uppercase tracking-mono text-brass-light">
+                  What we built
+                </p>
+                <p className="mt-3 font-body text-base font-light leading-body text-white/70">
+                  A custom AI agent, built on Claude, that automatically reads
+                  her emails and meeting transcripts and produces a weekly
+                  brief broken down by team member. Each next step is clearly
+                  assigned, with a named owner, and mapped back to the
+                  organization&apos;s top strategic priorities.
+                </p>
+              </div>
+            </FadeUp>
+          </div>
+
+          {/* Results strip */}
+          <FadeUp delay={0.25}>
+            <div className="mt-12 grid gap-6 md:grid-cols-3">
+              {[
+                {
+                  stat: '5+ hours',
+                  label: 'Of executive time reclaimed every week',
+                },
+                {
+                  stat: 'Clearer accountability',
+                  label:
+                    'Next steps are visible, owned, and tied to priorities, so fewer commitments disappear between meetings',
+                },
+                {
+                  stat: 'A decision cadence',
+                  label:
+                    'That runs on the agent. Her team operates from a shared, synthesized source of truth',
+                },
+              ].map((r) => (
+                <div
+                  key={r.stat}
+                  className="rounded-sm border border-brass/25 bg-navy-mid/60 p-6"
+                >
+                  <p className="font-display text-xl font-normal leading-display text-brass-light md:text-2xl">
+                    {r.stat}
+                  </p>
+                  <p className="mt-2 font-body text-sm font-light leading-body text-white/65">
+                    {r.label}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </FadeUp>
+
+          <div className="mt-12 grid gap-10 md:grid-cols-2 md:gap-12">
+            <FadeUp delay={0.3}>
+              <div>
+                <p className="font-mono text-[10px] uppercase tracking-mono text-brass-light">
+                  How it keeps getting better
+                </p>
+                <p className="mt-3 font-body text-base font-light leading-body text-white/70">
+                  This engagement is not a one-time deliverable. As AI
+                  capabilities advance, and they are advancing fast, we refine
+                  the agent alongside them. New models, new features, new
+                  integrations. Each iteration surfaces more time savings,
+                  better synthesis, and tighter alignment. It is how we work
+                  with every client. Rapid feedback, continuous testing, and a
+                  system that compounds in value over time.
+                </p>
+              </div>
+            </FadeUp>
+            <FadeUp delay={0.35}>
+              <div>
+                <p className="font-mono text-[10px] uppercase tracking-mono text-brass-light">
+                  Why it worked
+                </p>
+                <p className="mt-3 font-body text-base font-light leading-body text-white/70">
+                  This is what an AI agent looks like when it is built right.
+                  The agent is not autonomous. It surfaces. The leader
+                  decides. And because it queries a canonical set of
+                  organizational priorities we defined up front, its
+                  recommendations are useful instead of generically plausible.
+                  We are still in the work with her, which means the agent
+                  gets better every month as Claude gets better, as her team
+                  grows, and as her priorities evolve. This is not a product
+                  we sold her. It is a system we built with her.
+                </p>
+              </div>
+            </FadeUp>
+          </div>
+
+          <FadeUp delay={0.4}>
+            <p className="mt-10 font-body text-sm font-light italic leading-body text-white/55">
+              See more agent work we build and are building on our{' '}
+              <a
+                href="/agents"
+                className="text-brass-light underline decoration-brass/40 underline-offset-4 transition-colors hover:text-brass"
+              >
+                Agents
+              </a>{' '}
+              page.
+            </p>
+          </FadeUp>
+        </div>
+      </section>
+
       {/* Process */}
-      <section className="bg-navy py-20 md:py-28">
+      <section className="bg-navy-deep py-20 md:py-28">
         <div className="mx-auto max-w-7xl px-6">
           <FadeUp>
             <SectionLabel label="How We Work" />
@@ -435,7 +640,7 @@ export default function ServicesPage() {
       </section>
 
       {/* FAQ */}
-      <section className="bg-navy-deep py-20 md:py-28">
+      <section className="bg-navy py-20 md:py-28">
         <div className="mx-auto max-w-3xl px-6">
           <FadeUp>
             <SectionLabel label="Common Questions" />

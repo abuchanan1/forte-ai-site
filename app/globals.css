@@ -4,11 +4,24 @@
 
 html {
   scroll-behavior: smooth;
+  overflow-x: hidden;
 }
 
 body {
   color: #f7f4ee;
   background: #060e1c;
+  width: 100%;
+  min-width: 100%;
+  overflow-x: hidden;
+}
+
+main {
+  width: 100%;
+}
+
+/* Ensure section backgrounds always span full viewport width */
+main > section {
+  width: 100%;
 }
 
 /* Glow pulse for interactive elements */

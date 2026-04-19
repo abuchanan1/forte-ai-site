@@ -34,7 +34,7 @@ export function TextReveal({
     <Tag className={className}>
       <span ref={ref} className="inline">
         {words.map((word, i) => (
-          <span key={i} className="inline-block overflow-hidden">
+          <span key={i} className="inline-block overflow-hidden pb-[0.2em] -mb-[0.2em] align-baseline">
             <m.span
               className="inline-block"
               initial={{ y: '100%', opacity: 0 }}

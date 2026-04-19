@@ -4,7 +4,7 @@ export const COMPANY: CompanyInfo = {
   name: 'Forte AI Solutions',
   tagline: 'Data Intelligence. Democratized.',
   description:
-    'Forte designs and implements decision infrastructure — the systems that sit between raw data and leadership decisions. We help organizations turn messy data into clear, trusted metrics that drive action.',
+    'Forte builds AI agents that give leadership teams their time back, and the clean, canonical data foundation that makes those agents reliable. The agent surfaces. The humans decide.',
   email: 'hello@forteaisolutions.com',
   founded: 2024,
 }
@@ -14,6 +14,11 @@ export const NAV_LINKS: NavLink[] = [
     label: 'Insights',
     href: '/services',
     description: 'Data strategy consulting and intelligent automation.',
+  },
+  {
+    label: 'Agents',
+    href: '/agents',
+    description: 'AI agents we build for leadership teams.',
   },
   {
     label: 'About',
@@ -49,56 +54,56 @@ export const NAV_LINKS: NavLink[] = [
 
 export const SERVICES: Service[] = [
   {
-    id: 'foundation-sprint',
-    title: 'Decision Intelligence Foundation Sprint',
+    id: 'decision-engine',
+    title: 'Building Your Decision Engine',
     description:
-      'A 6–8 week engagement that gives your leadership team a clear operating system for decision-making. KPI frameworks, metric definitions, dashboard architecture, and a roadmap to implementation.',
+      "Flagship. This is where we build the AI agents that give your leadership team its time back. Every agent runs on a clean data foundation we build in tandem, because an agent without a reliable source of truth is just a fast way to get confident wrong answers.",
     outcomes: [
-      'KPI framework and metric definitions your whole organization agrees on',
-      'Executive dashboard architecture designed around how leaders actually decide',
-      'Reporting governance and decision cadence for leadership',
-      'AI readiness evaluation and implementation roadmap',
-    ],
-    icon: 'pipeline',
-  },
-  {
-    id: 'infrastructure',
-    title: 'Intelligent Data Infrastructure and Agentic AI',
-    description:
-      'Full-scale implementation of the decision infrastructure designed during the Foundation Sprint. Data pipelines, executive dashboards, KPI tracking, and custom AI agents that automate analysis.',
-    outcomes: [
-      'Data pipelines, warehouse, and quality monitoring built for your systems',
-      'Executive dashboards and KPI tracking with automated reporting',
-      'Custom agentic AI systems — insight agents, forecasting, operations monitoring',
-      'AI-assisted intelligence that supports decisions, not replaces them',
+      'Custom AI agents built for specific jobs in your organization',
+      'The data foundation underneath them: pipelines, warehouse, canonical model',
+      'Dashboards where they still add value',
+      'Complete documentation and full ownership, no lock-in',
     ],
     icon: 'model',
   },
   {
-    id: 'fractional',
-    title: 'Fractional Head of Decision Intelligence',
+    id: 'foundation-sprint',
+    title: 'Decision Intelligence Foundation Sprint',
     description:
-      'Ongoing senior-level data leadership without a full-time executive hire. We govern your metrics, evolve your dashboards, oversee AI agents, and facilitate the decision cadence that keeps leadership aligned.',
+      'A 6–8 week engagement that gives your leadership team a clear operating system for decision-making, and the foundation every AI agent needs to be reliable. Metrics, the Decision Data Model, and a blueprint every dashboard, report, and agent builds on.',
     outcomes: [
-      'Metric governance and dashboard evolution as your organization grows',
-      'AI agent oversight and analytics strategy',
-      'Decision cadence facilitation for leadership teams',
-      'Data governance and continuous system optimization',
+      'The Decision Data Model (the map, the tables, the dictionary)',
+      'KPI Framework and Dashboard Blueprint',
+      'A build-ready implementation roadmap',
+      'AI readiness evaluation and governance foundation',
     ],
-    icon: 'advisory',
+    icon: 'pipeline',
   },
   {
     id: 'assessment',
     title: 'AI and Data Health Assessment',
     description:
-      'A focused 2–3 week diagnostic that evaluates your organization\'s AI readiness, data maturity, and architecture. You walk away with a prioritized roadmap and clear next steps.',
+      "A focused 2–3 week diagnostic that tells you honestly whether you are ready to build or whether the foundation needs work first. You walk away with the Decision Readiness Report and a clear next step.",
     outcomes: [
-      'Data maturity assessment across your current systems',
-      'AI risk evaluation and readiness scoring',
-      'Architecture recommendations tailored to your stack',
-      'Prioritized roadmap with clear, actionable next steps',
+      'The Decision Readiness Report',
+      'Prioritized gap analysis, what to fix first and why',
+      'Architecture recommendations tailored to your existing stack',
+      'A clear roadmap for getting to decision-ready',
     ],
     icon: 'assessment',
+  },
+  {
+    id: 'fractional',
+    title: 'Fractional Head of Decision Intelligence',
+    description:
+      'Ongoing senior-level data leadership without a full-time executive hire. We run the Decision Cadence that keeps your metrics, dashboards, and AI agents sharp as your organization evolves. Iterative by design.',
+    outcomes: [
+      'Facilitated leadership decision cadence',
+      'Metric governance and dashboard evolution',
+      'AI agent oversight and analytics strategy',
+      'Continuous refinement of the Decision Data Model',
+    ],
+    icon: 'advisory',
   },
 ]
 
@@ -111,16 +116,17 @@ export const SOCIAL_LINKS: SocialLink[] = [
 ]
 
 export const STATS: Stat[] = [
-  { num: '6–8 wks', label: 'Foundation Sprint' },
-  { num: '100%', label: 'Client Ownership' },
-  { num: '24/7', label: 'Data Monitoring' },
+  { num: 'Agents shipped,', label: 'not demos shown' },
+  { num: '100% client ownership,', label: 'no lock-in' },
+  { num: 'Iterative by design,', label: 'so your system compounds' },
 ]
 
 export const PAGES = [
   { path: '/', description: 'Homepage with overview of Forte AI Solutions services and value proposition.' },
   { path: '/about', description: 'Mission, founder story, and company values.' },
-  { path: '/about/founder', description: 'Meet Aaron Buchanan, MPP — founder of Forte AI Solutions.' },
-  { path: '/services', description: 'Four service offerings: Foundation Sprint, Infrastructure & AI, Fractional Leadership, and Assessment.' },
+  { path: '/about/founder', description: 'Meet Aaron Buchanan, MPP. Founder of Forte AI Solutions.' },
+  { path: '/services', description: 'Four engagements. One decision infrastructure: Building Your Decision Engine (Flagship), Foundation Sprint, AI and Data Health Assessment, and Fractional Head of Decision Intelligence.' },
+  { path: '/agents', description: 'AI agents we have built and are building for leadership teams. The agent surfaces. The humans decide.' },
   { path: '/blog', description: 'Thought leadership on data strategy, decision infrastructure, and bridging technical and non-technical teams.' },
   { path: '/learn', description: 'AI-powered K-12 education. Coming soon.' },
   { path: '/labs', description: 'Research and development at the frontier of AI.' },
