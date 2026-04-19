@@ -157,52 +157,74 @@ export default function AboutPage() {
               team. Matching the tooling to the client is part of the work.
             </p>
             <p className="mt-4 font-body text-base font-light leading-body text-white/65">
-              We&apos;ve built decision infrastructure across a wide range of
-              platforms. Our typical toolkit includes:
+              We are deliberately vendor-agnostic. We do not resell software,
+              we do not take commissions, and we do not push any specific
+              platform. What we do is meet clients where they are, build on
+              what they already pay for when it makes sense, and recommend
+              alternatives when it does not. Every engagement ends with the
+              client owning the work, free to run it, modify it, or migrate
+              it without us.
+            </p>
+            <p className="mt-4 font-body text-base font-light leading-body text-white/65">
+              Our typical toolkit spans the following categories. We mix and
+              match depending on the client&apos;s size, budget, existing
+              stack, and strategy.
             </p>
           </FadeUp>
           <FadeUp delay={0.2}>
-            <ul className="mt-6 space-y-4">
+            <div className="mt-8 space-y-6">
               {[
                 {
-                  bold: 'AI and agentic systems:',
-                  rest: 'Claude and the Anthropic API for reliable agent behavior, especially when agents need to reason over real organizational data',
+                  category: 'Data warehousing and storage',
+                  body: 'BigQuery, Snowflake, Postgres, and other modern databases depending on scale and what the client already uses. For smaller organizations, a well-structured Postgres instance or BigQuery project often beats a more expensive enterprise warehouse. For larger organizations with existing investments, we integrate rather than replace.',
                 },
                 {
-                  bold: 'Data warehousing:',
-                  rest: 'BigQuery, Postgres, and other modern databases depending on scale and existing stack',
+                  category: 'Dashboards, reporting, and BI',
+                  body: 'Looker Studio, Power BI, Tableau, Metabase, and similar tools. For smaller organizations already on Google Workspace, Looker Studio is usually the simplest path. For organizations on Microsoft 365, Power BI is often the natural fit. For clients with dedicated analysts or more complex reporting needs, Tableau or Looker hold up. We pick the tool that matches the team that will actually use it, not the one with the fanciest demos.',
                 },
                 {
-                  bold: 'Dashboards and reporting:',
-                  rest: 'Looker Studio and adjacent tools that put insights in front of leadership without requiring a license per seat',
+                  category: 'AI and language models',
+                  body: 'Our default is Claude (Anthropic API) for agent reasoning and synthesis tasks. We also build with GPT models when the client is already invested in OpenAI, and Gemini when the team lives in Google Workspace. For budget-constrained or privacy-sensitive clients, we work with open-source models including Llama (Meta), Mistral, and Qwen, running locally or on a private cloud instance. The model choice is a strategy decision as much as a pricing one.',
                 },
                 {
-                  bold: 'Meetings and workflow:',
-                  rest: 'Zoom transcripts, email, calendar data, and other operational signals as inputs to agents and dashboards',
+                  category: 'Agent orchestration and workflow',
+                  body: "LangGraph, Claude's native tool use, CrewAI, and direct API orchestration for simpler builds. For most engagements at our scale, simpler patterns beat framework-heavy ones. We only reach for full agent frameworks when the complexity genuinely requires them.",
                 },
                 {
-                  bold: 'Whatever else the organization already uses:',
-                  rest: "We meet clients where they are. If your team lives in Google Workspace, we build there. If you're on Microsoft, we build there. If you already have a warehouse, we integrate with it.",
+                  category: 'Workflow, messaging, and collaboration',
+                  body: 'Slack for team communication and agent notifications. Microsoft Teams when the client lives there instead. We build agents that post directly into existing channels rather than forcing leaders into a new interface.',
+                },
+                {
+                  category: 'Productivity and knowledge work',
+                  body: 'Google Workspace (Gmail, Calendar, Drive, Docs, Sheets) and Microsoft 365 (Outlook, OneDrive, SharePoint, Word, Excel). Notion, Asana, Monday, and ClickUp for project and knowledge management. Zoom and Google Meet for meeting transcripts that feed our Synthesis Agent pattern.',
+                },
+                {
+                  category: 'Data pipelines and integration',
+                  body: 'Fivetran, Airbyte, or custom connectors depending on the scale and sensitivity of the data. dbt for transformation when the client has a real warehouse. Simpler ETL patterns when they do not.',
+                },
+                {
+                  category: 'CRMs and operational systems',
+                  body: 'Salesforce, HubSpot, Bloomerang, DonorPerfect, Apricot, CaseWorthy, PowerSchool, Infinite Campus, and whatever else the client already uses. We build on top of existing systems rather than asking clients to rip and replace.',
                 },
               ].map((item) => (
-                <li
-                  key={item.bold}
-                  className="flex items-start gap-3 font-body text-base font-light leading-body text-white/70"
-                >
-                  <span className="mt-3 block h-px w-3 shrink-0 bg-brass" />
-                  <span>
-                    <strong className="font-medium text-white">{item.bold}</strong>{' '}
-                    {item.rest}
-                  </span>
-                </li>
+                <div key={item.category}>
+                  <p className="font-body text-base font-medium text-white">
+                    {item.category}
+                  </p>
+                  <p className="mt-1 font-body text-sm font-light leading-body text-white/65">
+                    {item.body}
+                  </p>
+                </div>
               ))}
-            </ul>
+            </div>
           </FadeUp>
           <FadeUp delay={0.25}>
-            <p className="mt-8 font-body text-base font-light leading-body text-white/65">
+            <p className="mt-10 font-body text-base font-light leading-body text-white/65">
               The goal is never to sell a stack. The goal is to build decision
-              infrastructure your team can actually operate, with tools that
-              match your size, your budget, and where you are headed.
+              infrastructure the client can actually operate, with tools that
+              match their size, their budget, and where they are going. We
+              meet clients where they are. We do not force a proprietary
+              stack.
             </p>
           </FadeUp>
         </div>

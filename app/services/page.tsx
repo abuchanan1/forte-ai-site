@@ -69,7 +69,7 @@ const FAQS = [
   },
   {
     q: 'What tools and platforms do you use?',
-    a: 'It depends on the organization. We match the stack to the client\'s size, budget, and existing infrastructure. Our typical toolkit includes BigQuery and other modern databases, Looker Studio and similar reporting tools, Claude and the Anthropic API for AI agents, and integrations with the systems clients already use every day (Zoom, Google Workspace, email, and more). We meet organizations where they are. We do not force a proprietary stack.',
+    a: 'It depends on the organization. We are vendor-agnostic and do not resell software. Our typical toolkit spans modern data warehouses (BigQuery, Snowflake, Postgres), BI and reporting tools (Looker Studio, Power BI, Tableau, Metabase), AI models (Claude, GPT, Gemini, and open-source options like Llama and Mistral when privacy or budget requires it), workflow platforms (Slack, Microsoft Teams, Notion), and whatever CRMs, program systems, and productivity tools the client already uses. We match the stack to the client, not the other way around. A fuller view of how we pick tools lives on the About page.',
   },
   {
     q: 'How is Forte different from a data engineering contractor?',
