@@ -70,18 +70,22 @@ export default function RootLayout({
 }
 
 function JsonLd() {
+  const siteUrl = (
+    process.env.NEXT_PUBLIC_SITE_URL ?? 'https://forteaisolutions.com'
+  ).replace(/\/+$/, '')
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'Organization',
     name: COMPANY.name,
-    url: process.env.NEXT_PUBLIC_SITE_URL ?? 'https://forteaisolutions.com',
+    url: siteUrl,
+    logo: `${siteUrl}/forte-logo.svg`,
     description: COMPANY.description,
     foundingDate: String(COMPANY.founded),
-    slogan: COMPANY.tagline,
     contactPoint: {
       '@type': 'ContactPoint',
       email: COMPANY.email,
       contactType: 'sales',
+      availableLanguage: 'English',
     },
     sameAs: ['https://www.linkedin.com/company/forte-ai-solutions/'],
   }

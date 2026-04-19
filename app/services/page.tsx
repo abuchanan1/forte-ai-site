@@ -13,7 +13,7 @@ import {
 } from '@/components/ui/ServiceGraphics'
 
 export const metadata: Metadata = createMetadata({
-  title: 'Forte Insights | Services',
+  title: 'Services',
   description:
     'Four engagements. One decision infrastructure. AI agents, the data foundation underneath them, and the ongoing partnership that makes everything compound.',
   path: '/services',
@@ -693,6 +693,24 @@ export default function ServicesPage() {
           </FadeUp>
         </div>
       </section>
+
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'FAQPage',
+            mainEntity: FAQS.map((faq) => ({
+              '@type': 'Question',
+              name: faq.q,
+              acceptedAnswer: {
+                '@type': 'Answer',
+                text: faq.a,
+              },
+            })),
+          }),
+        }}
+      />
     </>
   )
 }

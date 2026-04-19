@@ -13,7 +13,7 @@ import { TextReveal } from '@/components/ui/TextReveal'
 import { BrokenFlywheel } from '@/components/ui/BrokenFlywheel'
 
 export const metadata: Metadata = createMetadata({
-  title: 'Data Intelligence. Democratized.',
+  title: 'AI Agents That Give Leaders Time Back',
   description: COMPANY.description,
   path: '/',
 })
@@ -42,7 +42,7 @@ export default function HomePage() {
         <div
           className="absolute inset-0 opacity-[0.07]"
           style={{
-            backgroundImage: 'url("https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1920&q=80")',
+            backgroundImage: 'url("/hero-earth.jpg")',
             backgroundSize: 'cover',
             backgroundPosition: 'center',
           }}

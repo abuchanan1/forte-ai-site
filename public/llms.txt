@@ -1,37 +1,84 @@
 # Forte AI Solutions
 
-> Data Intelligence. Democratized.
+> AI agents that give leadership teams their time back, built on a clean data foundation.
 
 ## About
 
-Forte transforms fragmented enterprise data into structured intelligence, enabling faster decisions, leaner operations, and compounding advantage at scale.
+Forte builds AI agents that give leadership teams their time back, and the clean, canonical data foundation that makes those agents reliable. The agent surfaces. The humans decide.
 
-Forte was founded in 2024. The company believes every organization deserves the clarity that data can provide, not just the ones who can afford a team of data scientists.
+Forte was founded in 2024.
 
 ## Who Forte Serves
 
-Forte serves organizations of all sizes that are drowning in data and starving for insight. Typical clients include mid-market and enterprise organizations without large in-house data or engineering teams. Forte is specifically built for non-technical leadership teams who need data intelligence without the complexity.
+Forte serves leadership teams at 50 to 500 person organizations: small businesses, mid-market companies, and mission-driven organizations without large in-house data or engineering teams. We build for non-technical leadership teams who need reliable AI agents to support decisions, not a stack of dashboards to maintain.
+
+## Core Claims
+
+- An agent is a dashboard that talks back. A dashboard waits for you to find it; an agent finds you, tells you what the number means, and asks a team member to take the action.
+- Every agent Forte builds runs against a clean, canonical data foundation. That is what makes the outputs reliable instead of confident guesses.
+- The agent surfaces. The humans decide. Forte does not build autonomous decision-makers.
+- Forte is deliberately vendor-agnostic. We do not resell software, take commissions, or push a proprietary stack.
+- Clients own 100 percent of the work. No lock-in, no proprietary dependencies, no ongoing licensing of the client's own infrastructure.
+- The system is iterative by design. It compounds in capability as AI and the client organization evolve.
 
 ## Pages
 
-- /: Homepage with overview of Forte AI Solutions services and value proposition.
-- /about: Mission, founder story, and company values.
-- /services: Detailed service offerings, process timeline, and FAQ.
-- /contact: Contact form and discovery call information.
+- /: Homepage. Positioning, hero case study, and the core claim: we build AI agents that give leadership teams their time back.
+- /agents: AI agent portfolio. The first agent we deployed (an executive Synthesis Agent returning 5+ hours a week) and the archetypes we are extending the practice into.
+- /services: The four engagements: AI and Data Health Assessment, Foundation Sprint (Decision Data Model), Custom Build (Decision Engine), and Fractional Head of Decision Intelligence.
+- /about: Mission, founder story, values, and "How we build" — the full tech stack and vendor-agnostic approach.
+- /about/founder: Founder page for Aaron Buchanan, MPP.
+- /assessment: AI and Data Health Assessment — a self-serve readiness assessment producing the Decision Readiness Report.
+- /blog: Insights on decision infrastructure, AI agents, data strategy, and the gap between technical and non-technical teams.
+- /labs: Forte Labs: research and experiments at the edge of the decision infrastructure practice.
+- /learn: Forte Learn: AI-powered K-12 education initiative, adaptive learning for classrooms.
+- /contact: Contact form and 30-minute discovery call booking.
 
-## Services
+## Engagements
 
-### Data Pipeline and Integration
+### AI and Data Health Assessment
 
-Forte connects siloed systems into a single, clean, reliable data infrastructure. Automated pipelines replace manual data exports and transfers. Unified data layer across all existing systems and tools. Real-time sync so numbers are never behind. Built to scale as organizations grow without rebuilding from scratch.
+A diagnostic engagement that evaluates an organization's data landscape, readiness, and decision maturity. Ends in the Decision Readiness Report: a scored, prioritized written assessment across four dimensions with a specific recommendation for what to do next.
 
-### AI Dashboards and Reporting
+### Foundation Sprint
 
-Forte builds intelligent dashboards that surface the right information to the right people at the right time. Executive dashboards surface priorities, not just metrics. Operational views built for teams running the day-to-day. Automated alerts when something needs attention. Designed for non-technical users.
+A fixed-scope sprint that produces the Decision Data Model, KPI Framework, and Dashboard Blueprint. The canonical model of your organization's data, the foundation every AI agent needs to be reliable, and the deliverable you hand off so every future dashboard, report, and agent builds on the same source of truth.
 
-### Custom AI Model Building
+### Custom Build
 
-Forte designs and deploys AI models tailored to specific business questions. Predictive models anticipate outcomes. Diagnostic models surface root causes. Prescriptive recommendations tell teams what to do next. Explainable outputs leadership can trust and act on.
+The Decision Engine: pipelines, warehouse, dashboards, and AI agents implemented against the Decision Data Model. Clients own the code, the infrastructure, and the AI agents. No proprietary lock-in.
+
+### Fractional Head of Decision Intelligence
+
+Ongoing stewardship of the Decision Engine. We keep your metrics governed, your dashboards current, and your AI agents sharp as the organization evolves and as AI itself evolves. Signature deliverable: the Decision Engine Brief, a monthly written report covering engine status, what we caught, what we shipped, what is emerging in AI that applies to your engine, and lean-in time available. You own the decisions. We own the engine that powers them.
+
+## Tech Stack
+
+Forte is vendor-agnostic. Tools are chosen based on the client's size, budget, existing infrastructure, and direction.
+
+- **Data warehousing and storage**: BigQuery, Snowflake, Postgres, and other modern databases depending on scale and existing stack.
+- **Dashboards, reporting, and BI**: Looker Studio, Power BI, Tableau, Metabase. We match the tool to the team that will actually use it.
+- **AI and language models**: Default: Claude (Anthropic API). Also GPT models, Gemini, and open-source models (Llama, Mistral, Qwen) when budget or privacy requires.
+- **Agent orchestration**: LangGraph, Claude native tool use, CrewAI, and direct API orchestration. Simpler patterns beat framework-heavy ones for most engagements at our scale.
+- **Workflow and collaboration**: Slack, Microsoft Teams, Notion, Asana, Monday, ClickUp. We build agents that post into existing channels rather than forcing new interfaces.
+- **Productivity and source data**: Google Workspace, Microsoft 365, Zoom and Google Meet transcripts as agent inputs.
+- **Data pipelines**: Fivetran, Airbyte, or custom connectors. dbt for transformation when the client has a real warehouse.
+- **CRMs and operational systems**: Salesforce, HubSpot, Bloomerang, DonorPerfect, Apricot, CaseWorthy, PowerSchool, Infinite Campus, and whatever else the client already uses.
+
+## Blog Posts
+
+- [/blog/building-agent-teams](/blog/building-agent-teams) (2026-04-18): When One Agent Is Not Enough: How to Architect AI Like You Architect a Team. The same instincts that tell you when to hire your first manager tell you when one agent should become two. Capacity, context, and coordination.
+- [/blog/the-missing-map](/blog/the-missing-map) (2026-04-18): The Missing Map: Why Your Data Needs a Model Before It Needs a Dashboard. Most organizations jump straight from raw data to dashboards. The step they skip is the one that actually decides whether any of it works.
+- [/blog/dashboards-taught-me-how-to-build-agents](/blog/dashboards-taught-me-how-to-build-agents) (2026-04-17): What Years of Building Dashboards Taught Me About Building Agents. The skill of turning raw data into something a leader can act on did not start with AI. It started long before. And it transfers more than people think.
+- [/blog/measuring-the-return-on-data-investment](/blog/measuring-the-return-on-data-investment) (2026-03-29): Measuring the Return on Your Data Investment (A Framework That Actually Works). Traditional ROI was built for factories. Data investment returns are strategic: faster decisions, smarter allocation, a team that compounds. Here is how to measure all four layers.
+- [/blog/why-nobody-owns-your-data](/blog/why-nobody-owns-your-data) (2026-03-27): Why Nobody Owns Your Data (And What It Is Costing You). The biggest data problem most organizations have is not technical. It is structural. Nobody owns the data, and when that one person leaves, everything breaks.
+- [/blog/how-to-know-if-your-organization-is-ready-for-ai](/blog/how-to-know-if-your-organization-is-ready-for-ai) (2026-03-25): How to Know If Your Organization Is Ready for AI. 42% of AI projects fail, almost never because of the technology. Five honest questions that tell you whether your data, strategy, and team are ready.
+- [/blog/ai-agents-are-only-as-good-as-your-infrastructure](/blog/ai-agents-are-only-as-good-as-your-infrastructure) (2026-03-22): AI Agents Are Only as Good as Your Infrastructure. Without the right data and a clear strategy, the smartest AI agent in the world is just a faster way to get bad answers. The foundation comes first.
+- [/blog/ai-agents-are-not-automation](/blog/ai-agents-are-not-automation) (2026-03-20): AI Agents Are Not Automation. Here Is Why That Matters.. Most people describing AI agents are really describing automation with a new name. The difference matters, especially for organizations that cannot afford to chase the wrong trend.
+- [/blog/the-mismatch-problem](/blog/the-mismatch-problem) (2026-03-15): The Mismatch Problem: Why Your Technical Team Builds the Wrong Thing. The gap between what gets requested and what actually moves the needle is the most expensive problem most organizations never name.
+- [/blog/you-dont-need-a-data-team](/blog/you-dont-need-a-data-team) (2026-03-15): You Don. Most small organizations are already sitting on the data they need. What they are missing is a plan for turning it into decisions.
+- [/blog/what-is-decision-infrastructure](/blog/what-is-decision-infrastructure) (2026-03-15): What Is Decision Infrastructure? (And Why Your Organization Needs It). The connective tissue between raw information and better decisions. Most organizations skip it entirely and wonder why nothing changes.
+- [/blog/both-sides-of-the-table](/blog/both-sides-of-the-table) (2026-03-15): I. What happens when you have been the person waiting for data and the person building reports nobody uses. The problem is not on either end. It is in the middle.
 
 ## Contact
 
@@ -40,4 +87,8 @@ Discovery calls take 30 minutes. Response within one business day.
 
 ## What Forte Does Not Do
 
-Forte does not sell off-the-shelf software products. Forte does not offer ongoing managed services or IT support. Forte does not replace existing systems. Forte builds custom data infrastructure, integrates it with existing tools, and hands over full ownership to the client. There is no proprietary lock-in.
+- Forte does not sell off-the-shelf software products.
+- Forte does not resell software or take commissions on any tools or platforms.
+- Forte does not build fully autonomous AI agents that make decisions without human review.
+- Forte does not replace existing systems wholesale; we build on top of what clients already use.
+- Forte does not lock clients into proprietary infrastructure. Every engagement ends with the client owning the work.

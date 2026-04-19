@@ -6,9 +6,9 @@ import { SectionLabel } from '@/components/ui/SectionLabel'
 import { Button } from '@/components/ui/Button'
 
 export const metadata: Metadata = createMetadata({
-  title: 'AI Agents for Leadership Teams',
+  title: 'AI Agents We Build',
   description:
-    'We build AI agents that give leadership teams their time back. The agent surfaces. The humans decide. Every agent runs on a clean data foundation.',
+    'The AI agents Forte has shipped and is building. The Synthesis Agent that returns five hours a week to an executive leader, and the archetypes we are extending the practice into.',
   path: '/agents',
 })
 

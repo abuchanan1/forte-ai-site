@@ -24,19 +24,25 @@ export function generateMetadata({ params }: PageProps): Metadata {
     title: post.title,
     description: post.description,
     path: `/blog/${post.slug}`,
+    article: {
+      publishedTime: post.publishedAt,
+      modifiedTime: post.publishedAt,
+      author: 'Aaron Buchanan',
+    },
   })
 }
 
 function parseMarkdown(md: string): string {
-  let html = md
+  // Strip a leading H1 line — the page already renders post.title as the sole H1
+  let html = md.replace(/^\s*#\s+.+\n+/, '')
 
   // Horizontal rules
   html = html.replace(/^---$/gm, '<hr />')
 
-  // Headings (# ## ###)
+  // Headings — H2 and H3 only. Any stray H1 (unlikely after the strip above) becomes H2.
   html = html.replace(/^### (.+)$/gm, '<h3>$1</h3>')
   html = html.replace(/^## (.+)$/gm, '<h2>$1</h2>')
-  html = html.replace(/^# (.+)$/gm, '<h1>$1</h1>')
+  html = html.replace(/^# (.+)$/gm, '<h2>$1</h2>')
 
   // Links [text](url)
   html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>')
@@ -105,12 +111,22 @@ export default function BlogPostPage({ params }: PageProps) {
     process.env.NEXT_PUBLIC_SITE_URL ?? 'https://forteaisolutions.com'
   ).replace(/\/+$/, '')
 
+  const postUrl = `${siteUrl}/blog/${post.slug}`
+  const ogImage = `${siteUrl}/api/og?title=${encodeURIComponent(post.title)}`
+
   const articleJsonLd = {
     '@context': 'https://schema.org',
-    '@type': 'Article',
+    '@type': 'BlogPosting',
+    '@id': postUrl,
+    mainEntityOfPage: {
+      '@type': 'WebPage',
+      '@id': postUrl,
+    },
     headline: post.title,
     description: post.description,
+    image: ogImage,
     datePublished: post.publishedAt,
+    dateModified: post.publishedAt,
     author: {
       '@type': 'Person',
       name: 'Aaron Buchanan',
@@ -120,8 +136,12 @@ export default function BlogPostPage({ params }: PageProps) {
       '@type': 'Organization',
       name: 'Forte AI Solutions',
       url: siteUrl,
+      logo: {
+        '@type': 'ImageObject',
+        url: `${siteUrl}/forte-logo.svg`,
+      },
     },
-    url: `${siteUrl}/blog/${post.slug}`,
+    url: postUrl,
   }
 
   const faqJsonLd = {
@@ -135,6 +155,16 @@ export default function BlogPostPage({ params }: PageProps) {
         text: item.answer,
       },
     })),
+  }
+
+  const breadcrumbJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: siteUrl },
+      { '@type': 'ListItem', position: 2, name: 'Blog', item: `${siteUrl}/blog` },
+      { '@type': 'ListItem', position: 3, name: post.title, item: postUrl },
+    ],
   }
 
   return (
@@ -237,6 +267,10 @@ export default function BlogPostPage({ params }: PageProps) {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
       />
     </>
   )

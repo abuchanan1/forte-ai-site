@@ -11,9 +11,9 @@ export const COMPANY: CompanyInfo = {
 
 export const NAV_LINKS: NavLink[] = [
   {
-    label: 'Insights',
+    label: 'Services',
     href: '/services',
-    description: 'Data strategy consulting and intelligent automation.',
+    description: 'Four engagements across assessment, foundation, build, and ongoing stewardship.',
   },
   {
     label: 'Agents',
