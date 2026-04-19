@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { upstashCreds } from '@/lib/upstash'
 
 export const metadata: Metadata = {
   title: 'Assessments — Admin',
@@ -25,17 +26,10 @@ interface SubmissionRecord {
 }
 
 async function loadSubmissions(): Promise<SubmissionRecord[]> {
-  if (
-    !process.env.UPSTASH_REDIS_REST_URL ||
-    !process.env.UPSTASH_REDIS_REST_TOKEN
-  ) {
-    return []
-  }
+  const creds = upstashCreds()
+  if (!creds) return []
   const { Redis } = await import('@upstash/redis')
-  const redis = new Redis({
-    url: process.env.UPSTASH_REDIS_REST_URL,
-    token: process.env.UPSTASH_REDIS_REST_TOKEN,
-  })
+  const redis = new Redis({ url: creds.url, token: creds.token })
   const ids = (await redis.zrange('assessment:index', 0, 99, {
     rev: true,
   })) as string[]

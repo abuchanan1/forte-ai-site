@@ -2,6 +2,7 @@ import { NextResponse, type NextRequest } from 'next/server'
 import { Resend } from 'resend'
 import { z } from 'zod'
 import { DIMENSION_LABELS, QUESTIONS, buildReport, type Track } from '@/lib/diagnostic'
+import { upstashCreds } from '@/lib/upstash'
 
 const submissionSchema = z.object({
   track: z.enum(['small-business', 'nonprofit']),
@@ -62,16 +63,11 @@ export async function POST(request: NextRequest) {
     const contact = data.contact ?? {}
 
     // Rate limiting via Upstash
-    if (
-      process.env.UPSTASH_REDIS_REST_URL &&
-      process.env.UPSTASH_REDIS_REST_TOKEN
-    ) {
+    const creds = upstashCreds()
+    if (creds) {
       const { Ratelimit } = await import('@upstash/ratelimit')
       const { Redis } = await import('@upstash/redis')
-      const redis = new Redis({
-        url: process.env.UPSTASH_REDIS_REST_URL,
-        token: process.env.UPSTASH_REDIS_REST_TOKEN,
-      })
+      const redis = new Redis({ url: creds.url, token: creds.token })
       const ratelimit = new Ratelimit({
         redis,
         limiter: Ratelimit.slidingWindow(5, '1 h'),
@@ -117,15 +113,9 @@ export async function POST(request: NextRequest) {
     }
 
     // Persist to Upstash if configured
-    if (
-      process.env.UPSTASH_REDIS_REST_URL &&
-      process.env.UPSTASH_REDIS_REST_TOKEN
-    ) {
+    if (creds) {
       const { Redis } = await import('@upstash/redis')
-      const redis = new Redis({
-        url: process.env.UPSTASH_REDIS_REST_URL,
-        token: process.env.UPSTASH_REDIS_REST_TOKEN,
-      })
+      const redis = new Redis({ url: creds.url, token: creds.token })
       await redis.set(`assessment:${submissionId}`, record)
       await redis.zadd('assessment:index', { score: Date.now(), member: submissionId })
       if (sessionId) {
