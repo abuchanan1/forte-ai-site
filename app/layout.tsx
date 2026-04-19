@@ -1,12 +1,12 @@
 import type { Metadata } from 'next'
 import { Cormorant, IBM_Plex_Sans, IBM_Plex_Mono } from 'next/font/google'
-import { GoogleAnalytics } from '@next/third-parties/google'
 import { Analytics } from '@vercel/analytics/react'
 import { Providers } from '@/components/providers'
 import { Navbar } from '@/components/layout/Navbar'
 import { Footer } from '@/components/layout/Footer'
 import { ChatBot } from '@/components/ui/ChatBot'
 import { CookieBanner } from '@/components/ui/CookieBanner'
+import { ConsentAwareAnalytics } from '@/components/ui/ConsentAwareAnalytics'
 import { COMPANY } from '@/lib/constants'
 import './globals.css'
 
@@ -61,7 +61,7 @@ export default function RootLayout({
         <JsonLd />
         {process.env.NODE_ENV === 'production' &&
           process.env.NEXT_PUBLIC_GA_ID && (
-            <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID} />
+            <ConsentAwareAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID} />
           )}
         <Analytics />
       </body>

@@ -53,7 +53,7 @@ export function createMetadata({
       }
 
   return {
-    title: fullTitle,
+    title: { absolute: fullTitle },
     description,
     metadataBase: new URL(siteUrl),
     alternates: {

@@ -18,19 +18,14 @@ export function CookieBanner() {
 
   const accept = () => {
     localStorage.setItem('forte-cookie-consent', 'accepted')
+    window.dispatchEvent(new Event('forte:consent-change'))
     setVisible(false)
   }
 
   const decline = () => {
     localStorage.setItem('forte-cookie-consent', 'declined')
+    window.dispatchEvent(new Event('forte:consent-change'))
     setVisible(false)
-    // Disable GA if user declines
-    if (typeof window !== 'undefined') {
-      const gaId = process.env.NEXT_PUBLIC_GA_ID
-      if (gaId) {
-        (window as Record<string, unknown>)[`ga-disable-${gaId}`] = true
-      }
-    }
   }
 
   return (
