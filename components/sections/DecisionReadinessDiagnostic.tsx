@@ -5,12 +5,16 @@ import { Button } from '@/components/ui/Button'
 import { FadeUp } from '@/components/ui/FadeUp'
 import { SectionLabel } from '@/components/ui/SectionLabel'
 import {
+  DIMENSION_LABELS,
   QUESTIONS,
+  STAGE_LABELS,
   type Question,
+  type ReportPayload,
   type Track,
 } from '@/lib/diagnostic'
+import { generateAssessmentPdf } from '@/lib/diagnostic-pdf'
 
-type Step = 'intro' | 'audience' | 'questions' | 'contact' | 'submitting' | 'done' | 'error'
+type Step = 'intro' | 'audience' | 'questions' | 'contact' | 'submitting' | 'results' | 'error'
 
 type AnswerValue = number | string | string[]
 
@@ -20,7 +24,7 @@ interface SavedState {
   qIndex: number
 }
 
-const STORAGE_KEY = 'forte.diagnostic.v1'
+const STORAGE_KEY = 'forte.diagnostic.v2'
 
 function loadState(): SavedState {
   if (typeof window === 'undefined') return { answers: {}, qIndex: 0 }
@@ -70,7 +74,8 @@ export function DecisionReadinessDiagnostic() {
     phone: '',
     requestedCall: false,
   })
-  const [formError, setFormError] = useState<string>('')
+  const [report, setReport] = useState<ReportPayload | null>(null)
+  const [error, setError] = useState<string>('')
   const [hydrated, setHydrated] = useState(false)
 
   useEffect(() => {
@@ -91,9 +96,6 @@ export function DecisionReadinessDiagnostic() {
   const questions = track ? QUESTIONS[track] : []
   const current = questions[qIndex]
 
-  const startDiagnostic = () => setStep('audience')
-  const resume = () => setStep('questions')
-
   const selectTrack = (t: Track) => {
     setTrack(t)
     setQIndex(0)
@@ -108,11 +110,8 @@ export function DecisionReadinessDiagnostic() {
 
   const goNext = () => {
     if (!current) return
-    if (qIndex < questions.length - 1) {
-      setQIndex(qIndex + 1)
-    } else {
-      setStep('contact')
-    }
+    if (qIndex < questions.length - 1) setQIndex(qIndex + 1)
+    else setStep('contact')
   }
 
   const goBack = () => {
@@ -133,21 +132,12 @@ export function DecisionReadinessDiagnostic() {
     return false
   }, [current, answers])
 
-  const submit = async () => {
-    setFormError('')
-    if (!contact.name.trim() || !contact.email.trim() || !contact.organization.trim() || !contact.role.trim()) {
-      setFormError('Please fill in name, email, organization, and role.')
-      return
-    }
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(contact.email)) {
-      setFormError('Please enter a valid email address.')
-      return
-    }
+  const submit = async (includeContact: boolean) => {
+    setError('')
     if (!track) {
-      setFormError('Please restart the diagnostic.')
+      setError('Please restart the diagnostic.')
       return
     }
-
     setStep('submitting')
     try {
       const res = await fetch('/api/assessment', {
@@ -155,25 +145,28 @@ export function DecisionReadinessDiagnostic() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           track,
-          ...contact,
           answers,
+          contact: includeContact ? contact : undefined,
         }),
       })
       if (!res.ok) {
         const data = (await res.json().catch(() => ({}))) as { message?: string }
-        setFormError(data.message ?? 'Something went wrong. Please try again.')
+        setError(data.message ?? 'Something went wrong. Please try again.')
         setStep('contact')
         return
       }
+      const data = (await res.json()) as { report: ReportPayload }
+      setReport(data.report)
       clearState()
-      setStep('done')
+      setStep('results')
+      if (typeof window !== 'undefined') {
+        window.scrollTo({ top: 0, behavior: 'smooth' })
+      }
     } catch {
-      setFormError('Network error. Please try again.')
+      setError('Network error. Please try again.')
       setStep('contact')
     }
   }
-
-  // --------------- Renders ---------------
 
   if (!hydrated) {
     return (
@@ -200,18 +193,18 @@ export function DecisionReadinessDiagnostic() {
           </FadeUp>
           <FadeUp delay={0.15}>
             <p className="mt-6 font-body text-base font-light leading-body text-white/65">
-              About ten minutes. Fifteen questions. No credit card, no sales
-              call required. Your written Decision Readiness Report lands in
-              your inbox within 24 hours.
+              About ten minutes. Fifteen questions. Your branded Decision
+              Readiness Report appears on screen the moment you finish,
+              downloadable as a PDF.
             </p>
           </FadeUp>
           <FadeUp delay={0.2}>
             <div className="mt-10 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
-              <Button onClick={startDiagnostic} size="lg">
+              <Button onClick={() => setStep('audience')} size="lg">
                 Start the Diagnostic →
               </Button>
               {hasResume ? (
-                <Button onClick={resume} variant="ghost" size="sm">
+                <Button onClick={() => setStep('questions')} variant="ghost" size="sm">
                   Resume where you left off
                 </Button>
               ) : null}
@@ -237,20 +230,19 @@ export function DecisionReadinessDiagnostic() {
           <FadeUp delay={0.15}>
             <p className="mt-4 font-body text-base font-light leading-body text-white/65">
               The diagnostic is tailored to your context. Pick the one that
-              fits best. If neither fits, pick the closest and the report will
-              account for it.
+              fits best.
             </p>
           </FadeUp>
           <div className="mt-10 grid gap-6 md:grid-cols-2">
             <AudienceCard
               title="Small Business"
-              body="Revenue-driven organizations scaling operations, sales, or service delivery. Typically 50 to 500 employees. You may be a founder, COO, or operational leader."
+              body="Revenue-driven organizations scaling operations, sales, or service delivery. Typically 50 to 500 employees."
               onClick={() => selectTrack('small-business')}
               cta="Continue as small business →"
             />
             <AudienceCard
               title="Nonprofit or Mission-Driven"
-              body="Impact-focused organizations. Nonprofits, schools and districts, foundations, mission-driven entities. You may be an Executive Director, Superintendent, Head of School, or operational leader."
+              body="Impact-focused organizations. Nonprofits, schools and districts, foundations, mission-driven entities."
               onClick={() => selectTrack('nonprofit')}
               cta="Continue as nonprofit/mission-driven →"
             />
@@ -310,7 +302,7 @@ export function DecisionReadinessDiagnostic() {
               ← Back
             </Button>
             <Button onClick={goNext} size="md" disabled={!canProceed}>
-              {qIndex === questions.length - 1 ? 'Continue to contact →' : 'Next →'}
+              {qIndex === questions.length - 1 ? 'Continue →' : 'Next →'}
             </Button>
           </div>
         </div>
@@ -319,39 +311,35 @@ export function DecisionReadinessDiagnostic() {
   }
 
   if (step === 'contact' || step === 'submitting') {
+    const hasNameAndEmail = contact.name.trim().length > 0 && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(contact.email)
     return (
       <section id="diagnostic" className="bg-navy-deep py-20 md:py-28">
         <div className="mx-auto max-w-2xl px-6">
           <FadeUp>
-            <SectionLabel label="Last step" />
+            <SectionLabel label="Optional" />
           </FadeUp>
           <FadeUp delay={0.1}>
             <h2 className="mt-4 font-display text-3xl font-normal leading-display text-white md:text-4xl">
-              Where should we send your Decision Readiness Report?
+              Want us to personalize the report?
             </h2>
           </FadeUp>
           <FadeUp delay={0.15}>
             <p className="mt-4 font-body text-base font-light leading-body text-white/65">
-              Your answers are being processed now. Enter your email and the
-              report will be in your inbox within 24 hours.
+              Adding your name and organization personalizes your report
+              cover. Leaving this blank is fine — you will still see your
+              scores and download the PDF.
             </p>
           </FadeUp>
 
-          <form
-            className="mt-10 space-y-5"
-            onSubmit={(e) => {
-              e.preventDefault()
-              submit()
-            }}
-          >
-            <Field label="Full name" required value={contact.name} onChange={(v) => setContact({ ...contact, name: v })} />
-            <Field label="Email address" type="email" required value={contact.email} onChange={(v) => setContact({ ...contact, email: v })} />
-            <Field label="Organization name" required value={contact.organization} onChange={(v) => setContact({ ...contact, organization: v })} />
-            <Field label="Role / title" required value={contact.role} onChange={(v) => setContact({ ...contact, role: v })} />
+          <div className="mt-10 space-y-5">
+            <Field label="Full name" value={contact.name} onChange={(v) => setContact({ ...contact, name: v })} />
+            <Field label="Email address" type="email" value={contact.email} onChange={(v) => setContact({ ...contact, email: v })} />
+            <Field label="Organization name" value={contact.organization} onChange={(v) => setContact({ ...contact, organization: v })} />
+            <Field label="Role / title" value={contact.role} onChange={(v) => setContact({ ...contact, role: v })} />
 
             <label className="block">
               <span className="block font-mono text-[10px] uppercase tracking-mono text-white/55">
-                Organization size (optional)
+                Organization size
               </span>
               <select
                 className="mt-2 w-full rounded-sm border border-brass/20 bg-navy-mid px-4 py-3 font-body text-base font-light text-white focus:border-brass/60 focus:outline-none"
@@ -366,107 +354,257 @@ export function DecisionReadinessDiagnostic() {
               </select>
             </label>
 
-            <Field label="Phone (optional)" value={contact.phone} onChange={(v) => setContact({ ...contact, phone: v })} />
+            <Field label="Phone" value={contact.phone} onChange={(v) => setContact({ ...contact, phone: v })} />
 
-            <label className="flex cursor-pointer items-start gap-3 rounded-sm border border-brass/15 bg-navy-mid/40 px-4 py-3 text-sm text-white/75 hover:border-brass/30">
+            <label
+              className={`flex cursor-pointer items-start gap-3 rounded-sm border px-4 py-3 text-sm transition-colors ${
+                hasNameAndEmail
+                  ? 'border-brass/15 bg-navy-mid/40 text-white/75 hover:border-brass/30'
+                  : 'border-white/10 bg-navy-mid/20 text-white/40 cursor-not-allowed'
+              }`}
+            >
               <input
                 type="checkbox"
                 className="mt-1 h-4 w-4 accent-[#A07840]"
-                checked={contact.requestedCall}
+                checked={contact.requestedCall && hasNameAndEmail}
+                disabled={!hasNameAndEmail}
                 onChange={(e) => setContact({ ...contact, requestedCall: e.target.checked })}
               />
               <span>
                 I&apos;d like a 30-minute discovery call to discuss my results.
-                <span className="block text-xs text-white/50">
-                  Optional — Aaron will reach out if checked.
-                </span>
+                {hasNameAndEmail ? null : (
+                  <span className="block text-xs text-white/40">
+                    Enabled once name and email are provided.
+                  </span>
+                )}
               </span>
             </label>
 
-            {formError ? (
+            {error ? (
               <p className="rounded-sm border border-red-500/30 bg-red-900/20 px-4 py-3 font-body text-sm text-red-300">
-                {formError}
+                {error}
               </p>
             ) : null}
 
-            <div className="flex items-center justify-between gap-4 pt-2">
+            <div className="flex flex-col gap-3 pt-4 sm:flex-row sm:items-center sm:justify-between">
               <Button onClick={goBack} variant="ghost" size="sm">
                 ← Back
               </Button>
-              <Button type="submit" size="md" disabled={step === 'submitting'}>
-                {step === 'submitting' ? 'Sending...' : 'Send my report →'}
-              </Button>
+              <div className="flex flex-col gap-3 sm:flex-row">
+                <Button
+                  onClick={() => submit(false)}
+                  variant="ghost"
+                  size="md"
+                  disabled={step === 'submitting'}
+                >
+                  Skip and see my report →
+                </Button>
+                <Button
+                  onClick={() => submit(true)}
+                  size="md"
+                  disabled={step === 'submitting'}
+                >
+                  {step === 'submitting' ? 'Generating...' : 'See my report →'}
+                </Button>
+              </div>
             </div>
 
             <p className="text-center font-body text-xs font-light leading-body text-white/45">
-              Your answers are confidential. We do not sell or share your data.
-              You will receive the report, one follow-up if you requested a
-              call, and nothing else unless you reach out.
+              Your answers are confidential. Both buttons produce the same
+              report. The only difference is whether your contact info is
+              saved with your submission.
             </p>
-          </form>
+          </div>
         </div>
       </section>
     )
   }
 
-  if (step === 'done') {
-    return (
-      <section id="diagnostic" className="bg-navy-deep py-20 md:py-28">
-        <div className="mx-auto max-w-2xl px-6 text-center">
-          <FadeUp>
-            <SectionLabel label="Received" />
-          </FadeUp>
-          <FadeUp delay={0.1}>
-            <h2 className="mt-4 font-display text-3xl font-normal leading-display text-white md:text-4xl">
-              Your report is on the way.
-            </h2>
-          </FadeUp>
-          <FadeUp delay={0.15}>
-            <p className="mt-6 font-body text-base font-light leading-body text-white/65">
-              Thanks for taking the diagnostic. Your Decision Readiness Report
-              will be in your inbox within 24 hours. If you asked for a
-              discovery call, Aaron will reach out within the same window.
-            </p>
-          </FadeUp>
-          <FadeUp delay={0.2}>
-            <p className="mt-8 font-body text-sm font-light leading-body text-white/55">
-              In the meantime, a few things you might find useful:
-            </p>
-            <ul className="mt-4 space-y-2 font-body text-sm font-light leading-body text-brass-light">
-              <li>
-                <a className="underline decoration-brass/40 underline-offset-4 hover:text-brass" href="/services#case-study">
-                  Read the Synthesis Agent case study →
-                </a>
-              </li>
-              <li>
-                <a className="underline decoration-brass/40 underline-offset-4 hover:text-brass" href="/agents">
-                  Explore the Agents we are building →
-                </a>
-              </li>
-              <li>
-                <a className="underline decoration-brass/40 underline-offset-4 hover:text-brass" href="/blog">
-                  Browse more Forte insights →
-                </a>
-              </li>
-            </ul>
-          </FadeUp>
-        </div>
-      </section>
-    )
+  if (step === 'results' && report) {
+    const orgProp = contact.organization ? { organization: contact.organization } : {}
+    return <ResultsView report={report} {...orgProp} />
   }
 
   return null
 }
 
 function labelDimension(q: Question): string {
-  const labels: Record<Question['dimension'], string> = {
-    'data-maturity': 'Data maturity',
-    'decision-clarity': 'Decision clarity',
-    'architecture-health': 'Architecture health',
-    'ai-readiness': 'AI readiness',
-  }
-  return labels[q.dimension]
+  return DIMENSION_LABELS[q.dimension]
 }
+
+// ============================================================
+// Results view (in-browser Decision Readiness Report)
+// ============================================================
+
+function ResultsView({
+  report,
+  organization,
+}: {
+  report: ReportPayload
+  organization?: string
+}) {
+  const [downloading, setDownloading] = useState(false)
+
+  const handleDownload = async () => {
+    setDownloading(true)
+    try {
+      await generateAssessmentPdf(report, organization)
+    } finally {
+      setDownloading(false)
+    }
+  }
+
+  const orgLine = organization || 'Prepared for your organization'
+
+  return (
+    <section id="diagnostic" className="bg-navy-deep py-20 md:py-28">
+      <div className="mx-auto max-w-4xl px-6">
+        <FadeUp>
+          <SectionLabel label="Your Decision Readiness Report" />
+        </FadeUp>
+        <FadeUp delay={0.1}>
+          <h2 className="mt-4 font-display text-3xl font-normal leading-display text-white md:text-5xl">
+            {orgLine}
+          </h2>
+        </FadeUp>
+        <FadeUp delay={0.15}>
+          <p className="mt-6 font-mono text-[11px] uppercase tracking-mono text-brass-light">
+            Current stage
+          </p>
+          <p className="mt-1 font-display text-4xl font-normal leading-display text-white md:text-6xl">
+            {report.bottleneckStage}
+          </p>
+          <p className="mt-4 max-w-2xl font-body text-base font-light leading-body text-white/65">
+            {report.insight.body}
+          </p>
+        </FadeUp>
+
+        <FadeUp delay={0.2}>
+          <div className="mt-10">
+            <Button onClick={handleDownload} size="lg" disabled={downloading}>
+              {downloading ? 'Preparing PDF...' : 'Download your branded PDF report'}
+            </Button>
+          </div>
+        </FadeUp>
+
+        <FadeUp delay={0.25}>
+          <div className="mt-16 grid gap-4 md:grid-cols-2">
+            {report.scores.map((s) => (
+              <div key={s.dimension} className="rounded-sm border border-brass/20 bg-navy-mid/50 p-6">
+                <p className="font-mono text-[10px] uppercase tracking-mono text-brass-light">
+                  {DIMENSION_LABELS[s.dimension]}
+                </p>
+                <p className="mt-2 font-display text-2xl font-normal leading-display text-white">
+                  {s.average.toFixed(1)} / 4.0
+                </p>
+                <p className="mt-1 font-body text-sm font-light leading-body text-white/60">
+                  Stage: {s.stage}
+                </p>
+                <div className="mt-4 h-[4px] w-full rounded-full bg-white/10">
+                  <div
+                    className="h-full rounded-full bg-brass"
+                    style={{ width: `${(s.average / 4.0) * 100}%` }}
+                  />
+                </div>
+                <div className="mt-3 flex justify-between font-mono text-[9px] uppercase tracking-mono text-white/40">
+                  {STAGE_LABELS.map((stage) => (
+                    <span key={stage}>{stage}</span>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        </FadeUp>
+
+        <FadeUp delay={0.3}>
+          <div className="mt-16">
+            <p className="font-mono text-[10px] uppercase tracking-mono text-brass-light">
+              The unique insight
+            </p>
+            <h3 className="mt-2 font-display text-2xl font-normal leading-display text-white md:text-3xl">
+              {report.insight.headline}
+            </h3>
+            <p className="mt-4 font-body text-base font-light leading-body text-white/70">
+              {report.insight.body}
+            </p>
+            {report.statedPain ? (
+              <div className="mt-6 rounded-sm border border-brass/20 bg-navy-mid/40 p-5">
+                <p className="font-mono text-[10px] uppercase tracking-mono text-white/50">
+                  You told us the biggest pain to solve is
+                </p>
+                <p className="mt-2 font-body text-sm font-light italic leading-body text-white/80">
+                  &ldquo;{report.statedPain}&rdquo;
+                </p>
+              </div>
+            ) : null}
+          </div>
+        </FadeUp>
+
+        <FadeUp delay={0.35}>
+          <div className="mt-16">
+            <p className="font-mono text-[10px] uppercase tracking-mono text-brass-light">
+              Your top three priorities
+            </p>
+            <ol className="mt-6 space-y-6">
+              {report.priorities.map((p, i) => (
+                <li key={p.title} className="flex gap-5">
+                  <span className="font-display text-2xl font-medium text-brass-light">
+                    {String(i + 1).padStart(2, '0')}
+                  </span>
+                  <div>
+                    <h4 className="font-body text-base font-medium text-white">
+                      {p.title}
+                    </h4>
+                    <p className="mt-1 font-body text-sm font-light leading-body text-white/65">
+                      {p.body}
+                    </p>
+                    <p className="mt-2 font-mono text-[10px] uppercase tracking-mono text-white/40">
+                      Estimate: {p.estimate}
+                    </p>
+                  </div>
+                </li>
+              ))}
+            </ol>
+          </div>
+        </FadeUp>
+
+        <FadeUp delay={0.4}>
+          <div className="mt-16 rounded-sm border border-brass/30 bg-brass/5 p-8">
+            <p className="font-mono text-[10px] uppercase tracking-mono text-brass-light">
+              Recommended next step
+            </p>
+            <h3 className="mt-2 font-display text-xl font-normal leading-display text-white md:text-2xl">
+              {report.nextStep.headline}
+            </h3>
+            <p className="mt-4 font-body text-base font-light leading-body text-white/75">
+              {report.nextStep.body}
+            </p>
+            <div className="mt-6 flex flex-wrap gap-3">
+              <Button href="/contact" size="md">
+                Book a discovery call →
+              </Button>
+              <Button href={report.nextStep.href} variant="ghost" size="md">
+                {report.nextStep.hrefLabel}
+              </Button>
+            </div>
+          </div>
+        </FadeUp>
+
+        <FadeUp delay={0.45}>
+          <p className="mt-12 font-body text-sm font-light italic leading-body text-white/55">
+            This report is yours. Use it however you want. Hire Forte or not.
+            If you want to talk through what to do next, book a discovery
+            call.
+          </p>
+        </FadeUp>
+      </div>
+    </section>
+  )
+}
+
+// ============================================================
+// Sub-components
+// ============================================================
 
 function AudienceCard({
   title,
@@ -543,11 +681,8 @@ function MultiSelect({
 }) {
   if (!question.multiSelectOptions) return null
   const toggle = (opt: string) => {
-    if (value.includes(opt)) {
-      onChange(value.filter((v) => v !== opt))
-    } else {
-      onChange([...value, opt])
-    }
+    if (value.includes(opt)) onChange(value.filter((v) => v !== opt))
+    else onChange([...value, opt])
   }
   return (
     <div className="space-y-2">
@@ -583,27 +718,23 @@ function Field({
   value,
   onChange,
   type = 'text',
-  required = false,
 }: {
   label: string
   value: string
   onChange: (v: string) => void
   type?: string
-  required?: boolean
 }) {
   return (
-    <div>
-      <label className="block font-mono text-[10px] uppercase tracking-mono text-white/55">
+    <label className="block">
+      <span className="block font-mono text-[10px] uppercase tracking-mono text-white/55">
         {label}
-        {required ? <span className="text-brass-light"> *</span> : null}
-      </label>
+      </span>
       <input
         type={type}
-        required={required}
         value={value}
         onChange={(e) => onChange(e.target.value)}
         className="mt-2 w-full rounded-sm border border-brass/20 bg-navy-mid px-4 py-3 font-body text-base font-light text-white placeholder-white/30 focus:border-brass/60 focus:outline-none"
       />
-    </div>
+    </label>
   )
 }

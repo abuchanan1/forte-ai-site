@@ -461,3 +461,235 @@ export function overallBottleneckStage(results: ScoreResult[]): Stage {
     return stageRank[r.stage] < stageRank[lowest] ? r.stage : lowest
   }, 'Intelligent')
 }
+
+// ============================================================
+// Insight engine + priorities + recommended next step
+// ============================================================
+
+export interface Insight {
+  id: string
+  headline: string
+  body: string
+}
+
+export interface Priority {
+  title: string
+  body: string
+  estimate: string
+}
+
+export interface RecommendedNextStep {
+  stage: Stage
+  headline: string
+  body: string
+  href: string
+  hrefLabel: string
+}
+
+export interface ReportPayload {
+  track: Track
+  scores: ScoreResult[]
+  bottleneckStage: Stage
+  insight: Insight
+  priorities: Priority[]
+  nextStep: RecommendedNextStep
+  organization?: string
+  statedPain?: string
+  toolsSelected: string[]
+}
+
+function dimensionByKey(scores: ScoreResult[], dim: Dimension): ScoreResult | undefined {
+  return scores.find((s) => s.dimension === dim)
+}
+
+function weakestDimension(scores: ScoreResult[]): ScoreResult {
+  return [...scores].sort((a, b) => a.average - b.average)[0] ?? scores[0]!
+}
+
+function strongestDimension(scores: ScoreResult[]): ScoreResult {
+  return [...scores].sort((a, b) => b.average - a.average)[0] ?? scores[0]!
+}
+
+function allBelow(scores: ScoreResult[], threshold: number): boolean {
+  return scores.every((s) => s.average < threshold)
+}
+
+function allAbove(scores: ScoreResult[], threshold: number): boolean {
+  return scores.every((s) => s.average >= threshold)
+}
+
+export function selectInsight(
+  scores: ScoreResult[],
+  answers: Record<string, number | string | string[]>,
+  track: Track,
+): Insight {
+  const data = dimensionByKey(scores, 'data-maturity')?.average ?? 0
+  const clarity = dimensionByKey(scores, 'decision-clarity')?.average ?? 0
+  const arch = dimensionByKey(scores, 'architecture-health')?.average ?? 0
+  const ai = dimensionByKey(scores, 'ai-readiness')?.average ?? 0
+
+  const ownerQ = track === 'small-business' ? 'sb-q9' : 'np-q9'
+  const ownerAnswer = answers[ownerQ]
+  const singlePerson = typeof ownerAnswer === 'number' && ownerAnswer <= 2
+
+  if (allAbove(scores, 2.5)) {
+    return {
+      id: 'strong-across',
+      headline: 'You are in rare company.',
+      body: 'You scored in the Integrated range or higher across every dimension. The question is not whether to invest in AI — it is which specific agent or system to build first. A discovery call is probably a better use of your time than another assessment.',
+    }
+  }
+
+  if (allBelow(scores, 2.0)) {
+    return {
+      id: 'all-low',
+      headline: 'Consistently low is not a problem to be discouraged by.',
+      body: 'Your scores are consistently low across every dimension. This is not a bad place to start. It means your biggest opportunity is foundational clarity, not technology. Organizations that start here often move faster than those that have half-built solutions to unwind.',
+    }
+  }
+
+  if (clarity >= 3.0 && data < 2.5) {
+    return {
+      id: 'clarity-over-data',
+      headline: 'High clarity, low data maturity is the hardest combination.',
+      body: 'You scored high on decision clarity but low on data maturity. You know what you want to decide, but you cannot trust the inputs. The urgency to fix the foundation is higher than your scores suggest — the gap is not in thinking, it is in trusting what you measure against.',
+    }
+  }
+
+  if (ai > arch + 0.4) {
+    return {
+      id: 'ai-over-arch',
+      headline: 'AI readiness ahead of architecture is a trap.',
+      body: 'Your AI readiness score is higher than your architecture health score. Teams that jump to AI before fixing architecture spend the next year explaining why their agents are unreliable. Shore up the architecture first; the AI will land on stable ground.',
+    }
+  }
+
+  if (singlePerson) {
+    return {
+      id: 'single-person',
+      headline: 'There is a single-person dependency in your data ownership.',
+      body: 'Your answer on data ownership suggests most of what you know about your data lives in one person\'s head. Before any other investment, audit what happens if that person leaves. That risk is larger than any technology gap on your list.',
+    }
+  }
+
+  if (data < 2.0 && clarity < 2.0) {
+    return {
+      id: 'foundation-first',
+      headline: 'The foundation problem shows up before the tooling problem.',
+      body: 'Your data maturity and decision clarity both landed in the Scattered range. No dashboard, no agent, and no reporting platform will work well until those two are in better shape. Good news: neither requires heavy technology spend to improve.',
+    }
+  }
+
+  if (data >= 3.0 && clarity < 2.5) {
+    return {
+      id: 'data-no-decisions',
+      headline: 'You have more data than decisions.',
+      body: 'Your data maturity is strong, but your decision clarity is not. You are probably measuring more than you need and deciding on less than you should. The next move is not more data — it is naming the three to five decisions your leadership team actually has to get right.',
+    }
+  }
+
+  const weakest = weakestDimension(scores)
+  const strongest = strongestDimension(scores)
+  return {
+    id: 'general-weakest',
+    headline: `Your bottleneck is ${DIMENSION_LABELS[weakest.dimension]}.`,
+    body: `You scored strongest on ${DIMENSION_LABELS[strongest.dimension]} (${strongest.average}/4.0) and weakest on ${DIMENSION_LABELS[weakest.dimension]} (${weakest.average}/4.0). The gap between your strongest and weakest is what is slowing the system down. Fixing the weakest dimension is usually higher leverage than pushing the strongest higher.`,
+  }
+}
+
+export function computePriorities(scores: ScoreResult[]): Priority[] {
+  const priorityByDimension: Record<Dimension, Priority> = {
+    'data-maturity': {
+      title: 'Define your core data model',
+      body: 'Write down what an "active client" or "active customer" is, where it lives, who owns the definition. Do this as a leadership conversation, not a technical one. This single artifact unlocks every downstream investment.',
+      estimate: '2 to 4 weeks',
+    },
+    'decision-clarity': {
+      title: 'Name the three to five decisions that actually matter',
+      body: 'Get your leadership team in a room and list the recurring decisions that determine whether the year goes well. Then trace backwards from each decision to the data that should inform it. Most organizations have more data than decisions — the problem is rarely volume.',
+      estimate: '1 to 2 weeks',
+    },
+    'architecture-health': {
+      title: 'Audit ownership and single-person risk',
+      body: 'Map every data source to a named owner with documentation and a backup. Note where the answer is "that one person who never takes vacation." Fix those before any new tool investment. Resilience compounds.',
+      estimate: '2 to 3 weeks',
+    },
+    'ai-readiness': {
+      title: 'Pick one small, well-scoped agent use case',
+      body: 'Do not try to "adopt AI." Pick one specific job that, done well by an agent, would change someone\'s week. Build that, run it for 90 days with explicit human review, and expand from what you learn.',
+      estimate: '4 to 8 weeks',
+    },
+  }
+
+  return [...scores]
+    .sort((a, b) => a.average - b.average)
+    .slice(0, 3)
+    .map((s) => priorityByDimension[s.dimension])
+}
+
+export function recommendedNextStep(stage: Stage): RecommendedNextStep {
+  if (stage === 'Scattered') {
+    return {
+      stage,
+      headline: 'Start with clarity, not technology.',
+      body: 'You are not ready for AI yet, and that is not a criticism. It is clarity. The right next step is an internal readiness conversation or the Forte AI and Data Health Assessment, which formalizes this process.',
+      href: '/services',
+      hrefLabel: 'See the Assessment engagement →',
+    }
+  }
+  if (stage === 'Centralized') {
+    return {
+      stage,
+      headline: 'Build the foundation once, so every future investment compounds.',
+      body: 'Your foundation is uneven. The Foundation Sprint (six to eight weeks) is built for organizations at this stage. It produces a Decision Data Model that gives every downstream investment — dashboards, reporting, AI — something reliable to build on.',
+      href: '/services',
+      hrefLabel: 'See the Foundation Sprint →',
+    }
+  }
+  if (stage === 'Integrated') {
+    return {
+      stage,
+      headline: 'You are ready to build a Decision Engine.',
+      body: 'AI agents can produce reliable outputs on your foundation. The question is which agent to build first. A discovery call is the right next step.',
+      href: '/agents',
+      hrefLabel: 'See the agents we build →',
+    }
+  }
+  return {
+    stage,
+    headline: 'Your foundation is strong. Keep the system evolving.',
+    body: 'You are in rare company. The Fractional Head of Decision Intelligence engagement is built for organizations that already have the foundation and need ongoing senior leadership to keep it evolving.',
+    href: '/services#fractional',
+    hrefLabel: 'See the Fractional engagement →',
+  }
+}
+
+export function buildReport(
+  track: Track,
+  answers: Record<string, number | string | string[]>,
+  organization?: string,
+): ReportPayload {
+  const scores = computeScores(track, answers)
+  const bottleneckStage = overallBottleneckStage(scores)
+  const insight = selectInsight(scores, answers, track)
+  const priorities = computePriorities(scores)
+  const nextStep = recommendedNextStep(bottleneckStage)
+  const statedPainQ = track === 'small-business' ? 'sb-q15' : 'np-q15'
+  const painRaw = answers[statedPainQ]
+  const statedPain = typeof painRaw === 'string' ? painRaw : undefined
+  const toolsQ = track === 'small-business' ? 'sb-q10' : 'np-q10'
+  const toolsRaw = answers[toolsQ]
+  const toolsSelected = Array.isArray(toolsRaw) ? toolsRaw : []
+
+  return {
+    track,
+    scores,
+    bottleneckStage,
+    insight,
+    priorities,
+    nextStep,
+    ...(organization ? { organization } : {}),
+    ...(statedPain ? { statedPain } : {}),
+    toolsSelected,
+  }
+}

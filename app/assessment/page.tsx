@@ -8,7 +8,7 @@ import { DecisionReadinessDiagnostic } from '@/components/sections/DecisionReadi
 export const metadata: Metadata = createMetadata({
   title: 'Decision Readiness Report',
   description:
-    'A diagnostic for leadership teams at 50 to 500 person organizations. Ten minutes to answer. A written Decision Readiness Report in your inbox within 24 hours.',
+    'A diagnostic for leadership teams at 50 to 500 person organizations. Ten minutes to answer. A branded Decision Readiness Report generated on the spot, downloadable as a PDF.',
   path: '/assessment',
 })
 
@@ -63,8 +63,8 @@ const HOW_IT_WORKS = [
   },
   {
     num: '03',
-    title: 'Receive your report',
-    body: 'Within 24 hours, a written Decision Readiness Report lands in your inbox. Four scores. A prioritized gap analysis. A specific recommendation for what to do next. Yours to use, hire Forte or not.',
+    title: 'View and download your report',
+    body: 'As soon as you finish, your Decision Readiness Report appears on screen. Four dimension scores. A prioritized gap analysis. A unique insight tailored to your answers. A recommended next step. Download the branded PDF. Yours to keep, hire Forte or not.',
   },
 ]
 
@@ -75,7 +75,7 @@ const WHAT_YOU_WILL_NOT_GET = [
   },
   {
     bold: 'It will not put you on an aggressive sales cadence.',
-    rest: 'You will receive your report, one follow-up offering a call if you want one, and then nothing unless you reach out.',
+    rest: 'The report is generated for you on the spot. You are free to use it however you want.',
   },
   {
     bold: 'It will not share your data.',
@@ -111,9 +111,8 @@ export default function AssessmentPage() {
           <FadeUp delay={0.2}>
             <p className="mt-6 max-w-2xl font-body text-lg font-light leading-body text-white/70">
               A diagnostic for leadership teams at 50-to-500 person
-              organizations. Ten minutes to answer. A written Decision
-              Readiness Report in your inbox within 24 hours. A clear view of
-              where you stand and what to do next.
+              organizations. Ten minutes to answer. A branded Decision
+              Readiness Report generated on the spot, downloadable as a PDF.
             </p>
           </FadeUp>
           <FadeUp delay={0.3}>
@@ -134,11 +133,11 @@ export default function AssessmentPage() {
               </li>
               <li className="flex items-center gap-2">
                 <span className="inline-block h-1 w-1 rounded-full bg-brass" />
-                No credit card · No sales call required
+                Instant PDF report · No sales call required
               </li>
               <li className="flex items-center gap-2">
                 <span className="inline-block h-1 w-1 rounded-full bg-brass" />
-                Written report within 24 hours
+                Confidential and yours to keep
               </li>
             </ul>
           </FadeUp>
@@ -224,7 +223,7 @@ export default function AssessmentPage() {
           </FadeUp>
           <FadeUp delay={0.1}>
             <h2 className="mt-4 font-display text-3xl font-normal leading-display text-white md:text-4xl">
-              Ten minutes to answer. Twenty-four hours to a real report.
+              Ten minutes to answer. Your report generated on the spot.
             </h2>
           </FadeUp>
           <div className="mt-12 grid gap-8 md:grid-cols-3">
