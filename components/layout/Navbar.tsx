@@ -29,7 +29,7 @@ export function Navbar() {
 
         <div className="hidden md:block">
           <Button href="/contact" size="sm">
-            Request a Demo
+            Book a Discovery Call
           </Button>
         </div>
 

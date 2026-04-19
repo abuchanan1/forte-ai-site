@@ -135,7 +135,7 @@ export function NavbarClient({ children }: NavbarClientProps) {
             </ul>
             <div className="mt-10">
               <Button href="/contact" size="md" onClick={closeMenu}>
-                Request a Demo
+                Book a Call
               </Button>
             </div>
           </div>
