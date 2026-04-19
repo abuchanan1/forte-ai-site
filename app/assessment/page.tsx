@@ -64,22 +64,18 @@ const HOW_IT_WORKS = [
   {
     num: '03',
     title: 'View and download your report',
-    body: 'As soon as you finish, your Decision Readiness Report appears on screen. Four dimension scores. A prioritized gap analysis. A unique insight tailored to your answers. A recommended next step. Download the branded PDF. Yours to keep, hire Forte or not.',
+    body: 'As soon as you finish, your Decision Readiness Report appears on screen. Four dimension scores. A prioritized gap analysis. A key insight tailored to your answers. A recommended next step. Download the PDF. Yours to keep, hire Forte or not.',
   },
 ]
 
 const WHAT_YOU_WILL_NOT_GET = [
   {
     bold: 'It will not tell you "you need AI" because you took an AI readiness diagnostic.',
-    rest: 'Roughly half the organizations that complete it are told, honestly, that they are not ready for AI yet and here is the foundation work that comes first.',
+    rest: 'We are not in the business of telling everyone they need AI. If your answers suggest you are not ready yet, the report will say so and name the foundation work that comes first.',
   },
   {
     bold: 'It will not put you on an aggressive sales cadence.',
     rest: 'The report is generated for you on the spot. You are free to use it however you want.',
-  },
-  {
-    bold: 'It will not share your data.',
-    rest: 'Your answers are confidential. The report is yours.',
   },
   {
     bold: 'It will not replace a real conversation.',

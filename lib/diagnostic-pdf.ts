@@ -239,7 +239,7 @@ export async function generateAssessmentPdf(
 
   footer(3)
 
-  // =========== Page 4 — Unique insight ===========
+  // =========== Page 4 — Key insight ===========
   doc.addPage()
   bgPage()
   y = 30
@@ -247,7 +247,7 @@ export async function generateAssessmentPdf(
   doc.setFont('helvetica', 'bold')
   doc.setFontSize(9)
   doc.setTextColor(...BRASS)
-  doc.text('THE UNIQUE INSIGHT', margin, y)
+  doc.text('KEY INSIGHT', margin, y)
   y += 12
 
   doc.setFont('helvetica', 'bold')

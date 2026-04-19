@@ -77,6 +77,22 @@ export function DecisionReadinessDiagnostic() {
   const [report, setReport] = useState<ReportPayload | null>(null)
   const [error, setError] = useState<string>('')
   const [hydrated, setHydrated] = useState(false)
+  const [showValidation, setShowValidation] = useState(false)
+
+  const contactErrors = useMemo(() => {
+    const emailTrimmed = contact.email.trim()
+    const emailIsValid = emailTrimmed === '' || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailTrimmed)
+    const nameIsPresent = contact.name.trim().length > 0
+    return {
+      email: emailTrimmed !== '' && !emailIsValid
+        ? 'Please enter a valid email address.'
+        : '',
+      call:
+        contact.requestedCall && (!nameIsPresent || !emailIsValid || emailTrimmed === '')
+          ? 'To request a call, please provide your name and a valid email so we can reach you.'
+          : '',
+    }
+  }, [contact])
 
   useEffect(() => {
     const saved = loadState()
@@ -92,6 +108,15 @@ export function DecisionReadinessDiagnostic() {
     if (!hydrated) return
     saveState({ ...(track ? { track } : {}), answers, qIndex })
   }, [track, answers, qIndex, hydrated])
+
+  useEffect(() => {
+    if (step !== 'results') return
+    if (typeof window === 'undefined') return
+    const el = document.getElementById('diagnostic')
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    }
+  }, [step])
 
   const questions = track ? QUESTIONS[track] : []
   const current = questions[qIndex]
@@ -138,6 +163,10 @@ export function DecisionReadinessDiagnostic() {
       setError('Please restart the diagnostic.')
       return
     }
+    if (includeContact && (contactErrors.email || contactErrors.call)) {
+      setShowValidation(true)
+      return
+    }
     setStep('submitting')
     try {
       const res = await fetch('/api/assessment', {
@@ -159,9 +188,6 @@ export function DecisionReadinessDiagnostic() {
       setReport(data.report)
       clearState()
       setStep('results')
-      if (typeof window !== 'undefined') {
-        window.scrollTo({ top: 0, behavior: 'smooth' })
-      }
     } catch {
       setError('Network error. Please try again.')
       setStep('contact')
@@ -311,7 +337,6 @@ export function DecisionReadinessDiagnostic() {
   }
 
   if (step === 'contact' || step === 'submitting') {
-    const hasNameAndEmail = contact.name.trim().length > 0 && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(contact.email)
     return (
       <section id="diagnostic" className="bg-navy-deep py-20 md:py-28">
         <div className="mx-auto max-w-2xl px-6">
@@ -333,7 +358,13 @@ export function DecisionReadinessDiagnostic() {
 
           <div className="mt-10 space-y-5">
             <Field label="Full name" value={contact.name} onChange={(v) => setContact({ ...contact, name: v })} />
-            <Field label="Email address" type="email" value={contact.email} onChange={(v) => setContact({ ...contact, email: v })} />
+            <Field
+              label="Email address"
+              type="email"
+              value={contact.email}
+              onChange={(v) => setContact({ ...contact, email: v })}
+              error={showValidation ? contactErrors.email : ''}
+            />
             <Field label="Organization name" value={contact.organization} onChange={(v) => setContact({ ...contact, organization: v })} />
             <Field label="Role / title" value={contact.role} onChange={(v) => setContact({ ...contact, role: v })} />
 
@@ -356,29 +387,27 @@ export function DecisionReadinessDiagnostic() {
 
             <Field label="Phone" value={contact.phone} onChange={(v) => setContact({ ...contact, phone: v })} />
 
-            <label
-              className={`flex cursor-pointer items-start gap-3 rounded-sm border px-4 py-3 text-sm transition-colors ${
-                hasNameAndEmail
-                  ? 'border-brass/15 bg-navy-mid/40 text-white/75 hover:border-brass/30'
-                  : 'border-white/10 bg-navy-mid/20 text-white/40 cursor-not-allowed'
-              }`}
-            >
-              <input
-                type="checkbox"
-                className="mt-1 h-4 w-4 accent-[#A07840]"
-                checked={contact.requestedCall && hasNameAndEmail}
-                disabled={!hasNameAndEmail}
-                onChange={(e) => setContact({ ...contact, requestedCall: e.target.checked })}
-              />
-              <span>
-                I&apos;d like a 30-minute discovery call to discuss my results.
-                {hasNameAndEmail ? null : (
+            <div>
+              <label className="flex cursor-pointer items-start gap-3 rounded-sm border border-brass/15 bg-navy-mid/40 px-4 py-3 text-sm text-white/75 transition-colors hover:border-brass/30">
+                <input
+                  type="checkbox"
+                  className="mt-1 h-4 w-4 accent-[#A07840]"
+                  checked={contact.requestedCall}
+                  onChange={(e) => setContact({ ...contact, requestedCall: e.target.checked })}
+                />
+                <span>
+                  I&apos;d like a 30-minute discovery call to discuss my results.
                   <span className="block text-xs text-white/40">
-                    Enabled once name and email are provided.
+                    Make sure name and email are filled in so we can reach you.
                   </span>
-                )}
-              </span>
-            </label>
+                </span>
+              </label>
+              {showValidation && contactErrors.call ? (
+                <p className="mt-2 font-body text-xs leading-body text-red-300">
+                  {contactErrors.call}
+                </p>
+              ) : null}
+            </div>
 
             {error ? (
               <p className="rounded-sm border border-red-500/30 bg-red-900/20 px-4 py-3 font-body text-sm text-red-300">
@@ -482,7 +511,7 @@ function ResultsView({
         <FadeUp delay={0.2}>
           <div className="mt-10">
             <Button onClick={handleDownload} size="lg" disabled={downloading}>
-              {downloading ? 'Preparing PDF...' : 'Download your branded PDF report'}
+              {downloading ? 'Preparing PDF...' : 'Download your report'}
             </Button>
           </div>
         </FadeUp>
@@ -519,7 +548,7 @@ function ResultsView({
         <FadeUp delay={0.3}>
           <div className="mt-16">
             <p className="font-mono text-[10px] uppercase tracking-mono text-brass-light">
-              The unique insight
+              Key insight
             </p>
             <h3 className="mt-2 font-display text-2xl font-normal leading-display text-white md:text-3xl">
               {report.insight.headline}
@@ -718,12 +747,15 @@ function Field({
   value,
   onChange,
   type = 'text',
+  error = '',
 }: {
   label: string
   value: string
   onChange: (v: string) => void
   type?: string
+  error?: string
 }) {
+  const hasError = error.length > 0
   return (
     <label className="block">
       <span className="block font-mono text-[10px] uppercase tracking-mono text-white/55">
@@ -733,8 +765,18 @@ function Field({
         type={type}
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="mt-2 w-full rounded-sm border border-brass/20 bg-navy-mid px-4 py-3 font-body text-base font-light text-white placeholder-white/30 focus:border-brass/60 focus:outline-none"
+        aria-invalid={hasError || undefined}
+        className={`mt-2 w-full rounded-sm border bg-navy-mid px-4 py-3 font-body text-base font-light text-white placeholder-white/30 focus:outline-none ${
+          hasError
+            ? 'border-red-400/60 focus:border-red-400'
+            : 'border-brass/20 focus:border-brass/60'
+        }`}
       />
+      {hasError ? (
+        <span className="mt-2 block font-body text-xs leading-body text-red-300">
+          {error}
+        </span>
+      ) : null}
     </label>
   )
 }
